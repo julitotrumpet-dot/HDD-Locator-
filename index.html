@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HDD Professional Multi-Level Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a202c; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; overscroll-behavior: none; }
+        #game-canvas { background-color: #2d3748; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.5); }
+        .lcd-screen { background-color: #bbf7d0; color: #166534; font-family: 'Courier New', Courier, monospace; font-weight: bold; }
+        .btn-action:disabled { opacity: 0.5; cursor: not-allowed; }
+        .star-gold { color: #fbbf24; text-shadow: 0 0 10px #f59e0b; }
+        .emergency-alert { animation: blinker 1s linear infinite; color: #ff0000; font-weight: 900; }
+        @keyframes blinker { 50% { opacity: 0; } }
+        
+        /* Estilo de la pantalla de presentación */
+        #splash-screen {
+            background: linear-gradient(rgba(26, 32, 44, 0.95), rgba(26, 32, 44, 0.95)), url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .mute-btn { cursor: pointer; transition: color 0.2s; }
+        .mute-btn:hover { color: #f59e0b; }
+    </style>
+</head>
+<body class="h-screen w-screen m-0 p-0 flex flex-col">
+
+    <!-- PANTALLA DE PRESENTACIÓN -->
+    <div id="splash-screen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-6 text-center text-white">
+        <div class="max-w-4xl bg-gray-800 bg-opacity-95 p-8 rounded-2xl border-2 border-yellow-500 shadow-2xl backdrop-blur-md">
+            <h1 class="text-4xl lg:text-6xl font-black text-yellow-500 mb-2 uppercase tracking-tighter">HDD PROFESSIONAL</h1>
+            <h2 class="text-xl lg:text-2xl font-bold text-white mb-2 uppercase tracking-widest">Precision Drilling Simulator v3.0</h2>
+            <p class="text-yellow-400 font-bold mb-6 italic tracking-wide text-lg">by Julio Sarracent</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left mb-8 border-t border-gray-600 pt-6">
+                <div>
+                    <h3 class="text-yellow-500 font-bold uppercase mb-2 flex items-center text-base">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13zM7 13a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13z" clip-rule="evenodd"></path></svg>
+                        Training Objectives
+                    </h3>
+                    <ul class="text-sm text-gray-300 space-y-2">
+                        <li>• Complete <span class="text-white font-bold">20 levels</span> of technical challenges.</li>
+                        <li>• Master <span class="text-white font-bold">Absolute Horizon</span> (Pitch 0% = Straight).</li>
+                        <li>• Variable terrain and depth calculation tasks.</li>
+                        <li>• Precision corridor navigation (Runaway Arc).</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-yellow-500 font-bold uppercase mb-2 flex items-center text-base">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 4.946-3.076 9.168-7.391 10.82a.5.5 0 01-.218 0C6.076 16.168 3 11.946 3 7.001c0-.681.056-1.35.166-2.001zm6.39 5.847a.75.75 0 00-1.06 1.06L9.44 13.85a.75.75 0 001.06 0l3.5-3.5a.75.75 0 10-1.06-1.06L10 12.293 8.556 10.846z" clip-rule="evenodd"></path></svg>
+                        Safety Protocols
+                    </h3>
+                    <ul class="text-sm text-gray-300 space-y-2">
+                        <li>• <span class="text-orange-400 font-bold">Potholing:</span> Standard utility verification.</li>
+                        <li>• <span class="text-red-500 font-bold">Emergency Strike:</span> Immediate 911 protocol.</li>
+                        <li>• <span class="text-blue-400 font-bold">Mechanical Integrity:</span> Avoid rod over-bending.</li>
+                        <li>• <span class="text-green-400 font-bold">Real-World Use:</span> These protocols are for life saving.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center border-t border-gray-600 pt-6">
+                <button onclick="startGame()" class="bg-yellow-500 hover:bg-yellow-400 text-black font-black text-2xl py-4 px-12 rounded-full shadow-[0_0_20px_rgba(245,158,11,0.5)] transition transform hover:scale-105 active:scale-95 uppercase mb-4">
+                    Start Training
+                </button>
+                <div class="max-w-2xl text-[10px] text-gray-400 font-medium tracking-tight italic">
+                    <p>DISCLAIMER: This application is a simulator for training purposes only. The safety protocols and operational steps shown should always be applied in real-life drilling projects. Always follow OSHA regulations, local utility laws, and manufacturer safety manuals on actual job sites.</p>
+                </div>
+                <p class="mt-4 text-xs text-gray-500 font-bold tracking-widest uppercase">Know what's below. Call <span class="text-white">811</span> before you dig.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADVERTENCIA DE ORIENTACIÓN -->
+    <div class="portrait:flex landscape:hidden fixed inset-0 bg-gray-900 z-50 flex-col items-center justify-center text-center p-6">
+        <svg class="w-24 h-24 mb-6 text-yellow-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10V6a2 2-0 012-2h12a2 2(0 012 2v4m-16 4v4a2 2(0 002 2h12a2 2(0 002-2v-4m-16-4h16"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v4m-4-4l4 4 4-4"></path></svg>
+        <h2 class="text-3xl font-bold text-yellow-400 mb-4">Rotate Your Device</h2>
+        <p class="text-xl text-gray-300">This simulator requires landscape orientation.</p>
+    </div>
+
+    <!-- INTERFAZ PRINCIPAL DEL JUEGO -->
+    <div class="portrait:hidden landscape:flex flex-col h-full w-full p-2 lg:p-4">
+        
+        <!-- ENCABEZADO -->
+        <div class="flex justify-between items-center mb-2 shrink-0">
+            <div>
+                <h1 class="text-xl lg:text-2xl font-bold text-yellow-400 leading-tight uppercase tracking-tighter">HDD SIMULATOR <span class="text-white ml-2">LEVEL <span id="lvl-number">1</span>/20</span></h1>
+                <div class="flex items-center space-x-2">
+                    <p class="text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest font-bold">Horizon Precision Logic v3.0</p>
+                    <span class="text-[10px] text-gray-500 italic">by Julio Sarracent</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div id="audio-toggle" onclick="toggleMute()" class="mute-btn text-gray-400">
+                    <svg class="w-6 h-6" id="speaker-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"></path></svg>
+                </div>
+                <div id="pothole-counter" class="text-sm font-bold text-yellow-500 bg-gray-900 px-3 py-1 rounded-full border border-yellow-900">
+                    Potholes: 0/0
+                </div>
+                <button onclick="toggleView()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-1 px-4 lg:py-2 lg:px-6 rounded shadow-lg transition text-xs lg:text-sm uppercase">
+                    View: <span id="btn-view-text">Main</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- PANTALLAS LCD -->
+        <div class="grid grid-cols-3 lg:grid-cols-6 gap-1 lg:gap-2 shrink-0 mb-2">
+            <div class="lcd-screen p-1 lg:p-2 rounded shadow flex flex-col items-center justify-center">
+                <span class="text-[9px] lg:text-xs text-green-800 uppercase text-center">Depth</span>
+                <span id="display-depth" class="text-sm lg:text-xl">0.00 ft</span>
+            </div>
+            <div class="lcd-screen p-1 lg:p-2 rounded shadow flex flex-col items-center justify-center">
+                <span class="text-[9px] lg:text-xs text-green-800 uppercase text-center">Pitch / Slope</span>
+                <span id="display-pitch" class="text-sm lg:text-xl">0 %</span>
+            </div>
+            <div class="lcd-screen p-1 lg:p-2 rounded shadow flex flex-col items-center justify-center border-2 border-blue-400 text-center">
+                <span class="text-[9px] lg:text-xs text-blue-800 uppercase font-bold leading-tight">Lat. Dev.</span>
+                <span id="display-lat" class="text-xs lg:text-lg">0.00 ft (C)</span>
+            </div>
+            <div class="lcd-screen p-1 lg:p-2 rounded shadow flex flex-col items-center justify-center">
+                <span class="text-[9px] lg:text-xs text-green-800 uppercase text-center text-center">Distance</span>
+                <span id="display-distance" class="text-xs lg:text-lg">0 ft (0r)</span>
+            </div>
+            <div class="lcd-screen p-1 lg:p-2 rounded shadow flex flex-col items-center justify-center bg-green-200 border-2 border-green-500 text-center">
+                <span class="text-[9px] lg:text-xs text-green-800 uppercase font-bold leading-tight text-center">To Target</span>
+                <span id="display-remaining" class="text-xs lg:text-lg">100 ft</span>
+            </div>
+            <div class="lcd-screen p-1 lg:p-2 rounded shadow flex flex-col items-center justify-center">
+                <span class="text-[9px] lg:text-xs text-green-800 uppercase text-center">Lat. Angle</span>
+                <span id="display-lat-angle" class="text-xs lg:text-lg">0 %</span>
+            </div>
+        </div>
+
+        <!-- ÁREA DEL CANVAS -->
+        <div class="relative flex-grow min-h-0 w-full mb-2 bg-gray-900 rounded-lg overflow-hidden shadow-inner">
+            <canvas id="game-canvas" width="1200" height="400" class="w-full h-full object-contain"></canvas>
+            
+            <!-- MODAL DE FIN DE JUEGO -->
+            <div id="game-over-modal" class="absolute inset-0 bg-black bg-opacity-40 hidden flex-col items-center justify-center rounded-lg z-20 backdrop-blur-sm">
+                <div class="bg-gray-800 border-2 border-gray-600 p-6 rounded-lg shadow-2xl max-w-xl w-full flex flex-col items-center mx-4 text-white">
+                    <h2 id="game-over-title" class="text-2xl lg:text-4xl font-bold mb-2 text-center uppercase"></h2>
+                    <div id="star-rating" class="flex space-x-2 mb-4 text-3xl"></div>
+                    <p id="game-over-msg" class="text-sm lg:text-lg mb-6 text-center px-4 max-w-2xl font-medium"></p>
+                    <div id="game-over-errors" class="w-full mb-6 text-left hidden bg-gray-900 p-4 rounded border border-red-900">
+                        <h4 class="text-red-500 font-bold mb-2 text-sm uppercase tracking-widest underline">Critical Log:</h4>
+                        <ul id="game-over-errors-list" class="list-disc pl-5 text-xs lg:text-sm text-red-400 space-y-1"></ul>
+                    </div>
+                    <div class="flex space-x-4">
+                        <button id="btn-retry" onclick="reiniciarJuego()" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-8 rounded shadow-lg transition uppercase tracking-wider text-sm lg:text-base">Retry</button>
+                        <button id="btn-next" onclick="nextLevel()" class="hidden bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-8 rounded shadow-lg transition uppercase tracking-wider text-sm lg:text-base">Next Level</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTROLES -->
+        <div class="bg-gray-800 p-2 lg:p-4 rounded-lg shadow-lg shrink-0 relative">
+            <div id="error-msg" class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-red-600 text-white font-bold text-sm px-4 py-2 rounded shadow-lg hidden z-50 mb-1 border-2 border-white max-w-sm text-center uppercase">Error</div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Reloj -->
+                <div class="flex flex-col items-center justify-center shrink-0">
+                    <h3 class="text-xs lg:text-sm mb-1 text-gray-400 font-bold uppercase tracking-widest text-center">Tool Face (Clock)</h3>
+                    <div id="clock-container" class="relative w-20 h-20 lg:w-24 lg:h-24 shrink-0 rounded-full border-4 border-gray-600 bg-gray-700 aspect-square mb-2 shadow-inner"></div>
+                    <div id="hour-selector" class="grid grid-cols-4 gap-1 w-full max-w-[140px]"></div>
+                </div>
+                <!-- Intensidad -->
+                <div class="flex flex-col items-center justify-center border-l border-r border-gray-700 px-2 text-center">
+                    <h3 class="text-xs lg:text-sm mb-2 text-gray-400 font-bold uppercase tracking-widest leading-tight text-center">Steer Intensity<br><span class="text-[9px] font-normal text-gray-500">(% per 10ft rod)</span></h3>
+                    <div class="flex space-x-2 w-full max-w-[200px] mb-2">
+                        <button onclick="programarFuerza(-1)" class="flex-1 bg-red-500 hover:bg-red-400 text-white font-bold py-2 rounded shadow">-1</button>
+                        <button onclick="programarFuerza(1)" class="flex-1 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 rounded shadow">+1</button>
+                    </div>
+                    <div id="display-programmed" class="text-gray-400 font-bold text-[10px] lg:text-xs text-center h-6 lg:h-8 flex items-center justify-center bg-gray-900 w-full max-w-[200px] rounded border">Power: 12%</div>
+                    <button onclick="limpiarFuerza()" class="mt-1 text-[10px] text-gray-500 hover:text-white underline mb-2 uppercase text-xs text-center">Reset (12%)</button>
+                    <div class="w-full max-w-[200px]">
+                        <h3 class="text-[9px] text-gray-400 font-bold uppercase text-center">Rod Capacity</h3>
+                        <div id="display-rod-left" class="text-yellow-400 font-bold text-[10px] text-center h-6 flex items-center justify-center bg-gray-900 w-full rounded border border-yellow-600 text-center">10.0 ft</div>
+                    </div>
+                </div>
+                <!-- Acciones -->
+                <div class="flex flex-col justify-center">
+                    <div class="flex justify-between items-center mb-1">
+                        <div class="flex items-center space-x-2"><h3 class="text-xs lg:text-sm text-gray-400 font-bold uppercase">Run Controls</h3>
+                        <div id="initial-pitch-controls" class="flex space-x-1">
+                            <button onclick="ajustarPitchInicial(-1)" class="bg-red-600 hover:bg-red-500 text-white font-bold text-[10px] px-2 py-0.5 rounded shadow">-</button>
+                            <button onclick="ajustarPitchInicial(1)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10px] px-2 py-0.5 rounded shadow">+</button>
+                        </div></div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1 w-full mb-1">
+                        <button onclick="iniciarMover(2.5, true)" class="btn-action bg-green-500 hover:bg-green-400 text-white font-bold py-2 rounded text-[10px] shadow uppercase">Drill 1/4</button>
+                        <button onclick="iniciarMover(5, true)" class="btn-action bg-green-600 hover:bg-green-500 text-white font-bold py-2 rounded text-[10px] shadow uppercase">Drill 1/2</button>
+                        <button onclick="iniciarMover(10, true)" class="btn-action bg-green-700 hover:bg-green-600 text-white font-bold py-2 rounded text-[10px] shadow uppercase">Drill Full</button>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1 w-full mb-1">
+                        <button onclick="iniciarMover(2.5, false)" class="btn-action bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-2 rounded text-[10px] shadow uppercase">Push 1/4</button>
+                        <button onclick="iniciarMover(5, false)" class="btn-action bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 rounded text-[10px] shadow uppercase">Push 1/2</button>
+                        <button onclick="iniciarMover(10, false)" class="btn-action bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-2 rounded text-[10px] shadow uppercase">Push Full</button>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1 w-full">
+                        <button onclick="iniciarRetroceder(2.5)" class="btn-action bg-gray-500 hover:bg-gray-400 text-white font-bold py-2 rounded text-[10px] shadow uppercase">Back 1/4</button>
+                        <button onclick="iniciarRetroceder(5)" class="btn-action bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 rounded text-[10px] shadow uppercase">Back 1/2</button>
+                        <button onclick="iniciarRetroceder(10)" class="btn-action bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 rounded text-[10px] shadow uppercase">Back Full</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- VARIABLES GLOBALES (Declaradas al inicio para evitar errores de referencia) ---
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Estado del juego
+        let state = {
+            level: 1,
+            view: 'side',
+            distance: 0,
+            absElevation: 0, 
+            lat: 0,
+            pitch: -24,
+            latAngle: 0,
+            clock: 12,
+            steeringForce: 12,
+            rods: 0,
+            path: [],
+            targetDistance: 100,
+            targetDepth: 3.0, 
+            targetLat: 0.0,
+            runawayWidth: 2.5, 
+            gameOver: false,
+            errors: [],
+            potholesVisited: [],
+            surfacePoints: [], 
+            utilities: []
+        };
+
+        // Constantes de visualización
+        const surfaceBaseY = 120; 
+        const startXOffset = 150; 
+        const ftToPx = 15; 
+
+        // Variables de Audio
+        let audioCtx = null;
+        let engineOsc = null;
+        let engineGain = null;
+        let musicGain = null;
+        let isMuted = false;
+        
+        let isAnimating = false;
+        let animationData = null;
+
+        // --- SISTEMA DE AUDIO ---
+        function initAudio() {
+            if (audioCtx) return;
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Oscilador del motor
+            engineOsc = audioCtx.createOscillator();
+            engineOsc.type = 'sawtooth';
+            engineOsc.frequency.setValueAtTime(35, audioCtx.currentTime); 
+            
+            engineGain = audioCtx.createGain();
+            engineGain.gain.setValueAtTime(isMuted ? 0 : 0.05, audioCtx.currentTime);
+            
+            let filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(200, audioCtx.currentTime);
+
+            engineOsc.connect(filter);
+            filter.connect(engineGain);
+            engineGain.connect(audioCtx.destination);
+            engineOsc.start();
+
+            // Secuenciador de música de fondo
+            musicGain = audioCtx.createGain();
+            musicGain.gain.setValueAtTime(isMuted ? 0 : 0.04, audioCtx.currentTime);
+            musicGain.connect(audioCtx.destination);
+            startAdventureMusic();
+        }
+
+        function startAdventureMusic() {
+            // Notas para un ambiente de aventura (Heroica Pentatónica)
+            const notes = [110, 130.81, 146.83, 164.81, 196.00, 220, 196.00, 164.81];
+            let step = 0;
+            
+            function playStep() {
+                if (!audioCtx) return;
+                if (isMuted) {
+                    setTimeout(playStep, 500);
+                    return;
+                }
+                
+                let osc = audioCtx.createOscillator();
+                let g = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(notes[step % notes.length], audioCtx.currentTime);
+                g.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
+                
+                osc.connect(g);
+                g.connect(musicGain);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.5);
+                
+                step++;
+                setTimeout(playStep, 500); 
+            }
+            playStep();
+        }
+
+        function setEnginePitch(freq, vol = 0.05) {
+            if (!audioCtx || isMuted) return;
+            engineOsc.frequency.exponentialRampToValueAtTime(freq, audioCtx.currentTime + 0.5);
+            engineGain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.2);
+        }
+
+        function playSound(freq, type, duration, vol = 0.1) {
+            if (!audioCtx || isMuted) return;
+            let osc = audioCtx.createOscillator();
+            let g = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            g.gain.setValueAtTime(vol, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+            osc.connect(g);
+            g.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const icon = document.getElementById('speaker-icon');
+            if (isMuted) {
+                icon.innerHTML = '<path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019 10a9.972 9.972 0 00-2.929-7.071 1 1 0 01-1.414 1.414A7.971 7.971 0 0117 10c0 1.282-.303 2.493-.842 3.572l-1.436-1.436a5.98 5.98 0 00.278-2.136 5.984 5.984 0 00-1.757-4.243 1 1 0 011.415-1.415A3.984 3.984 0 0113 10a3.983 3.983 0 01-.172 1.172l-1.445-1.445A1.984 1.984 0 0011 10a1.984 1.984 0 00-.586-1.414l-3-3a1.984 1.984 0 00-1.414-.586V4a1 1 0 011.707-.707L9.383 7.001l1.414 1.414L18.414 16.03l-1.414 1.414L15.352 15.8l-1.414-1.414-4.555-4.555-3.676-3.676L3.707 2.293z" clip-rule="evenodd"></path>';
+                if (engineGain) engineGain.gain.setValueAtTime(0, audioCtx.currentTime);
+                if (musicGain) musicGain.gain.setValueAtTime(0, audioCtx.currentTime);
+            } else {
+                icon.innerHTML = '<path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"></path>';
+                if (engineGain) engineGain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                if (musicGain) musicGain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+            }
+        }
+
+        // --- LÓGICA DEL JUEGO ---
+        function startGame() {
+            document.getElementById('splash-screen').style.display = 'none';
+            initAudio();
+            generateLevel(state.level);
+            renderClock();
+        }
+
+        function formatPiesPulgadas(decimalFeet) {
+            let isNegative = decimalFeet < 0;
+            let absFeet = Math.abs(decimalFeet);
+            let feet = Math.floor(absFeet);
+            let inches = Math.round((absFeet - feet) * 12);
+            if (inches === 12) { feet += 1; inches = 0; }
+            return (isNegative ? "-" : "") + feet + "." + inches;
+        }
+
+        function getIdealLat(dist) {
+            let progress = dist / state.targetDistance;
+            if (progress > 1) progress = 1;
+            return state.targetLat * Math.pow(progress, 2);
+        }
+
+        function getSurfaceHeight(dist) {
+            let relativeDist = dist + 100;
+            let idx = Math.floor(relativeDist / 5);
+            if (idx < 0) return state.surfacePoints[0].y;
+            if (idx >= state.surfacePoints.length - 1) return state.surfacePoints[state.surfacePoints.length-1].y;
+            let t = (relativeDist % 5) / 5;
+            return state.surfacePoints[idx].y + (state.surfacePoints[idx+1].y - state.surfacePoints[idx].y) * t;
+        }
+
+        function generateLevel(lvl) {
+            state.level = lvl;
+            state.distance = 0;
+            state.lat = 0;
+            state.pitch = -18 - Math.random() * 8; 
+            state.latAngle = 0;
+            state.clock = 12;
+            state.steeringForce = 12;
+            state.rods = 0;
+            state.gameOver = false;
+            state.errors = [];
+            state.potholesVisited = [];
+            
+            // Generar terreno
+            state.surfacePoints = [];
+            for (let i = -100; i <= state.targetDistance + 100; i += 5) {
+                let h = Math.sin(i * 0.04) * 2.5 + Math.cos(i * 0.015) * 2.0;
+                state.surfacePoints.push({ x: i, y: h });
+            }
+            
+            // Sincronizar altura inicial
+            state.absElevation = -getSurfaceHeight(0);
+            state.path = [{ distance: 0, absElevation: state.absElevation, lat: 0, pitch: state.pitch, latAngle: 0, rods: 0 }];
+            
+            state.targetDistance = 100 + (lvl - 1) * 15;
+            if (state.targetDistance > 400) state.targetDistance = 400;
+            state.targetLat = (Math.random() - 0.5) * 8; 
+            state.targetDepth = 2.0 + Math.random() * 2.0; 
+            
+            // Generar utilidades
+            state.utilities = [];
+            let numUtils = state.targetDistance < 150 ? 3 : 5;
+            let step = state.targetDistance / (numUtils + 1);
+            const types = [
+                { name: "GAS", color: '#FFFF00', diam: 4/12 },
+                { name: "WATER", color: '#00BFFF', diam: 6/12 },
+                { name: "SEWER", color: '#32CD32', diam: 12/12 },
+                { name: "POWER", color: '#FF0000', diam: 4/12 },
+                { name: "TELECOM", color: '#FFA500', diam: 4/12 } 
+            ];
+            for (let i = 1; i <= numUtils; i++) {
+                let dist = step * i;
+                let type = types[Math.floor(Math.random() * types.length)];
+                let depthFromSurf = 2.5 + Math.random() * 2.5; 
+                let surfaceElev = getSurfaceHeight(dist);
+                let utilityLat = (i >= numUtils - 1) ? state.targetLat : getIdealLat(dist) + (Math.random() - 0.5) * 1.5;
+                state.utilities.push({ id: i, name: type.name, dist: dist, lat: utilityLat, absElevation: -surfaceElev + depthFromSurf, depthTarget: depthFromSurf, diamFt: type.diam, color: type.color });
+            }
+            
+            document.getElementById('lvl-number').innerText = lvl;
+            if (engineGain) setEnginePitch(35, 0.05); 
+            actualizarPantallas();
+            dibujarEscena();
+        }
+
+        // Funciones de mapeo de coordenadas
+        function getPxX(dist) {
+            let viewMaxDist = state.targetDistance + 40;
+            return startXOffset + (dist / viewMaxDist) * (canvas.width - startXOffset - 40);
+        }
+
+        function getPxY_Side(absElevation) { 
+            return surfaceBaseY + (absElevation * ftToPx); 
+        }
+        
+        function getPxY_Top(lat) {
+            let centerY = canvas.height / 2;
+            return centerY + (lat / 10) * (canvas.height / 2 - 20);
+        }
+
+        function toggleView() {
+            state.view = state.view === 'side' ? 'top' : 'side';
+            document.getElementById('btn-view-text').innerText = state.view === 'side' ? 'Main' : 'Aerial';
+            document.getElementById('view-indicator').innerText = state.view === 'side' ? 'Main View (Absolute Horizon)' : 'Aerial View (Runway Corridor)';
+            dibujarEscena();
+        }
+
+        function ajustarPitchInicial(valor) {
+            if(state.gameOver || state.rods > 0) return;
+            state.pitch += valor;
+            if (state.pitch < -35) state.pitch = -35;
+            if (state.pitch > 50) state.pitch = 50;
+            state.path[0].pitch = state.pitch;
+            playSound(150, 'sine', 0.1);
+            actualizarPantallas();
+            dibujarEscena();
+        }
+
+        function setClock(hour) {
+            if(state.gameOver) return;
+            state.clock = hour;
+            playSound(200, 'sine', 0.05);
+            renderClock();
+            actualizarPantallas();
+        }
+
+        function programarFuerza(valor) {
+            if(state.gameOver) return;
+            state.steeringForce += valor;
+            if (state.steeringForce < -50) state.steeringForce = -50;
+            if (state.steeringForce > 50) state.steeringForce = 50;
+            if (Math.abs(state.steeringForce) >= 27) {
+                mostrarError("SNAP ALERT! Rod is at critical bend radius.");
+                playSound(800, 'square', 0.3, 0.05); 
+            } else {
+                playSound(300, 'sine', 0.1);
+            }
+            actualizarPantallas();
+        }
+
+        function limpiarFuerza() { state.steeringForce = 12; playSound(100, 'sine', 0.2); actualizarPantallas(); }
+
+        function iniciarMover(pies, isDrill) {
+            if (isAnimating || state.gameOver) return;
+            let rodLeft = 10 - (state.distance % 10);
+            if (state.distance % 10 === 0) rodLeft = 10;
+            if (pies > rodLeft) pies = rodLeft; 
+            let appliedForce = isDrill ? 0 : state.steeringForce; 
+            let forcePerChunk = appliedForce * (2.5 / 10);
+            let chunks = pies / 2.5; 
+            let queue = [];
+            let simState = { ...state }; 
+            for(let i=0; i<chunks; i++) {
+                let startNode = { ...simState };
+                if (!isDrill && appliedForce !== 0) {
+                    let degrees = (simState.clock % 12) * 30;
+                    let radians = degrees * (Math.PI / 180);
+                    simState.pitch += forcePerChunk * Math.cos(radians);
+                    simState.latAngle += forcePerChunk * Math.sin(radians);
+                    if(simState.pitch > 45) simState.pitch = 45;
+                    if(simState.pitch < -45) simState.pitch = -45;
+                }
+                simState.distance += 2.5;
+                simState.rods += 0.25;   
+                simState.absElevation += -(simState.pitch / 100) * 2.5; 
+                simState.lat += (simState.latAngle / 100) * 2.5;
+                state.utilities.forEach(util => {
+                    if (Math.abs(simState.distance - util.dist) < 1.2 && Math.abs(simState.lat - util.lat) < 0.5) {
+                        if (!state.potholesVisited.includes(util.id)) state.potholesVisited.push(util.id);
+                    }
+                });
+                let endNode = { ...simState };
+                queue.push({ type: 'push', start: startNode, end: endNode });
+            }
+            setEnginePitch(60, 0.15); 
+            iniciarAnim(queue);
+        }
+
+        function iniciarRetroceder(pies) {
+            if (isAnimating || state.path.length <= 1) return;
+            let maxRetract = state.distance % 10 === 0 ? 10 : state.distance % 10;
+            if (pies > maxRetract) pies = maxRetract; 
+            let chunks = pies / 2.5; 
+            let queue = [];
+            for(let i=0; i<Math.min(chunks, state.path.length - 1); i++) {
+                queue.push({ type: 'pull', start: state.path[state.path.length - 2 - i], end: state.path[state.path.length - 1 - i] });
+            }
+            setEnginePitch(50, 0.1); 
+            iniciarAnim(queue);
+        }
+
+        function iniciarAnim(queue) {
+            isAnimating = true;
+            document.querySelectorAll('.btn-action').forEach(b => b.disabled = true);
+            animationData = { queue: queue, current: queue.shift(), progress: 0, speed: 0.08 };
+            requestAnimationFrame(animTick);
+        }
+
+        function animTick() {
+            animationData.progress += animationData.speed;
+            if (animationData.progress >= 1) { completarPasoAnimacion(); } 
+            else { actualizarEstadoAnimado(); dibujarEscena(); requestAnimationFrame(animTick); }
+        }
+
+        function actualizarEstadoAnimado() {
+            let t = animationData.progress;
+            let from = animationData.current.type === 'push' ? animationData.current.start : animationData.current.end;
+            let to = animationData.current.type === 'push' ? animationData.current.end : animationData.current.start;
+            state.distance = from.distance + (to.distance - from.distance) * t;
+            state.absElevation = from.absElevation + (to.absElevation - from.absElevation) * t;
+            state.lat = from.lat + (to.lat - from.lat) * t;
+            state.pitch = from.pitch + (to.pitch - from.pitch) * t;
+            state.latAngle = from.latAngle + (to.latAngle - from.latAngle) * t;
+            state.rods = from.rods + (to.rods - from.rods) * t;
+            actualizarPantallas();
+        }
+
+        function completarPasoAnimacion() {
+            let to = animationData.current.type === 'push' ? animationData.current.end : animationData.current.start;
+            Object.assign(state, to);
+            if (animationData.current.type === 'push') state.path.push(animationData.current.end); else state.path.pop();
+            actualizarPantallas(); dibujarEscena();
+            if (chequearCondiciones(false)) { 
+                isAnimating = false; 
+                setEnginePitch(35, 0.05);
+                return; 
+            }
+            if (animationData.queue.length > 0) { 
+                animationData.current = animationData.queue.shift(); 
+                animationData.progress = 0; 
+                requestAnimationFrame(animTick); 
+            } else { 
+                isAnimating = false; 
+                document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); 
+                setEnginePitch(35, 0.05); 
+                chequearCondiciones(true); 
+            }
+        }
+
+        function renderClock() {
+            const container = document.getElementById('clock-container');
+            container.innerHTML = '';
+            for(let i=1; i<=12; i++) {
+                let angle = (i * 30 - 90) * (Math.PI / 180);
+                let cx = 50 + 40 * Math.cos(angle); let cy = 50 + 40 * Math.sin(angle);
+                let tick = document.createElement('div');
+                tick.className = `absolute rounded-full bg-gray-500 transform -translate-x-1/2 -translate-y-1/2 ` + (i % 3 === 0 ? 'w-2 h-2' : 'w-1 h-1');
+                tick.style.left = `${cx}%`; tick.style.top = `${cy}%`;
+                container.appendChild(tick);
+            }
+            let handWrapper = document.createElement('div');
+            handWrapper.className = "absolute top-1/2 left-1/2 w-full h-full";
+            handWrapper.style.transform = `translate(-50%, -50%) rotate(${state.clock * 30}deg)`;
+            let hand = document.createElement('div');
+            hand.className = "absolute bottom-1/2 left-1/2 transform -translate-x-1/2 w-1.5 h-[35%] rounded-t-sm z-10 bg-[#39ff14] shadow-[0_0_10px_#39ff14]";
+            let arrowHead = document.createElement('div');
+            arrowHead.className = "absolute -top-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-bottom-[10px] border-bottom-[#39ff14]";
+            hand.appendChild(arrowHead); handWrapper.appendChild(hand); container.appendChild(handWrapper);
+            let selector = document.getElementById('hour-selector');
+            selector.innerHTML = '';
+            for(let i=1; i<=12; i++) {
+                let btn = document.createElement('button');
+                btn.className = `font-bold text-[10px] py-1 rounded shadow ` + (state.clock === i ? 'bg-red-600 text-white' : 'bg-yellow-400 text-black');
+                btn.innerText = i; btn.onclick = () => setClock(i);
+                selector.appendChild(btn);
+            }
+        }
+
+        function actualizarPantallas() {
+            let localSurfVal = getSurfaceHeight(state.distance);
+            let relativeDepth = state.absElevation + localSurfVal; 
+            document.getElementById('display-depth').innerText = formatPiesPulgadas(relativeDepth) + " ft";
+            document.getElementById('display-pitch').innerText = (state.pitch > 0 ? "+" : "") + state.pitch.toFixed(1) + " %";
+            document.getElementById('display-lat').innerText = formatPiesPulgadas(Math.abs(state.lat)) + " ft " + (state.lat > 0.1 ? "(R)" : state.lat < -0.1 ? "(L)" : "(C)");
+            document.getElementById('display-lat-angle').innerText = (state.latAngle > 0 ? "+" : "") + state.latAngle.toFixed(1) + " %";
+            document.getElementById('display-distance').innerText = state.distance.toFixed(0) + " ft (" + state.rods.toFixed(1) + "r)";
+            let pDisp = document.getElementById('display-programmed');
+            pDisp.innerText = `Power: ${state.steeringForce}%`;
+            let absForce = Math.abs(state.steeringForce);
+            pDisp.className = "mt-1 font-bold text-[10px] lg:text-xs text-center h-6 lg:h-8 flex items-center justify-center bg-gray-900 w-full rounded border " + (absForce <= 10 ? "text-blue-300 border-blue-500" : absForce <= 16 ? "text-yellow-300 border-yellow-500" : "text-red-300 border-red-500");
+            let dRem = Math.max(0, state.targetDistance - state.distance);
+            document.getElementById('display-remaining').innerText = dRem.toFixed(0) + " ft";
+            let rLeft = 10 - (state.distance % 10); if (state.distance % 10 === 0) rLeft = 10;
+            document.getElementById('display-rod-left').innerText = `${rLeft.toFixed(1)} ft`;
+            document.getElementById('pothole-counter').innerText = `Potholes: ${state.potholesVisited.length}/${state.utilities.length}`;
+            let ipControls = document.getElementById('initial-pitch-controls');
+            if (ipControls) state.rods > 0 ? ipControls.classList.add('hidden') : ipControls.classList.remove('hidden');
+        }
+
+        function dibujarEscena() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            state.view === 'side' ? dibujarVistaPrincipal() : dibujarVistaAerea();
+        }
+
+        function dibujarVistaPrincipal() {
+            ctx.fillStyle = '#87CEEB'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath(); ctx.moveTo(getPxX(-100), canvas.height);
+            for(let p of state.surfacePoints) { ctx.lineTo(getPxX(p.x), surfaceBaseY - (p.y * 10)); }
+            ctx.lineTo(canvas.width, canvas.height);
+            let dirtGrad = ctx.createLinearGradient(0, surfaceBaseY - 20, 0, canvas.height);
+            dirtGrad.addColorStop(0, '#5C4033'); dirtGrad.addColorStop(1, '#3E2723');
+            ctx.fillStyle = dirtGrad; ctx.fill();
+            ctx.beginPath(); ctx.strokeStyle = '#228B22'; ctx.lineWidth = 4;
+            for(let p of state.surfacePoints) { ctx.lineTo(getPxX(p.x), surfaceBaseY - (p.y * 10) - 2); }
+            ctx.stroke();
+            ctx.save();
+            let startSurf = getSurfaceHeight(0);
+            ctx.translate(getPxX(0), surfaceBaseY - (startSurf * 10));
+            ctx.fillStyle = '#111'; ctx.fillRect(-40, -10, 60, 10);
+            ctx.fillStyle = '#FF9900'; ctx.fillRect(-35, -30, 50, 20);
+            ctx.translate(10, -5); ctx.rotate(Math.atan2(-state.pitch, 100)); 
+            ctx.fillStyle = '#555'; ctx.fillRect(-50, -4, 60, 8);
+            ctx.restore();
+            state.utilities.forEach(util => {
+                let pxX = getPxX(util.dist), pxY = getPxY_Side(util.absElevation), r = Math.max((util.diamFt/2)*15, 4);
+                ctx.beginPath(); ctx.arc(pxX, pxY, r, 0, Math.PI*2); ctx.fillStyle = util.color; ctx.fill();
+                ctx.strokeStyle = util.color; ctx.lineWidth = 1; ctx.stroke();
+                ctx.fillStyle = util.color; ctx.font = 'bold 10px Arial'; ctx.fillText(formatPiesPulgadas(util.depthTarget)+" ft", pxX+r+5, pxY+4);
+            });
+            let tX = getPxX(state.targetDistance), hW = 40;
+            let tSurfVal = getSurfaceHeight(state.targetDistance);
+            let tY_Surface = surfaceBaseY - (tSurfVal * 10);
+            let tAbsElevation = state.targetDepth - tSurfVal;
+            let tY_Target = getPxY_Side(tAbsElevation);
+            ctx.fillStyle = '#1a202c'; ctx.fillRect(tX, tY_Surface, hW, tY_Target - tY_Surface);
+            ctx.fillStyle = 'rgba(0, 255, 0, 0.5)'; ctx.fillRect(tX, tY_Target - 5, hW, 10);
+            ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(tX, tY_Surface); ctx.lineTo(tX, tY_Surface-30); ctx.stroke();
+            ctx.fillStyle = '#FF4500'; ctx.beginPath(); ctx.moveTo(tX, tY_Surface-30); ctx.lineTo(tX-15, tY_Surface-22); ctx.lineTo(tX, tY_Surface-15); ctx.fill();
+            ctx.fillStyle = '#00FF00'; ctx.font = 'bold 11px Arial'; ctx.fillText(`EXIT TARGET: ${formatPiesPulgadas(state.targetDepth)} ft`, tX + 2, tY_Target + 15);
+            dibujarRuta(getPxY_Side, -1);
+        }
+
+        function dibujarVistaAerea() {
+            ctx.fillStyle = '#2d4c1e'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            let midY = canvas.height/2;
+            ctx.strokeStyle = '#000000'; ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            for(let x=0; x <= state.targetDistance; x+=5) {
+                let idealY = getPxY_Top(getIdealLat(x) - state.runawayWidth);
+                if(x===0) ctx.moveTo(getPxX(x), idealY); else ctx.lineTo(getPxX(x), idealY);
+            }
+            ctx.stroke();
+            ctx.beginPath();
+            for(let x=0; x <= state.targetDistance; x+=5) {
+                let idealY = getPxY_Top(getIdealLat(x) + state.runawayWidth);
+                if(x===0) ctx.moveTo(getPxX(x), idealY); else ctx.lineTo(getPxX(x), idealY);
+            }
+            ctx.stroke();
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)'; ctx.setLineDash([10, 15]);
+            ctx.beginPath();
+            for(let x=0; x <= state.targetDistance; x+=5) {
+                let idealY = getPxY_Top(getIdealLat(x));
+                if(x===0) ctx.moveTo(getPxX(x), idealY); else ctx.lineTo(getPxX(x), idealY);
+            }
+            ctx.stroke(); ctx.setLineDash([]);
+            state.utilities.forEach(util => {
+                let pxX = getPxX(util.dist);
+                ctx.fillStyle = util.color; ctx.globalAlpha = 0.3; ctx.fillRect(pxX-5, 0, 10, canvas.height); ctx.globalAlpha = 1.0;
+                let isHit = state.potholesVisited.includes(util.id);
+                ctx.fillStyle = isHit ? '#fbbf24' : '#1a202c';
+                let pxY = getPxY_Top(util.lat);
+                ctx.fillRect(pxX - 12, pxY - 12, 24, 24);
+                if (isHit) { ctx.fillStyle = "#000"; ctx.font = "bold 14px Arial"; ctx.fillText("★", pxX - 6, pxY + 5); }
+                ctx.fillStyle = util.color; ctx.font = 'bold 11px Arial'; ctx.fillText(util.name, pxX+15, pxY - 15);
+            });
+            let tX = getPxX(state.targetDistance), tY = getPxY_Top(state.targetLat);
+            ctx.fillStyle = '#1a202c'; ctx.fillRect(tX, tY-25, 40, 50); ctx.strokeStyle = '#FFFF00'; ctx.strokeRect(tX, tY-25, 40, 50);
+            dibujarRuta(getPxY_Top, 1);
+        }
+
+        function dibujarRuta(getPxY, mult) {
+            if (state.path.length === 0) return;
+            ctx.beginPath(); ctx.strokeStyle = '#C0C0C0'; ctx.lineWidth = 6; ctx.lineCap = 'round';
+            let rP = [...state.path]; if (isAnimating) rP.push({ distance: state.distance, absElevation: state.absElevation, lat: state.lat });
+            for (let i = 0; i < rP.length; i++) {
+                let pX = getPxX(rP[i].distance), pY = state.view === 'side' ? getPxY(rP[i].absElevation) : getPxY(rP[i].lat);
+                if (i === 0) ctx.moveTo(pX, pY); else ctx.lineTo(pX, pY);
+            }
+            ctx.stroke();
+        }
+
+        function chequearCondiciones(finalCheck) {
+            let idealLatNow = getIdealLat(state.distance);
+            if (Math.abs(state.lat - idealLatNow) > state.runawayWidth) { mostrarGameOver("OUT OF AREA", "Safety corridor breach. Lateral limit exceeded.", "red"); return true; }
+            let rP = [...state.path]; if (!isAnimating) rP.push({ distance: state.distance, absElevation: state.absElevation });
+            for (let i = 1; i < rP.length; i++) {
+                let p1 = rP[i-1], p2 = rP[i];
+                for (let util of state.utilities) {
+                    let sD = 0.5 + (util.diamFt/2);
+                    if (util.dist >= Math.min(p1.distance, p2.distance)-sD && util.dist <= Math.max(p1.distance, p2.distance)+sD) {
+                        let t = Math.max(0, Math.min(1, (util.dist - p1.distance) / (p2.distance - p1.distance || 1)));
+                        let currentAbsElev = p1.absElevation + (p2.absElevation - p1.absElevation) * t;
+                        if (Math.abs(currentAbsElev - util.absElevation) <= sD) {
+                            playSound(50, 'square', 0.8, 0.2); 
+                            mostrarGameOver("UTILITY STRUCK!", `Critical strike on ${util.name} utility.\n\nCALL 911 IMMEDIATELY! SECURE THE AREA!`, "red"); return true;
+                        }
+                    }
+                }
+            }
+            let currentSurf = getSurfaceHeight(state.distance);
+            let relDepthNow = state.absElevation + currentSurf;
+            if (relDepthNow < -0.15 && state.distance > 5) { mostrarGameOver("FRACOUT!", "Pressure breach: Drill head emerged above surface point.", "red"); return true; }
+            if (finalCheck && state.distance >= state.targetDistance) {
+                let finalRelDepth = state.absElevation + getSurfaceHeight(state.distance);
+                let hD = Math.abs(finalRelDepth - state.targetDepth) <= 0.7, hL = Math.abs(state.lat - state.targetLat) <= 1.5;
+                if (hD && hL) { 
+                    playSound(600, 'sine', 0.5, 0.15); 
+                    setTimeout(()=>playSound(800, 'sine', 0.5, 0.1), 200);
+                    mostrarGameOver("EXCELLENT SHOT!", `Level ${state.level} Complete! Stars: ${state.potholesVisited.length}/${state.utilities.length}`, "green", true);
+                } else { mostrarGameOver("FAILED SHOT", "Accuracy outside entry requirements.", "orange"); }
+                return true;
+            }
+            return false;
+        }
+
+        function mostrarGameOver(tit, msg, col, isWin = false) {
+            state.gameOver = true; document.querySelectorAll('.btn-action').forEach(b => b.disabled = true);
+            const modal = document.getElementById('game-over-modal'), tEl = document.getElementById('game-over-title'), sEl = document.getElementById('star-rating');
+            if (tit === "UTILITY STRUCK!") tEl.className = `text-2xl lg:text-4xl font-bold mb-2 text-center text-red-600 emergency-alert`;
+            else tEl.className = `text-2xl lg:text-4xl font-bold mb-2 text-center ${col==='red'?'text-red-500':col==='green'?'text-green-500':'text-orange-400'}`;
+            tEl.innerText = tit; document.getElementById('game-over-msg').innerText = msg;
+            sEl.innerHTML = '';
+            if (isWin) {
+                for(let i=0; i < state.utilities.length; i++) {
+                    let s = document.createElement('span'); s.innerText = '★';
+                    s.className = state.potholesVisited.length > i ? 'star-gold' : 'text-gray-600';
+                    sEl.appendChild(s);
+                }
+                document.getElementById('btn-next').classList.remove('hidden');
+                document.getElementById('btn-retry').classList.add('hidden');
+            } else {
+                document.getElementById('btn-next').classList.add('hidden');
+                document.getElementById('btn-retry').classList.remove('hidden');
+            }
+            const eC = document.getElementById('game-over-errors'), eL = document.getElementById('game-over-errors-list');
+            if (state.errors.length > 0) { eL.innerHTML = ''; state.errors.forEach(e => { let li = document.createElement('li'); li.innerText = e; eL.appendChild(li); }); eC.classList.remove('hidden'); } 
+            else eC.classList.add('hidden');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+        }
+
+        function nextLevel() {
+            if (state.level < 20) { state.level++; generateLevel(state.level); document.getElementById('game-over-modal').classList.add('hidden'); document.querySelectorAll('.btn-action').forEach(b => b.disabled = false);
+            } else { mostrarGameOver("CAMPAIGN COMPLETE!", "Professional HDD Operator Certification awarded.", "green"); }
+        }
+
+        function reiniciarJuego() { generateLevel(state.level); document.getElementById('game-over-modal').classList.add('hidden'); document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); }
+    </script>
+</body>
+</html>
