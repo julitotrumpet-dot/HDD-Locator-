@@ -176,7 +176,6 @@
                     <button onclick="startGame()" class="bg-orange-600 hover:bg-orange-500 text-white font-black text-lg py-2 px-6 rounded-full shadow-[0_0_15px_rgba(234,88,12,0.6)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-orange-400">
                         Start
                     </button>
-                    <!-- NUEVO BOTÓN DE NIVELES -->
                     <button onclick="window.openLevels()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-lg py-2 px-6 rounded-full shadow-[0_0_15px_rgba(37,99,235,0.6)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-blue-400">
                         Levels
                     </button>
@@ -461,7 +460,6 @@
 
         // --- PROGRESS SYSTEM ---
         window.obtenerProgreso = function() {
-            // El formato es: { "1": { stars: 3, unlocked: true }, "2": { stars: 0, unlocked: true } }
             let saved = localStorage.getItem('hdd_progress');
             return saved ? JSON.parse(saved) : { "1": { stars: 0, unlocked: true } };
         };
@@ -470,8 +468,6 @@
             let prog = window.obtenerProgreso();
             if (!prog[lvl]) prog[lvl] = { stars: 0, unlocked: true };
             if (stars > prog[lvl].stars) prog[lvl].stars = stars;
-            
-            // Desbloquear el siguiente nivel
             if (lvl < 20) {
                 if (!prog[lvl + 1]) prog[lvl + 1] = { stars: 0, unlocked: true };
             }
@@ -487,8 +483,6 @@
                 let p = prog[i];
                 let isUnlocked = p && p.unlocked;
                 let btn = document.createElement('button');
-                
-                // Calcular máximo de estrellas para este nivel
                 let targetD = 100 + (i - 1) * 15;
                 let mStars = targetD < 150 ? 3 : 5;
                 
@@ -500,23 +494,12 @@
                             ? '<span class="text-yellow-400 drop-shadow-[0_0_2px_#000]">★</span>' 
                             : '<span class="text-gray-600">★</span>';
                     }
-
                     btn.className = "panel-inset rounded flex flex-col items-center justify-center p-2 lg:p-3 hover:bg-gray-800 transition transform hover:scale-105 border border-orange-500 cursor-pointer bg-gradient-to-b from-gray-700 to-gray-900";
-                    btn.innerHTML = `
-                        <span class="text-lg lg:text-xl font-black text-white mb-1" style="text-shadow: 1px 1px 2px #000;">LVL ${i}</span>
-                        <div class="flex text-[10px] lg:text-xs">${starHTML}</div>
-                    `;
-                    btn.onclick = () => {
-                        state.level = i;
-                        document.getElementById('levels-modal').classList.add('hidden');
-                        window.startGame();
-                    };
+                    btn.innerHTML = `<span class="text-lg lg:text-xl font-black text-white mb-1" style="text-shadow: 1px 1px 2px #000;">LVL ${i}</span><div class="flex text-[10px] lg:text-xs">${starHTML}</div>`;
+                    btn.onclick = () => { state.level = i; document.getElementById('levels-modal').classList.add('hidden'); window.startGame(); };
                 } else {
                     btn.className = "panel-inset rounded flex flex-col items-center justify-center p-2 lg:p-3 opacity-50 cursor-not-allowed border border-gray-700 bg-gray-900";
-                    btn.innerHTML = `
-                        <span class="text-2xl mb-1">🔒</span>
-                        <span class="text-[10px] lg:text-xs text-gray-500 font-bold">LVL ${i}</span>
-                    `;
+                    btn.innerHTML = `<span class="text-2xl mb-1">🔒</span><span class="text-[10px] lg:text-xs text-gray-500 font-bold">LVL ${i}</span>`;
                 }
                 grid.appendChild(btn);
             }
@@ -526,164 +509,77 @@
 
         // --- FIREBASE CONFIGURATION ---
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'hdd-simulator-v4';
-        let db = null;
-        let useLocalStorage = false;
-        let user = null;
+        let db = null; let useLocalStorage = false; let user = null;
 
         window.initFirebase = async function() {
             try {
                 const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
                 if(firebaseConfig) {
-                    const app = initializeApp(firebaseConfig);
-                    const auth = getAuth(app);
-                    db = getFirestore(app);
-
-                    onAuthStateChanged(auth, (currentUser) => {
-                        user = currentUser;
-                        if(user) {
-                           window.cargarLeaderboard();
-                        }
-                    });
-
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-                    
-                } else {
-                    useLocalStorage = true;
-                    window.cargarLeaderboard();
-                }
-            } catch(e) {
-                useLocalStorage = true;
-                console.log("Firebase init error, using LocalStorage for Leaderboard.", e);
-                window.cargarLeaderboard();
-            }
+                    const app = initializeApp(firebaseConfig); const auth = getAuth(app); db = getFirestore(app);
+                    onAuthStateChanged(auth, (currentUser) => { user = currentUser; if(user) { window.cargarLeaderboard(); } });
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) { await signInWithCustomToken(auth, __initial_auth_token); } else { await signInAnonymously(auth); }
+                } else { useLocalStorage = true; window.cargarLeaderboard(); }
+            } catch(e) { useLocalStorage = true; console.log("Firebase init error, using LocalStorage for Leaderboard.", e); window.cargarLeaderboard(); }
         };
 
         window.dbGuardarRecord = async function(nombre, nivel, tiempoSegundos, scoreEstrellas) {
             const record = { name: nombre, level: nivel, time: tiempoSegundos, score: scoreEstrellas, timestamp: new Date().toISOString() };
             if(useLocalStorage) {
-                let records = JSON.parse(localStorage.getItem('hdd_leaderboard') || '[]');
-                records.push(record);
-                localStorage.setItem('hdd_leaderboard', JSON.stringify(records));
-                window.cargarLeaderboard();
+                let records = JSON.parse(localStorage.getItem('hdd_leaderboard') || '[]'); records.push(record); localStorage.setItem('hdd_leaderboard', JSON.stringify(records)); window.cargarLeaderboard();
             } else if (db && user) {
-                try {
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard'), record);
-                    window.cargarLeaderboard();
-                } catch(e) { console.error("Error saving to Firebase:", e); }
+                try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard'), record); window.cargarLeaderboard(); } catch(e) { console.error("Error saving to Firebase:", e); }
             }
         };
 
         window.cargarLeaderboard = async function() {
-            const tbody = document.getElementById('home-leaderboard-body');
-            if(!tbody) return;
-            
+            const tbody = document.getElementById('home-leaderboard-body'); if(!tbody) return;
             let records = [];
-
-            if (useLocalStorage) {
-                records = JSON.parse(localStorage.getItem('hdd_leaderboard') || '[]');
-            } else if (db && user) {
-                try {
-                    const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard'));
-                    const querySnapshot = await getDocs(q);
-                    querySnapshot.forEach((doc) => { records.push(doc.data()); });
-                } catch(e) { console.error("Error loading from Firebase:", e); }
+            if (useLocalStorage) { records = JSON.parse(localStorage.getItem('hdd_leaderboard') || '[]'); } else if (db && user) {
+                try { const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard')); const querySnapshot = await getDocs(q); querySnapshot.forEach((doc) => { records.push(doc.data()); }); } catch(e) { console.error("Error loading from Firebase:", e); }
             }
-
-            records.sort((a, b) => {
-                if(b.level !== a.level) return b.level - a.level;
-                if(a.time !== b.time) return a.time - b.time;
-                return b.score - a.score;
-            });
-
-            records = records.slice(0, 10);
-            tbody.innerHTML = '';
-            
-            if(records.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-gray-500 italic py-4">No records yet. Be the first!</td></tr>';
-                return;
-            }
-
+            records.sort((a, b) => { if(b.level !== a.level) return b.level - a.level; if(a.time !== b.time) return a.time - b.time; return b.score - a.score; });
+            records = records.slice(0, 10); tbody.innerHTML = '';
+            if(records.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="text-center text-gray-500 italic py-4">No records yet. Be the first!</td></tr>'; return; }
             records.forEach((r, idx) => {
                 let rankClass = idx === 0 ? "top-1" : idx === 1 ? "top-2" : idx === 2 ? "top-3" : "";
                 let timeStr = formatTime(r.time);
                 let tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="text-center font-bold ${rankClass}">${idx + 1}</td>
-                    <td class="${rankClass} uppercase">${r.name.substring(0,15)}</td>
-                    <td class="text-center">Lvl ${r.level}</td>
-                    <td class="text-center font-mono">${timeStr}</td>
-                    <td class="text-center text-yellow-500 tracking-widest">${'★'.repeat(r.score)}</td>
-                `;
+                tr.innerHTML = `<td class="text-center font-bold ${rankClass}">${idx + 1}</td><td class="${rankClass} uppercase">${r.name.substring(0,15)}</td><td class="text-center">Lvl ${r.level}</td><td class="text-center font-mono">${timeStr}</td><td class="text-center text-yellow-500 tracking-widest">${'★'.repeat(r.score)}</td>`;
                 tbody.appendChild(tr);
             });
         };
 
-        function formatTime(secs) {
-            let m = Math.floor(secs / 60); let s = secs % 60;
-            return (m < 10 ? "0"+m : m) + ":" + (s < 10 ? "0"+s : s);
-        }
+        function formatTime(secs) { let m = Math.floor(secs / 60); let s = secs % 60; return (m < 10 ? "0"+m : m) + ":" + (s < 10 ? "0"+s : s); }
 
         // --- FUNCIONES Y EVENTOS GLOBALES ---
         window.zoomIn = function() { camera.zoom *= 1.2; clampCamera(); dibujarEscena(); };
         window.zoomOut = function() { camera.zoom /= 1.2; clampCamera(); dibujarEscena(); };
         window.resetZoom = function() { camera.zoom = 1; camera.offsetX = 0; camera.offsetY = 0; dibujarEscena(); };
-        
-        function clampCamera() {
-            if(camera.zoom < 0.5) camera.zoom = 0.5;
-            if(camera.zoom > 5) camera.zoom = 5;
-        }
+        function clampCamera() { if(camera.zoom < 0.5) camera.zoom = 0.5; if(camera.zoom > 5) camera.zoom = 5; }
 
         canvas.addEventListener('wheel', function(e) {
-            e.preventDefault();
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
-            const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
-            let zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
-            camera.offsetX = mouseX - (mouseX - camera.offsetX) * zoomFactor;
-            camera.offsetY = mouseY - (mouseY - camera.offsetY) * zoomFactor;
-            camera.zoom *= zoomFactor;
+            e.preventDefault(); const rect = canvas.getBoundingClientRect();
+            const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width); const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
+            let zoomFactor = e.deltaY < 0 ? 1.1 : 0.9; camera.offsetX = mouseX - (mouseX - camera.offsetX) * zoomFactor; camera.offsetY = mouseY - (mouseY - camera.offsetY) * zoomFactor; camera.zoom *= zoomFactor;
             clampCamera(); dibujarEscena();
         }, {passive: false});
 
         let isDragging = false; let dragStart = {x:0, y:0}; let lastOffset = {x:0, y:0}; let hasMoved = false;
-
         canvas.addEventListener('mousedown', function(e) { isDragging = true; hasMoved = false; dragStart = {x: e.clientX, y: e.clientY}; lastOffset = {x: camera.offsetX, y: camera.offsetY}; });
         window.addEventListener('mousemove', function(e) {
             if(!isDragging) return;
-            let dx = e.clientX - dragStart.x; let dy = e.clientY - dragStart.y;
-            if(Math.abs(dx) > 5 || Math.abs(dy) > 5) hasMoved = true;
-            const rect = canvas.getBoundingClientRect();
-            camera.offsetX = lastOffset.x + dx * (canvas.width / rect.width);
-            camera.offsetY = lastOffset.y + dy * (canvas.height / rect.height);
-            dibujarEscena();
+            let dx = e.clientX - dragStart.x; let dy = e.clientY - dragStart.y; if(Math.abs(dx) > 5 || Math.abs(dy) > 5) hasMoved = true;
+            const rect = canvas.getBoundingClientRect(); camera.offsetX = lastOffset.x + dx * (canvas.width / rect.width); camera.offsetY = lastOffset.y + dy * (canvas.height / rect.height); dibujarEscena();
         });
-        window.addEventListener('mouseup', function(e) {
-            if(!isDragging) return;
-            isDragging = false;
-            if(!hasMoved) handleCanvasInteraction(e.clientX, e.clientY);
-        });
+        window.addEventListener('mouseup', function(e) { if(!isDragging) return; isDragging = false; if(!hasMoved) handleCanvasInteraction(e.clientX, e.clientY); });
 
-        canvas.addEventListener('touchstart', function(e) {
-            if(e.touches.length === 1) { isDragging = true; hasMoved = false; dragStart = {x: e.touches[0].clientX, y: e.touches[0].clientY}; lastOffset = {x: camera.offsetX, y: camera.offsetY}; }
-        }, {passive: true});
+        canvas.addEventListener('touchstart', function(e) { if(e.touches.length === 1) { isDragging = true; hasMoved = false; dragStart = {x: e.touches[0].clientX, y: e.touches[0].clientY}; lastOffset = {x: camera.offsetX, y: camera.offsetY}; } }, {passive: true});
         window.addEventListener('touchmove', function(e) {
             if(!isDragging || e.touches.length !== 1) return;
-            let dx = e.touches[0].clientX - dragStart.x; let dy = e.touches[0].clientY - dragStart.y;
-            if(Math.abs(dx) > 5 || Math.abs(dy) > 5) hasMoved = true;
-            const rect = canvas.getBoundingClientRect();
-            camera.offsetX = lastOffset.x + dx * (canvas.width / rect.width);
-            camera.offsetY = lastOffset.y + dy * (canvas.height / rect.height);
-            dibujarEscena();
+            let dx = e.touches[0].clientX - dragStart.x; let dy = e.touches[0].clientY - dragStart.y; if(Math.abs(dx) > 5 || Math.abs(dy) > 5) hasMoved = true;
+            const rect = canvas.getBoundingClientRect(); camera.offsetX = lastOffset.x + dx * (canvas.width / rect.width); camera.offsetY = lastOffset.y + dy * (canvas.height / rect.height); dibujarEscena();
         }, {passive: true});
-        window.addEventListener('touchend', function(e) {
-            if(!isDragging) return;
-            isDragging = false;
-            if(!hasMoved && e.changedTouches.length > 0) handleCanvasInteraction(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-        });
+        window.addEventListener('touchend', function(e) { if(!isDragging) return; isDragging = false; if(!hasMoved && e.changedTouches.length > 0) handleCanvasInteraction(e.changedTouches[0].clientX, e.changedTouches[0].clientY); });
 
         function handleCanvasInteraction(clientX, clientY) {
             if (state.view !== 'top' || state.gameOver) return; 
@@ -692,8 +588,7 @@
             let px = (screenX - camera.offsetX) / camera.zoom; let py = (screenY - camera.offsetY) / camera.zoom;
             let viewMaxDist = state.targetDistance + 40; let dist = (px - startXOffset) / (canvas.width - startXOffset - 40) * viewMaxDist;
             let centerY = canvas.height / 2; let lat = (py - centerY) / (canvas.height / 2 - 20) * 10;
-            if (dist < 0) dist = 0; if (dist > viewMaxDist) dist = viewMaxDist;
-            if (lat < -20) lat = -20; if (lat > 20) lat = 20;
+            if (dist < 0) dist = 0; if (dist > viewMaxDist) dist = viewMaxDist; if (lat < -20) lat = -20; if (lat > 20) lat = 20;
             state.locator = { dist: dist, lat: lat }; dibujarEscena(); 
         }
 
@@ -725,24 +620,16 @@
 
         function setEnginePitch(f, v = 0.03) { if (!audioCtx || isMuted) return; engineOsc.frequency.exponentialRampToValueAtTime(f, audioCtx.currentTime + 0.5); engineGain.gain.linearRampToValueAtTime(Math.min(v, 0.08), audioCtx.currentTime + 0.2); }
         function playSound(f, t, d, v = 0.15) { if (!audioCtx || isMuted) return; let o = audioCtx.createOscillator(); let g = audioCtx.createGain(); o.type = t; o.frequency.setValueAtTime(f, audioCtx.currentTime); g.gain.setValueAtTime(v, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + d); o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime + d); }
-        
         window.playSuccessChime = function() {
             if (!audioCtx || isMuted) return;
-            let o1 = audioCtx.createOscillator(); let g1 = audioCtx.createGain(); o1.type = 'sine'; o1.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
-            g1.gain.setValueAtTime(0, audioCtx.currentTime); g1.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.05); g1.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2); o1.connect(g1); g1.connect(audioCtx.destination); o1.start(); o1.stop(audioCtx.currentTime + 0.2);
-            let o2 = audioCtx.createOscillator(); let g2 = audioCtx.createGain(); o2.type = 'sine'; o2.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); 
-            g2.gain.setValueAtTime(0, audioCtx.currentTime + 0.1); g2.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.15); g2.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.6); o2.connect(g2); g2.connect(audioCtx.destination); o2.start(audioCtx.currentTime + 0.1); o2.stop(audioCtx.currentTime + 0.6);
+            let o1 = audioCtx.createOscillator(); let g1 = audioCtx.createGain(); o1.type = 'sine'; o1.frequency.setValueAtTime(523.25, audioCtx.currentTime); g1.gain.setValueAtTime(0, audioCtx.currentTime); g1.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.05); g1.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2); o1.connect(g1); g1.connect(audioCtx.destination); o1.start(); o1.stop(audioCtx.currentTime + 0.2);
+            let o2 = audioCtx.createOscillator(); let g2 = audioCtx.createGain(); o2.type = 'sine'; o2.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); g2.gain.setValueAtTime(0, audioCtx.currentTime + 0.1); g2.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.15); g2.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.6); o2.connect(g2); g2.connect(audioCtx.destination); o2.start(audioCtx.currentTime + 0.1); o2.stop(audioCtx.currentTime + 0.6);
         };
 
         window.toggleMute = function() { 
             isMuted = !isMuted; const icon = document.getElementById('speaker-icon'); 
-            if (isMuted) { 
-                icon.innerHTML = '<path d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019 10a9.972 9.972 0 00-2.929-7.071 1 1 0 01-1.414 1.414A7.971 7.971 0 0117 10c0 1.282-.303 2.493-.842 3.572l-1.436-1.436a5.98 5.98 0 00.278-2.136 5.984 5.984 0 00-1.757-4.243 1 1 0 011.415-1.415A3.984 3.984 0 0113 10a3.983 3.983 0 01-.172 1.172l-1.445-1.445A1.984 1.984 0 0011 10a1.984 1.984 0 00-.586-1.414l-3-3a1.984 1.984 0 00-1.414-.586V4a1 1 0 011.707-.707L9.383 7.001l1.414 1.414L18.414 16.03l-1.414 1.414L15.352 15.8l-1.414-1.414-4.555-4.555-3.676-3.676L3.707 2.293z"/>'; 
-                if (engineGain) engineGain.gain.setValueAtTime(0, audioCtx.currentTime); if (musicGain) musicGain.gain.setValueAtTime(0, audioCtx.currentTime); 
-            } else { 
-                icon.innerHTML = '<path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"></path>'; 
-                if (engineGain) engineGain.gain.setValueAtTime(0.03, audioCtx.currentTime); if (musicGain) musicGain.gain.setValueAtTime(0.10, audioCtx.currentTime); 
-            } 
+            if (isMuted) { icon.innerHTML = '<path d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019 10a9.972 9.972 0 00-2.929-7.071 1 1 0 01-1.414 1.414A7.971 7.971 0 0117 10c0 1.282-.303 2.493-.842 3.572l-1.436-1.436a5.98 5.98 0 00.278-2.136 5.984 5.984 0 00-1.757-4.243 1 1 0 011.415-1.415A3.984 3.984 0 0113 10a3.983 3.983 0 01-.172 1.172l-1.445-1.445A1.984 1.984 0 0011 10a1.984 1.984 0 00-.586-1.414l-3-3a1.984 1.984 0 00-1.414-.586V4a1 1 0 011.707-.707L9.383 7.001l1.414 1.414L18.414 16.03l-1.414 1.414L15.352 15.8l-1.414-1.414-4.555-4.555-3.676-3.676L3.707 2.293z"/>'; if (engineGain) engineGain.gain.setValueAtTime(0, audioCtx.currentTime); if (musicGain) musicGain.gain.setValueAtTime(0, audioCtx.currentTime); } 
+            else { icon.innerHTML = '<path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"></path>'; if (engineGain) engineGain.gain.setValueAtTime(0.03, audioCtx.currentTime); if (musicGain) musicGain.gain.setValueAtTime(0.10, audioCtx.currentTime); } 
         };
 
         // --- HELPERS Y MATES ---
@@ -765,8 +652,7 @@
         function getSurfaceHeight(dist) {
             let rel = dist + 100; let idx = Math.floor(rel / 5);
             if (!state.surfacePoints || state.surfacePoints.length === 0) return 0;
-            if (idx < 0) return state.surfacePoints[0].y; 
-            if (idx >= state.surfacePoints.length - 1) return state.surfacePoints[state.surfacePoints.length-1].y;
+            if (idx < 0) return state.surfacePoints[0].y; if (idx >= state.surfacePoints.length - 1) return state.surfacePoints[state.surfacePoints.length-1].y;
             let t = (rel % 5) / 5; return state.surfacePoints[idx].y + (state.surfacePoints[idx+1].y - state.surfacePoints[idx].y) * t;
         }
 
@@ -774,80 +660,44 @@
         function getPxY_Side(absElevation) { return surfaceBaseY + (absElevation * ftToPx); }
         function getPxY_Top(lat) { return (canvas.height / 2) + (lat / 10) * (canvas.height / 2 - 20); }
 
-        function mostrarError(msg) {
-            const errDiv = document.getElementById('error-msg');
-            if (errDiv) { errDiv.innerText = msg; errDiv.classList.remove('hidden'); setTimeout(() => errDiv.classList.add('hidden'), 3000); }
-        }
-
+        function mostrarError(msg) { const errDiv = document.getElementById('error-msg'); if (errDiv) { errDiv.innerText = msg; errDiv.classList.remove('hidden'); setTimeout(() => errDiv.classList.add('hidden'), 3000); } }
         function getClockMultipliers(c) {
-            if (c === 12) return { p: 1, l: 0 }; if (c === 3) return { p: 0, l: 1 };
-            if (c === 6) return { p: -1, l: 0 }; if (c === 9) return { p: 0, l: -1 };
-            let r = (c * 30) * (Math.PI / 180);
-            return { p: Math.round(Math.cos(r)*1000)/1000, l: Math.round(Math.sin(r)*1000)/1000 };
+            if (c === 12) return { p: 1, l: 0 }; if (c === 3) return { p: 0, l: 1 }; if (c === 6) return { p: -1, l: 0 }; if (c === 9) return { p: 0, l: -1 };
+            let r = (c * 30) * (Math.PI / 180); return { p: Math.round(Math.cos(r)*1000)/1000, l: Math.round(Math.sin(r)*1000)/1000 };
         }
 
         window.cambiarLongitudVarilla = function(val) {
             let num = parseInt(val); let remaining = state.distance % state.maxRodLength;
-            if (state.distance > 0 && remaining > 0.01 && remaining < state.maxRodLength - 0.01) {
-                mostrarError("Finish pushing current rod first!"); document.getElementById('rod-length-select').value = state.maxRodLength; return;
-            }
+            if (state.distance > 0 && remaining > 0.01 && remaining < state.maxRodLength - 0.01) { mostrarError("Finish pushing current rod first!"); document.getElementById('rod-length-select').value = state.maxRodLength; return; }
             state.maxRodLength = num; window.limpiarFuerza();
         };
 
-        window.volverAlMenu = function() {
-            document.getElementById('splash-screen').style.display = 'flex';
-            document.getElementById('btn-resume').classList.remove('hidden');
-            document.getElementById('game-over-modal').classList.add('hidden'); 
-            if (audioCtx && audioCtx.state === 'running') audioCtx.suspend();
-            if (window.cargarLeaderboard) window.cargarLeaderboard();
-        };
-
-        window.resumeGame = function() {
-            document.getElementById('splash-screen').style.display = 'none';
-            if (audioCtx && audioCtx.state === 'suspended' && !isMuted) audioCtx.resume();
-        };
-
-        function updateTimerDisplay() {
-            if(state.gameOver) return;
-            state.timeElapsed = Math.floor((Date.now() - state.startTime) / 1000);
-            let m = Math.floor(state.timeElapsed / 60); let s = state.timeElapsed % 60;
-            document.getElementById('time-display').innerText = `Time: ${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`;
-        }
+        window.volverAlMenu = function() { document.getElementById('splash-screen').style.display = 'flex'; document.getElementById('btn-resume').classList.remove('hidden'); document.getElementById('game-over-modal').classList.add('hidden'); if (audioCtx && audioCtx.state === 'running') audioCtx.suspend(); if (window.cargarLeaderboard) window.cargarLeaderboard(); };
+        window.resumeGame = function() { document.getElementById('splash-screen').style.display = 'none'; if (audioCtx && audioCtx.state === 'suspended' && !isMuted) audioCtx.resume(); };
+        function updateTimerDisplay() { if(state.gameOver) return; state.timeElapsed = Math.floor((Date.now() - state.startTime) / 1000); let m = Math.floor(state.timeElapsed / 60); let s = state.timeElapsed % 60; document.getElementById('time-display').innerText = `Time: ${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`; }
 
         // --- RENDERIZADO ---
         function dibujarIndicadoresHUD(tCtx) {
             let relDepth = state.absElevation + getSurfaceHeight(state.distance); let pVal = parseFloat(state.pitch.toFixed(1)); let rem = Math.max(0, state.targetDistance - state.distance);
             let lines = [ "DEPTH:   " + formatPiesPulgadas(relDepth) + " ft", "PITCH:   " + (pVal > 0 ? "+" : "") + pVal.toFixed(1) + " %", "DIST:    " + state.distance.toFixed(0) + " ft", "TARGET:  " + rem.toFixed(0) + " ft" ];
-            let startX = canvas.width - 330; let startY = canvas.height - 120; 
-            tCtx.font = 'bold 18px "Courier New", Courier, monospace'; tCtx.textAlign = 'left';
-            for (let i = 0; i < lines.length; i++) {
-                let y = startY + (i * 26); tCtx.lineWidth = 4; tCtx.strokeStyle = 'black'; tCtx.strokeText(lines[i], startX, y); tCtx.fillStyle = 'white'; tCtx.fillText(lines[i], startX, y);
-            }
+            let startX = canvas.width - 330; let startY = canvas.height - 120; tCtx.font = 'bold 18px "Courier New", Courier, monospace'; tCtx.textAlign = 'left';
+            for (let i = 0; i < lines.length; i++) { let y = startY + (i * 26); tCtx.lineWidth = 4; tCtx.strokeStyle = 'black'; tCtx.strokeText(lines[i], startX, y); tCtx.fillStyle = 'white'; tCtx.fillText(lines[i], startX, y); }
         }
 
         function dibujarRadarRadar(tCtx) {
             let rW = 120, rH = 120, rX = canvas.width - rW - 20, rY = canvas.height - rH - 20;
-            tCtx.fillStyle = 'rgba(0, 0, 0, 0.7)'; tCtx.fillRect(rX, rY, rW, rH);
-            tCtx.strokeStyle = '#6b7280'; tCtx.lineWidth = 2; tCtx.strokeRect(rX, rY, rW, rH);
-            tCtx.beginPath(); tCtx.strokeStyle = 'rgba(255, 255, 255, 0.4)'; tCtx.lineWidth = 1;
-            tCtx.moveTo(rX + rW/2, rY); tCtx.lineTo(rX + rW/2, rY + rH); tCtx.moveTo(rX, rY + rH - 25); tCtx.lineTo(rX + rW, rY + rH - 25); tCtx.stroke();
+            tCtx.fillStyle = 'rgba(0, 0, 0, 0.7)'; tCtx.fillRect(rX, rY, rW, rH); tCtx.strokeStyle = '#6b7280'; tCtx.lineWidth = 2; tCtx.strokeRect(rX, rY, rW, rH);
+            tCtx.beginPath(); tCtx.strokeStyle = 'rgba(255, 255, 255, 0.4)'; tCtx.lineWidth = 1; tCtx.moveTo(rX + rW/2, rY); tCtx.lineTo(rX + rW/2, rY + rH); tCtx.moveTo(rX, rY + rH - 25); tCtx.lineTo(rX + rW, rY + rH - 25); tCtx.stroke();
             tCtx.fillStyle = 'rgba(255, 255, 255, 0.5)'; tCtx.font = '10px Arial'; tCtx.fillText("L", rX + 5, rY + rH - 30); tCtx.fillText("R", rX + rW - 15, rY + rH - 30);
-            
-            // Texto movido a la parte inferior del radar
             tCtx.fillStyle = '#facc15'; tCtx.fillText("TRACKER RADAR", rX + 20, rY + rH + 15);
-
             let radarRangeLat = 15, radarRangeDist = 50;
             function getRadarX(lat) { let clampedLat = Math.max(-radarRangeLat, Math.min(radarRangeLat, lat)); return rX + rW/2 + (clampedLat / radarRangeLat) * (rW/2 - 10); }
             function getRadarY(dist) { let relDist = dist - state.distance; if (relDist < -10) relDist = -10; if (relDist > radarRangeDist) relDist = radarRangeDist; return (rY + rH - 25) - (relDist / radarRangeDist) * (rH - 45); }
-
             let headX = getRadarX(state.lat), headY = getRadarY(state.distance);
             tCtx.beginPath(); tCtx.arc(headX, headY, 5, 0, Math.PI*2); tCtx.fillStyle = '#FF4500'; tCtx.fill(); tCtx.strokeStyle = '#FFF'; tCtx.lineWidth = 1.5; tCtx.stroke();
-
             if (state.locator) {
                 let locX = getRadarX(state.locator.lat), locY = getRadarY(state.locator.dist);
-                tCtx.beginPath(); tCtx.arc(locX, locY, 4, 0, Math.PI*2); tCtx.fillStyle = '#FFFFFF'; tCtx.fill();
-                tCtx.beginPath(); tCtx.strokeStyle = '#FFFFFF'; tCtx.lineWidth = 1.5;
-                tCtx.moveTo(locX - 6, locY); tCtx.lineTo(locX + 6, locY); tCtx.moveTo(locX, locY - 6); tCtx.lineTo(locX, locY + 6); tCtx.stroke();
+                tCtx.beginPath(); tCtx.arc(locX, locY, 4, 0, Math.PI*2); tCtx.fillStyle = '#FFFFFF'; tCtx.fill(); tCtx.beginPath(); tCtx.strokeStyle = '#FFFFFF'; tCtx.lineWidth = 1.5; tCtx.moveTo(locX - 6, locY); tCtx.lineTo(locX + 6, locY); tCtx.moveTo(locX, locY - 6); tCtx.lineTo(locX, locY + 6); tCtx.stroke();
             }
         }
 
@@ -857,34 +707,22 @@
             let rutaPath = [...state.path]; if (isAnimating) rutaPath.push({ distance: state.distance, absElevation: state.absElevation, lat: state.lat });
             for (let i = 0; i < rutaPath.length; i++) { let px = getPxX(rutaPath[i].distance); let py = viewType === 'side' ? getPy(rutaPath[i].absElevation) : getPy(rutaPath[i].lat); if (i === 0) ctxTarget.moveTo(px, py); else ctxTarget.lineTo(px, py); }
             ctxTarget.stroke();
-            if (viewType === 'top') {
-                state.path.forEach(n => { if (n.distance > 0 && Math.abs(n.distance % state.maxRodLength) < 0.1) { ctxTarget.beginPath(); ctxTarget.arc(getPxX(n.distance), getPy(n.lat), 3, 0, Math.PI*2); ctxTarget.fillStyle = '#000'; ctxTarget.fill(); } });
-            }
+            if (viewType === 'top') { state.path.forEach(n => { if (n.distance > 0 && Math.abs(n.distance % state.maxRodLength) < 0.1) { ctxTarget.beginPath(); ctxTarget.arc(getPxX(n.distance), getPy(n.lat), 3, 0, Math.PI*2); ctxTarget.fillStyle = '#000'; ctxTarget.fill(); } }); }
         }
 
         function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius, fillCol, strokeCol) {
             let rot = Math.PI / 2 * 3; let x = cx; let y = cy; let step = Math.PI / spikes;
             ctx.beginPath(); ctx.moveTo(cx, cy - outerRadius);
-            for (let i = 0; i < spikes; i++) {
-                x = cx + Math.cos(rot) * outerRadius; y = cy + Math.sin(rot) * outerRadius; ctx.lineTo(x, y); rot += step;
-                x = cx + Math.cos(rot) * innerRadius; y = cy + Math.sin(rot) * innerRadius; ctx.lineTo(x, y); rot += step;
-            }
-            ctx.lineTo(cx, cy - outerRadius); ctx.closePath(); ctx.lineWidth = 2; ctx.strokeStyle = strokeCol; ctx.stroke();
-            if (fillCol !== 'transparent') { ctx.fillStyle = fillCol; ctx.fill(); }
+            for (let i = 0; i < spikes; i++) { x = cx + Math.cos(rot) * outerRadius; y = cy + Math.sin(rot) * outerRadius; ctx.lineTo(x, y); rot += step; x = cx + Math.cos(rot) * innerRadius; y = cy + Math.sin(rot) * innerRadius; ctx.lineTo(x, y); rot += step; }
+            ctx.lineTo(cx, cy - outerRadius); ctx.closePath(); ctx.lineWidth = 2; ctx.strokeStyle = strokeCol; ctx.stroke(); if (fillCol !== 'transparent') { ctx.fillStyle = fillCol; ctx.fill(); }
         }
 
         function dibujarEstrellasHUD(tCtx) {
-            let total = state.utilities.length; let recogidas = state.potholesVisited.length;
-            if(total === 0) return;
+            let total = state.utilities.length; let recogidas = state.potholesVisited.length; if(total === 0) return;
             let starSpacing = 35; let startX = (canvas.width / 2) - ((total - 1) * starSpacing / 2); let startY = canvas.height - 35; 
-            tCtx.fillStyle = 'rgba(0, 0, 0, 0.6)'; let boxWidth = Math.max((total - 1) * starSpacing + 50, 160); let boxStartX = (canvas.width / 2) - (boxWidth / 2);
-            tCtx.fillRect(boxStartX, startY - 20, boxWidth, 55);
-            for(let i=0; i<total; i++) {
-                let isCollected = i < recogidas; let fillCol = isCollected ? '#facc15' : 'transparent'; let strokeCol = isCollected ? '#ca8a04' : '#6b7280';
-                drawStar(tCtx, startX + (i * starSpacing), startY, 5, 12, 6, fillCol, strokeCol);
-            }
-            tCtx.font = '18px "VT323", "Courier New", monospace'; tCtx.textAlign = 'center'; tCtx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-            tCtx.fillText("by Julio Sarracent", canvas.width / 2, startY + 28);
+            tCtx.fillStyle = 'rgba(0, 0, 0, 0.6)'; let boxWidth = Math.max((total - 1) * starSpacing + 50, 160); let boxStartX = (canvas.width / 2) - (boxWidth / 2); tCtx.fillRect(boxStartX, startY - 20, boxWidth, 55);
+            for(let i=0; i<total; i++) { let isCollected = i < recogidas; let fillCol = isCollected ? '#facc15' : 'transparent'; let strokeCol = isCollected ? '#ca8a04' : '#6b7280'; drawStar(tCtx, startX + (i * starSpacing), startY, 5, 12, 6, fillCol, strokeCol); }
+            tCtx.font = '18px "VT323", "Courier New", monospace'; tCtx.textAlign = 'center'; tCtx.fillStyle = 'rgba(255, 255, 255, 0.5)'; tCtx.fillText("by Julio Sarracent", canvas.width / 2, startY + 28);
         }
 
         function dibujarCuerpoEscena(tCtx, viewType) {
@@ -892,95 +730,59 @@
                 tCtx.fillStyle = '#87CEEB'; tCtx.fillRect(-5000, -5000, 10000, 5000 + surfaceBaseY);
                 tCtx.beginPath(); tCtx.moveTo(-5000, 5000); for(let p of state.surfacePoints) tCtx.lineTo(getPxX(p.x), surfaceBaseY - (p.y*10)); tCtx.lineTo(5000, 5000); 
                 let g = tCtx.createLinearGradient(0,0,0,1000); g.addColorStop(0,'#5C4033'); g.addColorStop(1,'#3E2723'); tCtx.fillStyle = g; tCtx.fill();
-                
-                tCtx.beginPath(); tCtx.strokeStyle = '#228B22'; tCtx.lineWidth = 4; 
-                tCtx.moveTo(-5000, surfaceBaseY - (state.surfacePoints[0]?.y*10)-2);
-                for(let p of state.surfacePoints) tCtx.lineTo(getPxX(p.x), surfaceBaseY - (p.y*10)-2); 
-                tCtx.lineTo(5000, surfaceBaseY - (state.surfacePoints[state.surfacePoints.length-1]?.y*10)-2);
-                tCtx.stroke();
-                
-                tCtx.beginPath(); tCtx.strokeStyle='#000'; tCtx.lineWidth = 1.5; tCtx.setLineDash([8,8]);
-                for(let x=-100; x<=state.targetDistance+100; x+=5) tCtx.lineTo(getPxX(x), getPxY_Side(-getSurfaceHeight(x)+state.maxAllowedDepthRel));
-                tCtx.stroke(); tCtx.setLineDash([]);
-                
+                tCtx.beginPath(); tCtx.strokeStyle = '#228B22'; tCtx.lineWidth = 4; tCtx.moveTo(-5000, surfaceBaseY - (state.surfacePoints[0]?.y*10)-2); for(let p of state.surfacePoints) tCtx.lineTo(getPxX(p.x), surfaceBaseY - (p.y*10)-2); tCtx.lineTo(5000, surfaceBaseY - (state.surfacePoints[state.surfacePoints.length-1]?.y*10)-2); tCtx.stroke();
+                tCtx.beginPath(); tCtx.strokeStyle='#000'; tCtx.lineWidth = 1.5; tCtx.setLineDash([8,8]); for(let x=-100; x<=state.targetDistance+100; x+=5) tCtx.lineTo(getPxX(x), getPxY_Side(-getSurfaceHeight(x)+state.maxAllowedDepthRel)); tCtx.stroke(); tCtx.setLineDash([]);
                 state.utilities.forEach(u => { 
                     let pxX = getPxX(u.dist), pxY = getPxY_Side(u.absElevation), r = Math.max((u.diamFt/2)*15, 4);
                     tCtx.beginPath(); tCtx.arc(pxX, pxY, r, 0, Math.PI*2); tCtx.fillStyle = u.color; tCtx.fill(); tCtx.lineWidth = 1; tCtx.strokeStyle = '#000'; tCtx.stroke();
-                    
-                    // Indicador de profundidad en la parte azul (cielo)
-                    let depthLabel = formatPiesPulgadas(u.depthTarget) + " ft";
-                    let surfY = surfaceBaseY - (getSurfaceHeight(u.dist) * 10);
-                    tCtx.font = `bold ${14 / camera.zoom}px Arial`;
-                    tCtx.textAlign = 'center';
-                    tCtx.lineWidth = 3 / camera.zoom;
-                    tCtx.strokeStyle = '#000000';
-                    tCtx.strokeText(depthLabel, pxX, surfY - (20 / camera.zoom));
-                    tCtx.fillStyle = u.color;
-                    tCtx.fillText(depthLabel, pxX, surfY - (20 / camera.zoom));
+                    let depthLabel = formatPiesPulgadas(u.depthTarget) + " ft"; let surfY = surfaceBaseY - (getSurfaceHeight(u.dist) * 10);
+                    tCtx.font = `bold ${14 / camera.zoom}px Arial`; tCtx.textAlign = 'center'; tCtx.lineWidth = 3 / camera.zoom; tCtx.strokeStyle = '#000000'; tCtx.strokeText(depthLabel, pxX, surfY - (20 / camera.zoom)); tCtx.fillStyle = u.color; tCtx.fillText(depthLabel, pxX, surfY - (20 / camera.zoom));
                 });
-                
                 let tx = getPxX(state.targetDistance), s = getSurfaceHeight(state.targetDistance), ys = surfaceBaseY-(s*10), yt = getPxY_Side(state.targetDepth-s);
                 tCtx.fillStyle = '#1a202c'; tCtx.fillRect(tx, ys, 40, yt-ys); tCtx.fillStyle = 'rgba(0,255,0,0.5)'; tCtx.fillRect(tx, yt-5, 40, 10);
-                
                 tCtx.save(); let startS = getSurfaceHeight(0); tCtx.translate(getPxX(0), surfaceBaseY - (startS * 10)); tCtx.fillStyle = '#111'; tCtx.fillRect(-40, -10, 60, 10); tCtx.fillStyle = '#FF9900'; tCtx.fillRect(-35, -30, 50, 20); tCtx.translate(10, -5); tCtx.rotate(Math.atan2(-state.pitch, 100)); tCtx.fillStyle = '#555'; tCtx.fillRect(-50, -4, 60, 8); tCtx.restore();
-
                 dibujarRuta(tCtx, getPxY_Side, 'side');
             } else {
                 tCtx.fillStyle = '#2d4c1e'; tCtx.fillRect(-5000,-5000,10000,10000); tCtx.strokeStyle='#000'; tCtx.lineWidth = 1.2;
-                
                 tCtx.beginPath(); tCtx.moveTo(-5000, getPxY_Top(getIdealLat(0)-state.runawayWidth)); for(let x=0; x<=state.targetDistance; x+=5) tCtx.lineTo(getPxX(x), getPxY_Top(getIdealLat(x)-state.runawayWidth)); tCtx.lineTo(5000, getPxY_Top(getIdealLat(state.targetDistance)-state.runawayWidth)); tCtx.stroke();
                 tCtx.beginPath(); tCtx.moveTo(-5000, getPxY_Top(getIdealLat(0)+state.runawayWidth)); for(let x=0; x<=state.targetDistance; x+=5) tCtx.lineTo(getPxX(x), getPxY_Top(getIdealLat(x)+state.runawayWidth)); tCtx.lineTo(5000, getPxY_Top(getIdealLat(state.targetDistance)+state.runawayWidth)); tCtx.stroke();
-                
                 state.utilities.forEach(u => { 
                     let pxX = getPxX(u.dist); tCtx.fillStyle = u.color; tCtx.globalAlpha=0.3; tCtx.fillRect(pxX-5,-5000,10,10000); tCtx.globalAlpha=1; 
                     let isHit = state.potholesVisited.includes(u.id); tCtx.fillStyle = isHit ? '#fbbf24':'#1a202c'; let pxY = getPxY_Top(u.lat); tCtx.fillRect(pxX-12, pxY-12, 24, 24); 
                     if (isHit) { tCtx.fillStyle = "#000"; tCtx.font = "bold 14px Arial"; tCtx.fillText("★", pxX - 6, pxY + 5); }
                 });
                 tCtx.fillStyle = '#1a202c'; let tx = getPxX(state.targetDistance), ty = getPxY_Top(state.targetLat); tCtx.fillRect(tx, ty-25, 40, 50);
-                
                 tCtx.save(); tCtx.translate(getPxX(0), getPxY_Top(0)); tCtx.fillStyle = '#111'; tCtx.fillRect(-45, -20, 65, 10); tCtx.fillRect(-45, 10, 65, 10); tCtx.fillStyle = '#FF9900'; tCtx.fillRect(-40, -10, 55, 20); tCtx.fillStyle = '#222'; tCtx.fillRect(-25, -6, 20, 12); tCtx.fillStyle = '#555'; tCtx.fillRect(15, -3, 25, 6); tCtx.restore();
-
                 dibujarRuta(tCtx, getPxY_Top, 'top');
-
                 if (state.locator) {
                     let locPx = getPxX(state.locator.dist), locPy = getPxY_Top(state.locator.lat);
-                    let baseRadius = 10; 
+                    let baseRadius = 10;
+                    tCtx.beginPath(); tCtx.arc(locPx, locPy, baseRadius / camera.zoom, 0, Math.PI*2); tCtx.fillStyle = '#FFFFFF'; tCtx.fill();
+                    tCtx.lineWidth = 2 / camera.zoom; tCtx.strokeStyle = '#000000'; tCtx.stroke();
+                    tCtx.beginPath(); tCtx.strokeStyle = '#000000'; tCtx.lineWidth = 2 / camera.zoom; let crossSize = baseRadius / camera.zoom;
+                    tCtx.moveTo(locPx - crossSize, locPy); tCtx.lineTo(locPx + crossSize, locPy); tCtx.moveTo(locPx, locPy - crossSize); tCtx.lineTo(locPx, locPy + crossSize); tCtx.stroke();
                     
-                    tCtx.beginPath(); 
-                    tCtx.arc(locPx, locPy, baseRadius / camera.zoom, 0, Math.PI*2); 
-                    tCtx.fillStyle = '#FFFFFF'; 
-                    tCtx.fill();
-                    tCtx.lineWidth = 2 / camera.zoom; 
-                    tCtx.strokeStyle = '#000000'; 
-                    tCtx.stroke();
-                    
-                    tCtx.beginPath(); 
-                    tCtx.strokeStyle = '#000000'; 
-                    tCtx.lineWidth = 2 / camera.zoom; 
-                    let crossSize = baseRadius / camera.zoom;
-                    tCtx.moveTo(locPx - crossSize, locPy); tCtx.lineTo(locPx + crossSize, locPy); 
-                    tCtx.moveTo(locPx, locPy - crossSize); tCtx.lineTo(locPx, locPy + crossSize); 
-                    tCtx.stroke();
+                    // INDICADOR DE DISTANCIA (NUEVO)
+                    let diff = Math.abs(state.locator.dist - state.distance);
+                    let distLabel = diff.toFixed(1) + " ft";
+                    tCtx.font = `bold ${12 / camera.zoom}px Arial`;
+                    tCtx.textAlign = 'center';
+                    tCtx.lineWidth = 3 / camera.zoom;
+                    tCtx.strokeStyle = '#000000';
+                    tCtx.strokeText(distLabel, locPx, locPy - (baseRadius / camera.zoom + 5));
+                    tCtx.fillStyle = '#FFFFFF';
+                    tCtx.fillText(distLabel, locPx, locPy - (baseRadius / camera.zoom + 5));
                 }
             }
         }
 
-        function dibujarEscena() { 
-            ctx.clearRect(0,0,canvas.width,canvas.height); 
-            ctx.save(); ctx.translate(camera.offsetX, camera.offsetY); ctx.scale(camera.zoom, camera.zoom);
-            dibujarCuerpoEscena(ctx, state.view); 
-            ctx.restore();
-            if (state.view === 'side') { dibujarRadarRadar(ctx); dibujarIndicadoresHUD(ctx); }
-            dibujarEstrellasHUD(ctx);
-        }
+        function dibujarEscena() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.save(); ctx.translate(camera.offsetX, camera.offsetY); ctx.scale(camera.zoom, camera.zoom); dibujarCuerpoEscena(ctx, state.view); ctx.restore(); if (state.view === 'side') { dibujarRadarRadar(ctx); dibujarIndicadoresHUD(ctx); } dibujarEstrellasHUD(ctx); }
 
-        // --- CONTROL DEL JUEGO ---
         function chequearCondiciones(finalCheck) {
             let iL = getIdealLat(state.distance); if (Math.abs(state.lat - iL) > state.runawayWidth) { mostrarGameOver("OUT OF AREA", "Safety corridor breach.", "red"); return true; }
             let relD = state.absElevation + getSurfaceHeight(state.distance);
             if (relD > state.maxAllowedDepthRel) { mostrarGameOver("FAIL BORE SHUT TOO DEEP", "Permit violation.", "red"); return true; }
             if (relD <= 1.0 && state.distance >= state.maxRodLength) { mostrarGameOver("FAIL BORE TOO SHALLOW", "Minimum cover violation: Rod is 12 inches or less from surface.", "orange"); return true; }
-
             let rP = [...state.path]; if (!isAnimating) rP.push({ distance: state.distance, absElevation: state.absElevation });
             for (let i = 1; i < rP.length; i++) {
                 for (let u of state.utilities) {
@@ -988,206 +790,85 @@
                         let t = (u.dist - rP[i-1].distance) / (rP[i].distance - rP[i-1].distance || 1);
                         if (t >= 0 && t <= 1) {
                             let e = rP[i-1].absElevation + (rP[i].absElevation - rP[i-1].absElevation) * t;
-                            let rodRadiusFt = 1.5 / 12; let utilityRadiusFt = u.diamFt / 2;
-                            let gapFt = Math.abs(e - u.absElevation) - utilityRadiusFt - rodRadiusFt; let clearanceInches = gapFt * 12;
-                            if (clearanceInches <= 1.0) { 
-                                playSound(50, 'square', 0.8, 0.3); let safeMsg = clearanceInches < 0 ? "Direct Hit!" : `Grazed at ${clearanceInches.toFixed(1)}"`;
-                                mostrarGameOver("UTILITY STRUCK!", `Critical hit! ${safeMsg} (Safe clearance is > 1").`, "red"); return true; 
-                            }
+                            let rodRadiusFt = 1.5 / 12; let utilityRadiusFt = u.diamFt / 2; let gapFt = Math.abs(e - u.absElevation) - utilityRadiusFt - rodRadiusFt; let clearanceInches = gapFt * 12;
+                            if (clearanceInches <= 1.0) { playSound(50, 'square', 0.8, 0.3); let safeMsg = clearanceInches < 0 ? "Direct Hit!" : `Grazed at ${clearanceInches.toFixed(1)}"`; mostrarGameOver("UTILITY STRUCK!", `Critical hit! ${safeMsg} (Safe clearance is > 1").`, "red"); return true; }
                         }
                     }
                 }
             }
             if (relD < -0.15 && state.distance > 5) { mostrarGameOver("FRACOUT!", "Pressure breach.", "red"); return true; }
-            if (finalCheck && state.distance >= state.targetDistance) {
-                if (Math.abs(relD - state.targetDepth) <= 0.7 && Math.abs(state.lat - state.targetLat) <= 1.5) { 
-                    playSound(600, 'sine', 0.5, 0.2); setTimeout(()=>playSound(800, 'sine', 0.5, 0.15), 200); 
-                    mostrarGameOver("EXCELLENT SHOT!", `Level ${state.level} Complete!`, "green", true); 
-                }
-                else { mostrarGameOver("FAILED SHOT", "Accuracy requirements not met.", "orange"); }
-                return true;
-            }
+            if (finalCheck && state.distance >= state.targetDistance) { if (Math.abs(relD - state.targetDepth) <= 0.7 && Math.abs(state.lat - state.targetLat) <= 1.5) { playSound(600, 'sine', 0.5, 0.2); setTimeout(()=>playSound(800, 'sine', 0.5, 0.15), 200); mostrarGameOver("EXCELLENT SHOT!", `Level ${state.level} Complete!`, "green", true); } else { mostrarGameOver("FAILED SHOT", "Accuracy requirements not met.", "orange"); } return true; }
             return false;
         }
 
-        function verificarEstrellas() {
-            state.utilities.forEach(u => {
-                if (Math.abs(state.distance - u.dist) < 1.5 && Math.abs(state.lat - u.lat) < 1.0) {
-                    if (!state.potholesVisited.includes(u.id)) {
-                        state.potholesVisited.push(u.id);
-                        if (window.playSuccessChime) window.playSuccessChime();
-                    }
-                }
-            });
-        }
+        function verificarEstrellas() { state.utilities.forEach(u => { if (Math.abs(state.distance - u.dist) < 1.5 && Math.abs(state.lat - u.lat) < 1.0) { if (!state.potholesVisited.includes(u.id)) { state.potholesVisited.push(u.id); if (window.playSuccessChime) window.playSuccessChime(); } } }); }
 
         function animTick() {
             animationData.progress += animationData.speed;
             if (animationData.progress >= 1) {
-                let to = animationData.current.type === 'push' ? animationData.current.end : animationData.current.start;
-                Object.assign(state, to); if (animationData.current.type === 'push') state.path.push(animationData.current.end); else state.path.pop();
-                verificarEstrellas(); window.actualizarPantallas(); dibujarEscena();
-                if (chequearCondiciones(false)) { isAnimating = false; setEnginePitch(35); return; }
-                if (animationData.queue.length > 0) { animationData.current = animationData.queue.shift(); animationData.progress = 0; requestAnimationFrame(animTick); }
-                else { isAnimating = false; document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); setEnginePitch(35); chequearCondiciones(true); }
+                let to = animationData.current.type === 'push' ? animationData.current.end : animationData.current.start; Object.assign(state, to); if (animationData.current.type === 'push') state.path.push(animationData.current.end); else state.path.pop();
+                verificarEstrellas(); window.actualizarPantallas(); dibujarEscena(); if (chequearCondiciones(false)) { isAnimating = false; setEnginePitch(35); return; }
+                if (animationData.queue.length > 0) { animationData.current = animationData.queue.shift(); animationData.progress = 0; requestAnimationFrame(animTick); } else { isAnimating = false; document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); setEnginePitch(35); chequearCondiciones(true); }
             } else {
                 let t = animationData.progress; let f = animationData.current.type === 'push' ? animationData.current.start : animationData.current.end; let to = animationData.current.type === 'push' ? animationData.current.end : animationData.current.start;
-                state.distance = f.distance + (to.distance - f.distance) * t; state.absElevation = f.absElevation + (to.absElevation - f.absElevation) * t; state.lat = f.lat + (to.lat - f.lat) * t;
-                state.pitch = f.pitch + (to.pitch - f.pitch) * t; state.latAngle = f.latAngle + (to.latAngle - f.latAngle) * t; state.rods = f.rods + (to.rods - f.rods) * t;
+                state.distance = f.distance + (to.distance - f.distance) * t; state.absElevation = f.absElevation + (to.absElevation - f.absElevation) * t; state.lat = f.lat + (to.lat - f.lat) * t; state.pitch = f.pitch + (to.pitch - f.pitch) * t; state.latAngle = f.latAngle + (to.latAngle - f.latAngle) * t; state.rods = f.rods + (to.rods - f.rods) * t;
                 verificarEstrellas(); window.actualizarPantallas(); dibujarEscena(); requestAnimationFrame(animTick);
             }
         }
 
         function iniciarAnim(q) { isAnimating = true; document.querySelectorAll('.btn-action').forEach(b => b.disabled = true); animationData = { queue: q, current: q.shift(), progress: 0, speed: 0.032 }; requestAnimationFrame(animTick); }
-        
         window.iniciarMoverFraccion = function(frac, isDrill, metricKey) {
-            if (isAnimating || state.gameOver) return;
-            if(metricKey) state.metrics[metricKey]++;
-            let pies = state.maxRodLength * frac; let remainingRod = state.maxRodLength - (state.distance % state.maxRodLength);
-            if (Math.abs(remainingRod - state.maxRodLength) < 0.01) remainingRod = state.maxRodLength;
-            if (pies > remainingRod + 0.01) pies = remainingRod;
+            if (isAnimating || state.gameOver) return; if(metricKey) state.metrics[metricKey]++;
+            let pies = state.maxRodLength * frac; let remainingRod = state.maxRodLength - (state.distance % state.maxRodLength); if (Math.abs(remainingRod - state.maxRodLength) < 0.01) remainingRod = state.maxRodLength; if (pies > remainingRod + 0.01) pies = remainingRod;
             let af = isDrill ? 0 : state.steeringForce; let numChunks = Math.ceil(pies / 2.5); if (numChunks === 0) return;
             let distPerChunk = pies / numChunks; let q = []; let s = { ...state };
             for(let i=0; i<numChunks; i++) {
                 let start = { ...s }; let rodsPerChunk = distPerChunk / state.maxRodLength;
                 if (!isDrill && af !== 0) { let mults = getClockMultipliers(s.clock); let pitchChange = af * rodsPerChunk; s.pitch += pitchChange * mults.p; s.latAngle += pitchChange * mults.l; }
-                s.distance += distPerChunk; s.rods += rodsPerChunk; s.absElevation += -(s.pitch / 100) * distPerChunk; s.lat += (s.latAngle / 100) * distPerChunk;
-                q.push({ type: 'push', start: start, end: { ...s } });
+                s.distance += distPerChunk; s.rods += rodsPerChunk; s.absElevation += -(s.pitch / 100) * distPerChunk; s.lat += (s.latAngle / 100) * distPerChunk; q.push({ type: 'push', start: start, end: { ...s } });
             }
             setEnginePitch(60, 0.08); iniciarAnim(q);
         };
         
         window.iniciarRetrocederFraccion = function(frac) {
-            if (isAnimating || state.path.length <= 1) return;
-            state.metrics.back++; let pies = state.maxRodLength * frac; let targetDist = Math.max(0, state.distance - pies);
-            let q = []; let poppedDist = 0;
-            for(let i=1; i < state.path.length; i++) {
-                let endNode = state.path[state.path.length - i]; let startNode = state.path[state.path.length - 1 - i]; q.push({ type: 'pull', start: startNode, end: endNode });
-                poppedDist += (endNode.distance - startNode.distance); if (state.distance - poppedDist <= targetDist + 0.01) break; 
-            }
+            if (isAnimating || state.path.length <= 1) return; state.metrics.back++; let pies = state.maxRodLength * frac; let targetDist = Math.max(0, state.distance - pies);
+            let q = []; let poppedDist = 0; for(let i=1; i < state.path.length; i++) { let endNode = state.path[state.path.length - i]; let startNode = state.path[state.path.length - 1 - i]; q.push({ type: 'pull', start: startNode, end: endNode }); poppedDist += (endNode.distance - startNode.distance); if (state.distance - poppedDist <= targetDist + 0.01) break; }
             if (q.length > 0) { setEnginePitch(50, 0.05); iniciarAnim(q); }
         };
 
         window.programarFuerza = function(v) { if(state.gameOver) return; state.steeringForce = Math.max(-50, Math.min(50, state.steeringForce + v)); if(Math.abs(state.steeringForce)>=27) { mostrarError("SNAP ALERT!"); playSound(800,'square',0.3,0.05); } else playSound(300,'sine',0.1); window.actualizarPantallas(); };
         window.limpiarFuerza = function() { if (state.maxRodLength === 6) state.steeringForce = 8; else if (state.maxRodLength === 20) state.steeringForce = 24; else state.steeringForce = 12; playSound(100,'sine',0.2); window.actualizarPantallas(); };
-        window.ajustarPitchInicial = function(v) { if(state.gameOver || state.rods>0) return; state.pitch = Math.max(-35, Math.min(50, state.pitch+v)); state.path[0].pitch = state.pitch; playSound(150,'sine',0.1); window.actualizarPantallas(); dibujarEscena(); };
-        
+        window.ajustarPitchInicial = function(v) { if(state.gameOver || state.rods>0) return; state.pitch = Math.max(-35, Math.min(50, state.pitch+v)); if (state.path.length>0) state.path[0].pitch = state.pitch; playSound(150,'sine',0.1); window.actualizarPantallas(); dibujarEscena(); };
         window.setClock = function(h) { if(state.gameOver) return; state.clock = h; playSound(200,'sine',0.05); window.renderClock(); window.actualizarPantallas(); };
         
         window.renderClock = function() {
             const container = document.getElementById('clock-container'); if (!container) return; container.innerHTML = '';
-            for(let i=1; i<=12; i++) {
-                let a = (i * 30 - 90) * (Math.PI / 180); let cx = 50 + 40 * Math.cos(a); let cy = 50 + 40 * Math.sin(a);
-                let tick = document.createElement('div'); tick.className = `absolute rounded-full bg-gray-500 transform -translate-x-1/2 -translate-y-1/2 ` + (i % 3 === 0 ? 'w-2 h-2' : 'w-1 h-1'); tick.style.left = `${cx}%`; tick.style.top = `${cy}%`; container.appendChild(tick);
-            }
+            for(let i=1; i<=12; i++) { let a = (i * 30 - 90) * (Math.PI / 180); let cx = 50 + 40 * Math.cos(a); let cy = 50 + 40 * Math.sin(a); let tick = document.createElement('div'); tick.className = `absolute rounded-full bg-gray-500 transform -translate-x-1/2 -translate-y-1/2 ` + (i % 3 === 0 ? 'w-2 h-2' : 'w-1 h-1'); tick.style.left = `${cx}%`; tick.style.top = `${cy}%`; container.appendChild(tick); }
             let hw = document.createElement('div'); hw.className = "absolute top-1/2 left-1/2 w-full h-full text-center"; hw.style.transform = `translate(-50%, -50%) rotate(${state.clock * 30}deg)`;
             let hand = document.createElement('div'); hand.className = "absolute bottom-1/2 left-1/2 transform -translate-x-1/2 w-1.5 h-[35%] rounded-t-sm z-10 bg-[#39ff14] shadow-[0_0_10px_#39ff14] text-center";
             let ah = document.createElement('div'); ah.className = "absolute -top-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-bottom-[10px] border-bottom-[#39ff14] text-center";
             hand.appendChild(ah); hw.appendChild(hand); container.appendChild(hw);
             let sel = document.getElementById('hour-selector'); if (!sel) return; sel.innerHTML = '';
-            for(let i=1; i<=12; i++) {
-                let btn = document.createElement('button'); btn.className = `font-bold text-[10px] py-1 rounded shadow-[1px_1px_3px_#000] border border-gray-600 ` + (state.clock === i ? 'bg-red-600 text-white border-red-400' : 'bg-yellow-500 text-black');
-                btn.innerText = i; btn.onclick = () => { if(!state.gameOver) { window.setClock(i); } };
-                sel.appendChild(btn);
-            }
+            for(let i=1; i<=12; i++) { let btn = document.createElement('button'); btn.className = `font-bold text-[10px] py-1 rounded shadow-[1px_1px_3px_#000] border border-gray-600 ` + (state.clock === i ? 'bg-red-600 text-white border-red-400' : 'bg-yellow-500 text-black'); btn.innerText = i; btn.onclick = () => { if(!state.gameOver) { window.setClock(i); } }; sel.appendChild(btn); }
         };
         
         window.actualizarPantallas = function() {
-            let pDisp = document.getElementById('display-programmed');
-            if (pDisp) { 
-                pDisp.innerText = `Power: ${state.steeringForce}%`; let abs = Math.abs(state.steeringForce); 
-                pDisp.className = "mt-1 font-bold text-[10px] lg:text-xs text-center h-6 lg:h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded text-center"; 
-                if (abs <= 10) pDisp.classList.add("text-blue-300"); else if (abs <= 16) pDisp.classList.add("text-yellow-300"); else pDisp.classList.add("text-red-400"); 
-            }
-            
+            let pDisp = document.getElementById('display-programmed'); if (pDisp) { pDisp.innerText = `Power: ${state.steeringForce}%`; let abs = Math.abs(state.steeringForce); pDisp.className = "mt-1 font-bold text-[10px] lg:text-xs text-center h-6 lg:h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded text-center"; if (abs <= 10) pDisp.classList.add("text-blue-300"); else if (abs <= 16) pDisp.classList.add("text-yellow-300"); else pDisp.classList.add("text-red-400"); }
             let rl = state.maxRodLength - (state.distance % state.maxRodLength); if (Math.abs(rl - state.maxRodLength) < 0.01 || Math.abs(rl) < 0.01) rl = state.maxRodLength;
-            let dRod = document.getElementById('display-rod-left');
-            if (dRod) dRod.innerText = `Left: ${rl.toFixed(1)} ft`;
+            let dRod = document.getElementById('display-rod-left'); if (dRod) dRod.innerText = `Left: ${rl.toFixed(1)} ft`;
             let ip = document.getElementById('initial-pitch-controls'); if (ip) state.rods > 0 ? ip.classList.add('hidden') : ip.classList.remove('hidden');
-
-            const logList = document.getElementById('rod-log-list');
-            if (logList) {
-                logList.innerHTML = '';
-                let maxRod = Math.floor((state.distance + 0.01) / state.maxRodLength);
-                let currentPath = [...state.path, {distance: state.distance, absElevation: state.absElevation}];
-                for (let i = 1; i <= maxRod; i++) {
-                    let targetDist = i * state.maxRodLength;
-                    let node = currentPath.find(n => Math.abs(n.distance - targetDist) < 0.1);
-                    if (node) {
-                        let nodeRelDepth = node.absElevation + getSurfaceHeight(node.distance);
-                        let li = document.createElement('li');
-                        li.innerText = `Rod ${i}=${formatRodLog(nodeRelDepth)}`;
-                        logList.appendChild(li);
-                    }
-                }
-                const logBox = document.getElementById('rod-log-box'); if (logBox) logBox.scrollTop = logBox.scrollHeight;
-            }
+            const logList = document.getElementById('rod-log-list'); if (logList) { logList.innerHTML = ''; let maxRod = Math.floor((state.distance + 0.01) / state.maxRodLength); let currentPath = [...state.path, {distance: state.distance, absElevation: state.absElevation}]; for (let i = 1; i <= maxRod; i++) { let targetDist = i * state.maxRodLength; let node = currentPath.find(n => Math.abs(n.distance - targetDist) < 0.1); if (node) { let nodeRelDepth = node.absElevation + getSurfaceHeight(node.distance); let li = document.createElement('li'); li.innerText = `Rod ${i}=${formatRodLog(nodeRelDepth)}`; logList.appendChild(li); } } const logBox = document.getElementById('rod-log-box'); if (logBox) logBox.scrollTop = logBox.scrollHeight; }
         };
 
-        // --- MANEJO DE VISTAS Y FINALES ---
         window.toggleView = function() { state.view = state.view === 'side' ? 'top' : 'side'; const btnText = document.getElementById('btn-view-text'); const indicator = document.getElementById('view-indicator'); if (btnText) btnText.innerText = state.view === 'side' ? 'Main' : 'Aerial'; if (indicator) indicator.innerText = state.view === 'side' ? 'Main View (Absolute Horizon)' : 'Aerial View (Runway Corridor)'; dibujarEscena(); };
-        window.toggleFullScreen = function() { 
-            try { 
-                let doc = document.documentElement;
-                let isFull = document.fullscreenElement || document.webkitFullscreenElement;
-                if (!isFull) { 
-                    if (doc.requestFullscreen) {
-                        doc.requestFullscreen().catch(e => mostrarError("Fullscreen blocked.")); 
-                    } else if (doc.webkitRequestFullscreen) {
-                        doc.webkitRequestFullscreen(); // Soporte para iPad/Safari antiguo
-                    } else {
-                        // Mensaje de fallback nativo para iPhones
-                        mostrarError("iOS: Add to Home Screen to play Fullscreen");
-                    }
-                } else { 
-                    if (document.exitFullscreen) document.exitFullscreen(); 
-                    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-                } 
-            } catch(e) { 
-                mostrarError("Full screen not supported."); 
-            } 
-        };
-        
-        function mostrarGameOver(tit, msg, col, isWin = false) {
-            state.gameOver = true; clearInterval(state.timerInterval); document.querySelectorAll('.btn-action').forEach(b => b.disabled = true);
-            const m = document.getElementById('game-over-modal'), t = document.getElementById('game-over-title');
-            t.className = `text-xl lg:text-4xl font-black mb-2 text-center emergency-alert ${col==='red'?'text-red-500':col==='green'?'text-green-500':'text-orange-400'}`;
-            t.innerText = tit; document.getElementById('game-over-msg').innerText = msg;
-            const s = document.getElementById('star-rating'); s.innerHTML = ''; const newRecordForm = document.getElementById('new-record-form');
-            if (isWin) { 
-                // GUARDAR EL PROGRESO CUANDO GANA
-                window.guardarProgresoLocal(state.level, state.potholesVisited.length);
-
-                for(let i=0; i<state.utilities.length; i++) { let span = document.createElement('span'); span.innerText = '★'; span.className = state.potholesVisited.length > i ? 'star-gold' : 'text-gray-600'; s.appendChild(span); }
-                document.getElementById('btn-next').classList.remove('hidden'); document.getElementById('btn-retry').classList.add('hidden');
-                if (state.potholesVisited.length === state.utilities.length) { newRecordForm.classList.remove('hidden'); newRecordForm.classList.add('flex'); document.getElementById('btn-next').classList.add('hidden'); } else { newRecordForm.classList.add('hidden'); newRecordForm.classList.remove('flex'); }
-            } else { document.getElementById('btn-next').classList.add('hidden'); document.getElementById('btn-retry').classList.remove('hidden'); newRecordForm.classList.add('hidden'); newRecordForm.classList.remove('flex'); }
-            m.classList.remove('hidden'); m.classList.add('flex');
-        }
-
-        window.generarInformeFinal = function() {
-            reportViewType = 'side'; const btn = document.getElementById('btn-report-view'); if (btn) btn.innerText = 'View: MAIN';
-            let m = Math.floor(state.timeElapsed / 60); let s = state.timeElapsed % 60; document.getElementById('report-time').innerText = `${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`;
-            document.getElementById('metric-d14').innerText = state.metrics.d14; document.getElementById('metric-d12').innerText = state.metrics.d12; document.getElementById('metric-df').innerText = state.metrics.df;
-            document.getElementById('metric-p14').innerText = state.metrics.p14; document.getElementById('metric-p12').innerText = state.metrics.p12; document.getElementById('metric-pf').innerText = state.metrics.pf;
-            document.getElementById('metric-b').innerText = state.metrics.back; document.getElementById('metric-rods').innerText = state.rods.toFixed(1);
-            dibujarReporte(); document.getElementById('report-modal').classList.remove('hidden'); document.getElementById('report-modal').classList.add('flex');
-        };
+        window.toggleFullScreen = function() { try { let doc = document.documentElement; let isFull = document.fullscreenElement || document.webkitFullscreenElement; if (!isFull) { if (doc.requestFullscreen) { doc.requestFullscreen().catch(e => mostrarError("Fullscreen blocked.")); } else if (doc.webkitRequestFullscreen) { doc.webkitRequestFullscreen(); } else { mostrarError("iOS: Add to Home Screen to play Fullscreen"); } } else { if (document.exitFullscreen) document.exitFullscreen(); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); } } catch(e) { mostrarError("Full screen not supported."); } };
+        function mostrarGameOver(tit, msg, col, isWin = false) { state.gameOver = true; clearInterval(state.timerInterval); document.querySelectorAll('.btn-action').forEach(b => b.disabled = true); const m = document.getElementById('game-over-modal'), t = document.getElementById('game-over-title'); t.className = `text-xl lg:text-4xl font-black mb-2 text-center emergency-alert ${col==='red'?'text-red-500':col==='green'?'text-green-500':'text-orange-400'}`; t.innerText = tit; document.getElementById('game-over-msg').innerText = msg; const s = document.getElementById('star-rating'); s.innerHTML = ''; const newRecordForm = document.getElementById('new-record-form'); if (isWin) { window.guardarProgresoLocal(state.level, state.potholesVisited.length); for(let i=0; i<state.utilities.length; i++) { let span = document.createElement('span'); span.innerText = '★'; span.className = state.potholesVisited.length > i ? 'star-gold' : 'text-gray-600'; s.appendChild(span); } document.getElementById('btn-next').classList.remove('hidden'); document.getElementById('btn-retry').classList.add('hidden'); if (state.potholesVisited.length === state.utilities.length) { newRecordForm.classList.remove('hidden'); newRecordForm.classList.add('flex'); document.getElementById('btn-next').classList.add('hidden'); } else { newRecordForm.classList.add('hidden'); newRecordForm.classList.remove('flex'); } } else { document.getElementById('btn-next').classList.add('hidden'); document.getElementById('btn-retry').classList.remove('hidden'); newRecordForm.classList.add('hidden'); newRecordForm.classList.remove('flex'); } m.classList.remove('hidden'); m.classList.add('flex'); }
+        window.generarInformeFinal = function() { reportViewType = 'side'; const btn = document.getElementById('btn-report-view'); if (btn) btn.innerText = 'View: MAIN'; let m = Math.floor(state.timeElapsed / 60); let s = state.timeElapsed % 60; document.getElementById('report-time').innerText = `${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`; document.getElementById('metric-d14').innerText = state.metrics.d14; document.getElementById('metric-d12').innerText = state.metrics.d12; document.getElementById('metric-df').innerText = state.metrics.df; document.getElementById('metric-p14').innerText = state.metrics.p14; document.getElementById('metric-p12').innerText = state.metrics.p12; document.getElementById('metric-pf').innerText = state.metrics.pf; document.getElementById('metric-b').innerText = state.metrics.back; document.getElementById('metric-rods').innerText = state.rods.toFixed(1); dibujarReporte(); document.getElementById('report-modal').classList.remove('hidden'); document.getElementById('report-modal').classList.add('flex'); };
         window.toggleReportView = function() { reportViewType = reportViewType === 'side' ? 'top' : 'side'; const btn = document.getElementById('btn-report-view'); if (btn) btn.innerText = reportViewType === 'side' ? 'View: MAIN' : 'View: AERIAL'; dibujarReporte(); };
-        function dibujarReporte() {
-            const rc = document.getElementById('report-canvas'); const rCtx = rc.getContext('2d'); rCtx.clearRect(0,0,1200,400);
-            rCtx.save(); rCtx.beginPath(); rCtx.rect(0,0,1200,400); rCtx.clip(); let tempCamera = {...camera}; camera = {zoom: 1, offsetX: 0, offsetY: 0}; dibujarCuerpoEscena(rCtx, reportViewType); camera = tempCamera;
-            rCtx.fillStyle = reportViewType === 'side' ? "black" : "white"; rCtx.font = "bold 24px Arial"; rCtx.fillText(reportViewType === 'side' ? "SIDE VIEW REPORT" : "AERIAL VIEW REPORT", 20, 40); rCtx.restore();
-        }
+        function dibujarReporte() { const rc = document.getElementById('report-canvas'); const rCtx = rc.getContext('2d'); rCtx.clearRect(0,0,1200,400); rCtx.save(); rCtx.beginPath(); rCtx.rect(0,0,1200,400); rCtx.clip(); let tempCamera = {...camera}; camera = {zoom: 1, offsetX: 0, offsetY: 0}; dibujarCuerpoEscena(rCtx, reportViewType); camera = tempCamera; rCtx.fillStyle = reportViewType === 'side' ? "black" : "white"; rCtx.font = "bold 24px Arial"; rCtx.fillText(reportViewType === 'side' ? "SIDE VIEW REPORT" : "AERIAL VIEW REPORT", 20, 40); rCtx.restore(); }
         window.cerrarInforme = function() { document.getElementById('report-modal').classList.add('hidden'); document.getElementById('report-modal').classList.remove('flex'); };
-        window.saveRecord = function() {
-            const nameInput = document.getElementById('player-name-input'); const name = nameInput.value.trim();
-            if(!name) { mostrarError("Please enter a name"); return; }
-            if(window.dbGuardarRecord) { window.dbGuardarRecord(name, state.level, state.timeElapsed, state.potholesVisited.length); }
-            document.getElementById('new-record-form').classList.add('hidden'); nameInput.value = ''; window.nextLevel();
-        };
+        window.saveRecord = function() { const nameInput = document.getElementById('player-name-input'); const name = nameInput.value.trim(); if(!name) { mostrarError("Please enter a name"); return; } if(window.dbGuardarRecord) { window.dbGuardarRecord(name, state.level, state.timeElapsed, state.potholesVisited.length); } document.getElementById('new-record-form').classList.add('hidden'); nameInput.value = ''; window.nextLevel(); };
 
-        // --- NIVELES E INICIO ---
         const apwaTypes = [ { name: "SEWER", color: '#32CD32', diam: 12/12 }, { name: "POWER", color: '#FF0000', diam: 4/12 }, { name: "WATER", color: '#00BFFF', diam: 6/12 }, { name: "TELECOM", color: '#FFA500', diam: 4/12 } ];
         function generateLevel(lvl) {
             clearInterval(state.timerInterval); let currentRodSize = parseInt(document.getElementById('rod-length-select').value) || 10;
@@ -1205,15 +886,11 @@
             state.maxAllowedDepthRel = deep + 2.0; const ln = document.getElementById('lvl-number'); if(ln) ln.innerText = lvl; setEnginePitch(35); window.actualizarPantallas(); dibujarEscena();
         }
 
-        window.startGame = function() { 
-            const splash = document.getElementById('splash-screen'); if (splash) splash.style.display = 'none'; 
-            window.initAudio(); if (audioCtx && audioCtx.state === 'suspended' && !isMuted) audioCtx.resume(); 
-            generateLevel(state.level); window.renderClock(); 
-        };
+        window.startGame = function() { const splash = document.getElementById('splash-screen'); if (splash) splash.style.display = 'none'; window.initAudio(); if (audioCtx && audioCtx.state === 'suspended' && !isMuted) audioCtx.resume(); generateLevel(state.level); window.renderClock(); };
         window.nextLevel = function() { if (state.level < 20) { state.level++; generateLevel(state.level); document.getElementById('game-over-modal').classList.add('hidden'); document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); } };
         window.reiniciarJuego = function() { generateLevel(state.level); document.getElementById('game-over-modal').classList.add('hidden'); document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); };
 
-        initFirebase();
+        window.initFirebase();
     </script>
 </body>
 </html>
