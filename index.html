@@ -117,7 +117,7 @@
                     </h3>
                     <ul class="text-[10px] lg:text-xs text-gray-200 space-y-1">
                         <li>• Complete <span class="text-white font-bold">20 levels</span> with Dynamic Music.</li>
-                        <li>• Master <span class="text-white font-bold">Absolute Horizon</span> and Depth Permits.</li>
+                        <li>• Master <span class="text-white font-bold">Absolute Horizon</span> and Depth Limits.</li>
                         <li>• <span class="text-orange-400 font-bold">NEW:</span> Camera Zoom & Panning System.</li>
                         <li>• Compete for the fastest time and best accuracy!</li>
                     </ul>
@@ -131,7 +131,7 @@
                         <li>• <span class="text-orange-400 font-bold">Potholing:</span> Standard utility verification.</li>
                         <li>• <span class="text-red-400 font-bold">Emergency Strike:</span> Call 911 immediately.</li>
                         <li>• <span class="text-blue-400 font-bold">Snap Alert:</span> Respect rod bend limits.</li>
-                        <li>• <span class="text-green-400 font-bold">Real-World Use:</span> These protocols are for life saving.</li>
+                        <li>• <span class="text-green-400 font-bold">Real-World Use:</span> These protocols save lives.</li>
                     </ul>
                 </div>
             </div>
@@ -344,7 +344,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE FIN DE JUEGO -->
+    <!-- GAME OVER MODAL -->
     <div id="game-over-modal" class="absolute inset-0 bg-black bg-opacity-80 hidden flex-col items-center justify-center z-30 backdrop-blur-sm text-center">
         <div class="panel-metal border-none p-6 rounded-lg shadow-[0_0_50px_rgba(0,0,0,1)] max-w-xl w-full flex flex-col items-center mx-4 text-white text-center relative">
             <div class="screw screw-tl"></div><div class="screw screw-tr"></div><div class="screw screw-bl"></div><div class="screw screw-br"></div>
@@ -354,7 +354,7 @@
             
             <div id="new-record-form" class="hidden flex-col items-center w-full mb-4 panel-inset p-4 rounded border border-yellow-500">
                 <h4 class="text-yellow-400 font-bold mb-2 uppercase animate-pulse">🎉 NEW RECORD! 🎉</h4>
-                <p class="text-sm text-gray-300 mb-2">Enter your name for the Leaderboard:</p>
+                <p class="text-sm text-gray-300 mb-2">Enter your name for the leaderboard:</p>
                 <div class="flex space-x-2">
                     <input type="text" id="player-name-input" class="px-3 py-1 rounded text-black font-bold uppercase" placeholder="YOUR NAME" maxlength="15">
                     <button onclick="window.saveRecord()" class="bg-green-600 hover:bg-green-500 text-white font-bold py-1 px-4 rounded shadow border border-green-400">SAVE</button>
@@ -369,9 +369,9 @@
                 <button id="btn-report" onclick="window.generarInformeFinal()" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded shadow-[1px_1px_3px_#000] transition uppercase text-sm lg:text-base text-center border border-indigo-400">
                     View Final Record
                 </button>
-                <button id="btn-retry" onclick="window.reiniciarJuego()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-8 rounded shadow-[1px_1px_3px_#000] transition uppercase text-sm lg:text-base text-center border border-gray-400">Retry</button>
+                <button id="btn-retry" onclick="window.reiniciarJuego()" class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-8 rounded shadow-[1px_1px_3px_#000] transition uppercase text-sm lg:text-base text-center border border-green-500">Retry</button>
                 <button id="btn-next" onclick="window.nextLevel()" class="hidden bg-yellow-500 hover:bg-yellow-400 text-black font-black py-2 px-8 rounded shadow-[1px_1px_3px_#000] transition uppercase text-sm lg:text-base text-center border border-yellow-700">Next Level</button>
-                <button onclick="window.volverAlMenu()" class="bg-gray-900 hover:bg-gray-800 text-white font-bold py-2 px-6 rounded shadow-[1px_1px_3px_#000] transition uppercase text-sm lg:text-base text-center border border-gray-600">Close</button>
+                <button onclick="window.volverAlMenu()" class="bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-6 rounded shadow-[1px_1px_3px_#000] transition uppercase text-sm lg:text-base text-center border border-red-500">Close</button>
             </div>
         </div>
     </div>
@@ -402,7 +402,7 @@
                             <p class="text-2xl font-mono font-bold text-white" id="report-time">00:00</p>
                         </div>
                         <div>
-                            <p class="text-gray-400 uppercase text-xs mb-1 border-b border-gray-700 pb-1">Drill Actions (Rotation)</p>
+                            <p class="text-gray-400 uppercase text-xs mb-1 border-b border-gray-700 pb-1">Rotation Actions</p>
                             <div class="grid grid-cols-2 gap-2 text-green-400 font-mono">
                                 <div><span class="text-gray-500">1/4:</span> <span id="metric-d14">0</span></div>
                                 <div><span class="text-gray-500">1/2:</span> <span id="metric-d12">0</span></div>
@@ -410,7 +410,7 @@
                             </div>
                         </div>
                         <div>
-                            <p class="text-gray-400 uppercase text-xs mb-1 border-b border-gray-700 pb-1">Push Actions (Steering)</p>
+                            <p class="text-gray-400 uppercase text-xs mb-1 border-b border-gray-700 pb-1">Steering Actions (Push)</p>
                             <div class="grid grid-cols-2 gap-2 text-yellow-400 font-mono">
                                 <div><span class="text-gray-500">1/4:</span> <span id="metric-p14">0</span></div>
                                 <div><span class="text-gray-500">1/2:</span> <span id="metric-p12">0</span></div>
@@ -418,7 +418,7 @@
                             </div>
                         </div>
                         <div>
-                            <p class="text-gray-400 uppercase text-xs mb-1 border-b border-gray-700 pb-1">Retract Actions</p>
+                            <p class="text-gray-400 uppercase text-xs mb-1 border-b border-gray-700 pb-1">Retraction Actions</p>
                             <div class="grid grid-cols-2 gap-2 text-red-400 font-mono">
                                 <div><span class="text-gray-500">Back:</span> <span id="metric-b">0</span></div>
                                 <div><span class="text-gray-500">Rods:</span> <span id="metric-rods">0</span></div>
@@ -545,7 +545,7 @@
         function setEnginePitch(f, v = 0.03) { if (!audioCtx || isMuted) return; engineOsc.frequency.exponentialRampToValueAtTime(f, audioCtx.currentTime + 0.5); engineGain.gain.linearRampToValueAtTime(Math.min(v, 0.08), audioCtx.currentTime + 0.2); }
         function playSound(f, t, d, v = 0.15) { if (!audioCtx || isMuted) return; let o = audioCtx.createOscillator(); let g = audioCtx.createGain(); o.type = t; o.frequency.setValueAtTime(f, audioCtx.currentTime); g.gain.setValueAtTime(v, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + d); o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime + d); }
         window.playSuccessChime = function() { if (!audioCtx || isMuted) return; let o1 = audioCtx.createOscillator(); let g1 = audioCtx.createGain(); o1.type = 'sine'; o1.frequency.setValueAtTime(523.25, audioCtx.currentTime); g1.gain.setValueAtTime(0, audioCtx.currentTime); g1.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.05); g1.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2); o1.connect(g1); g1.connect(audioCtx.destination); o1.start(); o1.stop(audioCtx.currentTime + 0.2); let o2 = audioCtx.createOscillator(); let g2 = audioCtx.createGain(); o2.type = 'sine'; o2.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); g2.gain.setValueAtTime(0, audioCtx.currentTime + 0.1); g2.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.15); g2.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.6); o2.connect(g2); g2.connect(audioCtx.destination); o2.start(audioCtx.currentTime + 0.1); o2.stop(audioCtx.currentTime + 0.6); };
-        window.toggleMute = function() { isMuted = !isMuted; const icon = document.getElementById('speaker-icon'); if (isMuted) { icon.innerHTML = '<path d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019 10a9.972 9.972 0 00-2.929-7.071 1 1 0 01-1.414 1.414A7.971 7.971 0 0117 10c0 1.282-.303 2.493-.842 3.572l-1.436-1.436a5.98 5.98 0 00.278-2.136 5.984 5.984 0 00-1.757-4.243 1 1 0 011.415-1.415A3.984 3.984 0 0113 10a3.983 3.983 0 01-.172 1.172l-1.445-1.445A1.984 1.984 0 0011 10a1.984 1.984 0 00-.586-1.414l-3-3a1.984 1.984 0 00-1.414-.586V4a1 1 0 011.707-.707L9.383 7.001l1.414 1.414L18.414 16.03l-1.414 1.414L15.352 15.8l-1.414-1.414-4.555-4.555-3.676-3.676L3.707 2.293z"/>'; if (engineGain) engineGain.gain.setValueAtTime(0, audioCtx.currentTime); if (musicGain) musicGain.gain.setValueAtTime(0, audioCtx.currentTime); } else { icon.innerHTML = '<path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"></path>'; if (engineGain) engineGain.gain.setValueAtTime(0.03, audioCtx.currentTime); if (musicGain) musicGain.gain.setValueAtTime(0.10, audioCtx.currentTime); } };
+        window.toggleMute = function() { isMuted = !isMuted; const icon = document.getElementById('speaker-icon'); if (isMuted) { icon.innerHTML = '<path d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019 10a9.972 9.972 0 00-2.929-7.071 1 1 0 01-1.414 1.414A7.971 7.971 0 0117 10c0 1.282-.303 2.493-.842 3.572l-1.436-1.436a5.98 5.98 0 00.278-2.136 5.984 5.984 0 00-1.757-4.243 1 1 0 011.415-1.415A3.984 3.984 0 0113 10a3.983 3.983 0 01-.172 1.172l-1.445-1.445A1.984 1.984 0 0011 10a1.984 1.984 0 00-.586-1.414l-3-3a1.984 1.984 0 00-1.414-.586V4a1 1 0 011.707-.707L9.383 7.001l1.414 1.414L18.414 16.03l-1.414 1.414L15.352 15.8l-1.414-1.414-4.555-4.555-3.676-3.676L3.707 2.293z"/>'; if (engineGain) engineGain.gain.setValueAtTime(0, audioCtx.currentTime); if (musicGain) musicGain.gain.setValueAtTime(0, audioCtx.currentTime); } else { icon.innerHTML = '<path fill-rule="evenodd" d="M9.383 3.076a1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"></path>'; if (engineGain) engineGain.gain.setValueAtTime(0.03, audioCtx.currentTime); if (musicGain) musicGain.gain.setValueAtTime(0.10, audioCtx.currentTime); } };
 
         function formatPiesPulgadas(decimalFeet) { let isNegative = decimalFeet < 0; let absFeet = Math.abs(decimalFeet); let feet = Math.floor(absFeet); let inches = Math.round((absFeet - feet) * 12); if (inches === 12) { feet += 1; inches = 0; } return (isNegative ? "-" : "") + feet + "." + inches; }
         function formatRodLog(decimalFeet) { let isNegative = decimalFeet < 0; let absFeet = Math.abs(decimalFeet); let feet = Math.floor(absFeet); let inches = Math.round((absFeet - feet) * 12); if (inches === 12) { feet += 1; inches = 0; } if (inches === 0) return (isNegative ? "-" : "") + feet + "ft"; return (isNegative ? "-" : "") + feet + "'" + inches + '"'; }
@@ -556,14 +556,14 @@
         function getPxY_Top(lat) { return (canvas.height / 2) + (lat / 10) * (canvas.height / 2 - 20); }
         function mostrarError(msg) { const errDiv = document.getElementById('error-msg'); if (errDiv) { errDiv.innerText = msg; errDiv.classList.remove('hidden'); setTimeout(() => errDiv.classList.add('hidden'), 3000); } }
         function getClockMultipliers(c) { if (c === 12) return { p: 1, l: 0 }; if (c === 3) return { p: 0, l: 1 }; if (c === 6) return { p: -1, l: 0 }; if (c === 9) return { p: 0, l: -1 }; let r = (c * 30) * (Math.PI / 180); return { p: Math.round(Math.cos(r)*1000)/1000, l: Math.round(Math.sin(r)*1000)/1000 }; }
-        window.cambiarLongitudVarilla = function(val) { let num = parseInt(val); let remaining = state.distance % state.maxRodLength; if (state.distance > 0 && remaining > 0.01 && remaining < state.maxRodLength - 0.01) { mostrarError("Finish rod first!"); document.getElementById('rod-length-select').value = state.maxRodLength; return; } state.maxRodLength = num; window.limpiarFuerza(); };
+        window.cambiarLongitudVarilla = function(val) { let num = parseInt(val); let remaining = state.distance % state.maxRodLength; if (state.distance > 0 && remaining > 0.01 && remaining < state.maxRodLength - 0.01) { mostrarError("Finish the rod first!"); document.getElementById('rod-length-select').value = state.maxRodLength; return; } state.maxRodLength = num; window.limpiarFuerza(); };
         window.volverAlMenu = function() { document.getElementById('splash-screen').style.display = 'flex'; document.getElementById('btn-resume').classList.remove('hidden'); document.getElementById('game-over-modal').classList.add('hidden'); if (audioCtx && audioCtx.state === 'running') audioCtx.suspend(); if (window.cargarLeaderboard) window.cargarLeaderboard(); };
         window.resumeGame = function() { document.getElementById('splash-screen').style.display = 'none'; if (audioCtx && audioCtx.state === 'suspended' && !isMuted) audioCtx.resume(); };
         function updateTimerDisplay() { if(state.gameOver) return; state.timeElapsed = Math.floor((Date.now() - state.startTime) / 1000); let m = Math.floor(state.timeElapsed / 60); let s = state.timeElapsed % 60; document.getElementById('time-display').innerText = `Time: ${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`; }
 
         function dibujarIndicadoresHUD(tCtx) {
             let relDepth = state.absElevation + getSurfaceHeight(state.distance); let pVal = parseFloat(state.pitch.toFixed(1)); let rem = Math.max(0, state.targetDistance - state.distance);
-            let lines = [ "DEPTH:    " + formatPiesPulgadas(relDepth) + " ft", "PITCH:    " + (pVal > 0 ? "+" : "") + pVal.toFixed(1) + " %", "DIST:    " + state.distance.toFixed(0) + " ft", "TARGET:  " + rem.toFixed(0) + " ft" ];
+            let lines = [ "DEPTH:    " + formatPiesPulgadas(relDepth) + " ft", "PITCH:    " + (pVal > 0 ? "+" : "") + pVal.toFixed(1) + " %", "DIST:     " + state.distance.toFixed(0) + " ft", "TARGET:   " + rem.toFixed(0) + " ft" ];
             let startX = canvas.width - 330; let startY = canvas.height - 120; tCtx.font = 'bold 18px "Courier New", Courier, monospace'; tCtx.textAlign = 'left';
             for (let i = 0; i < lines.length; i++) { let y = startY + (i * 26); tCtx.lineWidth = 4; tCtx.strokeStyle = 'black'; tCtx.strokeText(lines[i], startX, y); tCtx.fillStyle = 'white'; tCtx.fillText(lines[i], startX, y); }
         }
@@ -591,7 +591,12 @@
                 tCtx.fillStyle = '#2d4c1e'; tCtx.fillRect(-5000,-5000,10000,10000); tCtx.strokeStyle='#000'; tCtx.lineWidth = 1.2;
                 tCtx.beginPath(); tCtx.moveTo(-5000, getPxY_Top(getIdealLat(0)-state.runawayWidth)); for(let x=0; x<=state.targetDistance; x+=5) tCtx.lineTo(getPxX(x), getPxY_Top(getIdealLat(x)-state.runawayWidth)); tCtx.lineTo(5000, getPxY_Top(getIdealLat(state.targetDistance)-state.runawayWidth)); tCtx.stroke();
                 tCtx.beginPath(); tCtx.moveTo(-5000, getPxY_Top(getIdealLat(0)+state.runawayWidth)); for(let x=0; x<=state.targetDistance; x+=5) tCtx.lineTo(getPxX(x), getPxY_Top(getIdealLat(x)+state.runawayWidth)); tCtx.lineTo(5000, getPxY_Top(getIdealLat(state.targetDistance)+state.runawayWidth)); tCtx.stroke();
-                state.utilities.forEach(u => { let pxX = getPxX(u.dist); tCtx.fillStyle = u.color; tCtx.globalAlpha=0.3; tCtx.fillRect(pxX-5,-5000,10,10000); tCtx.globalAlpha=1; let isHit = state.potholesVisited.includes(u.id); tCtx.fillStyle = isHit ? '#fbbf24':'#1a202c'; let pxY = getPxY_Top(u.lat); tCtx.fillRect(pxX-12, pxY-12, 24, 24); if (isHit) { tCtx.fillStyle = "#000"; tCtx.font = "bold 14px Arial"; tCtx.fillText("★", pxX - 6, pxY + 5); } });
+                state.utilities.forEach(u => { 
+                    let pxX = getPxX(u.dist); tCtx.fillStyle = u.color; tCtx.globalAlpha=0.3; tCtx.fillRect(pxX-5,-5000,10,10000); tCtx.globalAlpha=1; 
+                    let isHit = state.potholesVisited.includes(u.id); tCtx.fillStyle = isHit ? '#fbbf24':'#1a202c'; 
+                    let pxY = getPxY_Top(u.lat); tCtx.fillRect(pxX-12, pxY-12, 24, 24); 
+                    if (isHit) { tCtx.fillStyle = "#000"; tCtx.font = "bold 14px Arial"; tCtx.fillText("★", pxX - 6, pxY + 5); } 
+                });
                 tCtx.fillStyle = '#1a202c'; let tx = getPxX(state.targetDistance), ty = getPxY_Top(state.targetLat); tCtx.fillRect(tx, ty-25, 40, 50);
                 tCtx.save(); tCtx.translate(getPxX(0), getPxY_Top(0)); tCtx.fillStyle = '#111'; tCtx.fillRect(-45, -20, 65, 10); tCtx.fillRect(-45, 10, 65, 10); tCtx.fillStyle = '#FF9900'; tCtx.fillRect(-40, -10, 55, 20); tCtx.fillStyle = '#222'; tCtx.fillRect(-25, -6, 20, 12); tCtx.fillStyle = '#555'; tCtx.fillRect(15, -3, 25, 6); tCtx.restore(); dibujarRuta(tCtx, getPxY_Top, 'top');
                 if (state.locator) {
@@ -605,8 +610,8 @@
 
         function chequearCondiciones(finalCheck) {
             let iL = getIdealLat(state.distance); if (Math.abs(state.lat - iL) > state.runawayWidth) { mostrarGameOver("OUT OF AREA", "Safety corridor breach.", "red"); return true; }
-            let relD = state.absElevation + getSurfaceHeight(state.distance); if (relD > state.maxAllowedDepthRel) { mostrarGameOver("FAIL TOO DEEP", "Permit violation.", "red"); return true; }
-            if (relD <= 1.0 && state.distance >= state.maxRodLength) { mostrarGameOver("FAIL TOO SHALLOW", "Minimum cover violation.", "orange"); return true; }
+            let relD = state.absElevation + getSurfaceHeight(state.distance); if (relD > state.maxAllowedDepthRel) { mostrarGameOver("FAIL: TOO DEEP", "Permit depth violation.", "red"); return true; }
+            if (relD <= 1.0 && state.distance >= state.maxRodLength) { mostrarGameOver("FAIL: TOO SHALLOW", "Insufficient minimum cover.", "orange"); return true; }
             let rP = [...state.path]; if (!isAnimating) rP.push({ distance: state.distance, absElevation: state.absElevation });
             for (let i = 1; i < rP.length; i++) {
                 for (let u of state.utilities) {
@@ -615,17 +620,34 @@
                         if (t >= 0 && t <= 1) {
                             let e = rP[i-1].absElevation + (rP[i].absElevation - rP[i-1].absElevation) * t;
                             let rodRadiusFt = 1.5 / 12; let utilityRadiusFt = u.diamFt / 2; let gapFt = Math.abs(e - u.absElevation) - utilityRadiusFt - rodRadiusFt; let clearanceInches = gapFt * 12;
-                            if (clearanceInches <= 1.0) { playSound(50, 'square', 0.8, 0.3); mostrarGameOver("UTILITY STRUCK!", `Hit! clearance: ${clearanceInches.toFixed(1)}".`, "red"); return true; }
+                            if (clearanceInches <= 1.0) { playSound(50, 'square', 0.8, 0.3); mostrarGameOver("UTILITY STRUCK!", `Impact! Clearance: ${clearanceInches.toFixed(1)}".`, "red"); return true; }
                         }
                     }
                 }
             }
-            if (relD < -0.15 && state.distance > 5) { mostrarGameOver("FRACOUT!", "Pressure breach.", "red"); return true; }
-            if (finalCheck && state.distance >= state.targetDistance) { if (Math.abs(relD - state.targetDepth) <= 0.7 && Math.abs(state.lat - state.targetLat) <= 1.5) { playSound(600, 'sine', 0.5, 0.2); setTimeout(()=>playSound(800, 'sine', 0.5, 0.15), 200); mostrarGameOver("EXCELLENT!", `Lvl ${state.level} Complete!`, "green", true); } else { mostrarGameOver("FAILED", "Accuracy violation.", "orange"); } return true; }
+            if (relD < -0.15 && state.distance > 5) { mostrarGameOver("FRACOUT!", "Pressure relief to the surface.", "red"); return true; }
+            if (finalCheck && state.distance >= state.targetDistance) { if (Math.abs(relD - state.targetDepth) <= 0.7 && Math.abs(state.lat - state.targetLat) <= 1.5) { playSound(600, 'sine', 0.5, 0.2); setTimeout(()=>playSound(800, 'sine', 0.5, 0.15), 200); mostrarGameOver("EXCELLENT!", `Level ${state.level} Complete!`, "green", true); } else { mostrarGameOver("FAILED", "Target precision not met.", "orange"); } return true; }
             return false;
         }
 
-        function verificarEstrellas() { state.utilities.forEach(u => { if (Math.abs(state.distance - u.dist) < 1.5 && Math.abs(state.lat - u.lat) < 1.0) { if (!state.potholesVisited.includes(u.id)) { state.potholesVisited.push(u.id); if (window.playSuccessChime) window.playSuccessChime(); } } }); }
+        // Strict collision logic with Pothole visual box
+        function verificarEstrellas() { 
+            const hScale = (canvas.width - startXOffset - 40) / (state.targetDistance + 40);
+            const vScale = (canvas.height / 2 - 20) / 10;
+            const thresholdDist = 12 / hScale; 
+            const thresholdLat = 12 / vScale;
+
+            state.utilities.forEach(u => { 
+                if (Math.abs(state.distance - u.dist) <= thresholdDist && 
+                    Math.abs(state.lat - u.lat) <= thresholdLat) { 
+                    if (!state.potholesVisited.includes(u.id)) { 
+                        state.potholesVisited.push(u.id); 
+                        if (window.playSuccessChime) window.playSuccessChime(); 
+                    } 
+                } 
+            }); 
+        }
+
         function animTick() {
             animationData.progress += animationData.speed;
             if (animationData.progress >= 1) {
@@ -726,7 +748,6 @@
             const splash = document.getElementById('splash-screen'); 
             if (splash) splash.style.display = 'none'; 
             
-            // Trigger Fullscreen on user interaction
             window.toggleFullScreen();
             
             window.initAudio(); 
