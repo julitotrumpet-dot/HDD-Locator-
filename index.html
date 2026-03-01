@@ -832,7 +832,9 @@
             tCtx.beginPath(); tCtx.strokeStyle = 'rgba(255, 255, 255, 0.4)'; tCtx.lineWidth = 1;
             tCtx.moveTo(rX + rW/2, rY); tCtx.lineTo(rX + rW/2, rY + rH); tCtx.moveTo(rX, rY + rH - 25); tCtx.lineTo(rX + rW, rY + rH - 25); tCtx.stroke();
             tCtx.fillStyle = 'rgba(255, 255, 255, 0.5)'; tCtx.font = '10px Arial'; tCtx.fillText("L", rX + 5, rY + rH - 30); tCtx.fillText("R", rX + rW - 15, rY + rH - 30);
-            tCtx.fillStyle = '#facc15'; tCtx.fillText("TRACKER RADAR", rX + 5, rY + 12);
+            
+            // Texto movido a la parte inferior del radar
+            tCtx.fillStyle = '#facc15'; tCtx.fillText("TRACKER RADAR", rX + 20, rY + rH + 15);
 
             let radarRangeLat = 15, radarRangeDist = 50;
             function getRadarX(lat) { let clampedLat = Math.max(-radarRangeLat, Math.min(radarRangeLat, lat)); return rX + rW/2 + (clampedLat / radarRangeLat) * (rW/2 - 10); }
