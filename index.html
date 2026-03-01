@@ -1051,8 +1051,28 @@
 
         function toggleFullScreen() { 
             try { 
-                if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(e => mostrarError("Fullscreen blocked.")); } else { if (document.exitFullscreen) document.exitFullscreen(); } 
-            } catch(e) { mostrarError("Full screen not supported."); } 
+                let doc = window.document;
+                let docEl = doc.documentElement;
+                
+                // Soportar diferentes motores de navegadores móviles (Webkit, Moz, MS)
+                let requestFullScreen = docEl.requestFullscreen || docEl.webkitRequestFullScreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
+                let cancelFullScreen = doc.exitFullscreen || doc.webkitExitFullscreen || doc.mozCancelFullScreen || doc.msExitFullscreen;
+
+                if (!doc.fullscreenElement && !doc.webkitFullscreenElement && !doc.mozFullScreenElement && !doc.msFullscreenElement) { 
+                    if (requestFullScreen) {
+                        // Intenta forzar la pantalla completa, atrapa el error si es un entorno bloqueado
+                        requestFullScreen.call(docEl).catch(e => mostrarError("Pantalla completa bloqueada (iOS/Iframe).")); 
+                    } else {
+                        mostrarError("No soportado por este dispositivo (ej. iPhone).");
+                    }
+                } else { 
+                    if (cancelFullScreen) {
+                        cancelFullScreen.call(doc); 
+                    }
+                } 
+            } catch(e) { 
+                mostrarError("Error al intentar pantalla completa."); 
+            } 
         }
 
         function mostrarGameOver(tit, msg, col, isWin = false) {
