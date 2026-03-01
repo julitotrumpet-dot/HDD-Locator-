@@ -55,7 +55,7 @@
     <div id="splash-screen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-6 text-center text-white overflow-y-auto">
         <div class="max-w-4xl bg-gray-800 bg-opacity-95 p-8 rounded-2xl border-2 border-yellow-500 shadow-2xl backdrop-blur-md my-auto">
             <h1 class="text-4xl lg:text-6xl font-black text-yellow-500 mb-2 uppercase tracking-tighter">HDD PROFESSIONAL</h1>
-            <h2 class="text-xl lg:text-2xl font-bold text-white mb-2 uppercase tracking-widest text-center">Precision Drilling Simulator v4.2</h2>
+            <h2 class="text-xl lg:text-2xl font-bold text-white mb-2 uppercase tracking-widest text-center">Precision Drilling Simulator v5.0</h2>
             <p class="text-yellow-400 font-bold mb-6 italic tracking-wide text-lg text-center">by Julio Sarracent</p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left mb-6 border-t border-gray-600 pt-6">
@@ -67,7 +67,7 @@
                     <ul class="text-sm text-gray-300 space-y-2">
                         <li>• Complete <span class="text-white font-bold">20 levels</span> with Dynamic Music.</li>
                         <li>• Master <span class="text-white font-bold">Absolute Horizon</span> and Depth Permits.</li>
-                        <li>• <span class="text-yellow-400 font-bold">NEW:</span> Placeable Locator Tracking & Radar View.</li>
+                        <li>• <span class="text-yellow-400 font-bold">NEW:</span> Camera Zoom & Panning System.</li>
                         <li>• Compete for the fastest time and best accuracy!</li>
                     </ul>
                 </div>
@@ -141,7 +141,7 @@
             <div>
                 <h1 class="text-lg lg:text-2xl font-bold text-yellow-400 leading-tight uppercase tracking-tighter text-center">HDD SIMULATOR <span class="text-white ml-2 text-sm lg:text-base">LEVEL <span id="lvl-number">1</span>/20</span></h1>
                 <div class="flex items-center space-x-2 text-white text-center">
-                    <p class="text-[9px] lg:text-xs text-gray-400 uppercase tracking-widest font-bold text-center">Precision Horizon v4.2</p>
+                    <p class="text-[9px] lg:text-xs text-gray-400 uppercase tracking-widest font-bold text-center">Precision Horizon v5.0</p>
                     <span class="text-[9px] text-gray-500 italic text-center" id="time-display">Time: 00:00</span>
                 </div>
             </div>
@@ -167,38 +167,17 @@
             </div>
         </div>
 
-        <!-- PANTALLAS LCD -->
-        <div class="grid grid-cols-3 lg:grid-cols-6 gap-1 lg:gap-2 shrink-0 mb-1 text-center">
-            <div class="lcd-screen p-1 lg:p-2 rounded shadow flex flex-col items-center justify-center text-center">
-                <span class="text-[9px] lg:text-[11px] text-green-800 uppercase text-center">Depth</span>
-                <span id="display-depth" class="text-xs lg:text-xl text-center">0.00 ft</span>
-            </div>
-            <div class="lcd-screen p-1 lg:p-2 rounded shadow flex flex-col items-center justify-center text-center">
-                <span class="text-[9px] lg:text-[11px] text-green-800 uppercase text-center">Pitch %</span>
-                <span id="display-pitch" class="text-xs lg:text-xl text-center">0 %</span>
-            </div>
-            <div class="lcd-screen p-1 lg:p-2 rounded shadow flex flex-col items-center justify-center border-2 border-blue-400 text-center">
-                <span class="text-[9px] lg:text-[11px] text-blue-800 uppercase font-bold text-center">Lat. Dev.</span>
-                <span id="display-lat" class="text-xs lg:text-lg text-center">0.00 ft (C)</span>
-            </div>
-            <div class="lcd-screen p-1 lg:p-2 rounded shadow flex flex-col items-center justify-center text-center">
-                <span class="text-[9px] lg:text-[11px] text-green-800 uppercase text-center">Distance</span>
-                <span id="display-distance" class="text-xs lg:text-lg text-center">0 ft (0r)</span>
-            </div>
-            <div class="lcd-screen p-1 lg:p-2 rounded shadow flex flex-col items-center justify-center bg-green-200 border-2 border-green-500 text-center">
-                <span class="text-[9px] lg:text-[11px] text-green-800 font-bold text-center">To Target</span>
-                <span id="display-remaining" class="text-xs lg:text-lg text-center">100 ft</span>
-            </div>
-            <div class="lcd-screen p-1 lg:p-2 rounded shadow flex flex-col items-center justify-center text-center">
-                <span class="text-[9px] lg:text-[11px] text-green-800 uppercase text-center">Lat. Angle</span>
-                <span id="display-lat-angle" class="text-xs lg:text-lg text-center">0 %</span>
-            </div>
-        </div>
-
         <!-- ÁREA DEL CANVAS -->
         <div class="relative flex-grow min-h-0 w-full mb-1 bg-gray-900 rounded-lg overflow-hidden shadow-inner text-center">
             <div id="view-indicator" class="absolute top-2 left-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded font-bold text-[10px] lg:text-sm pointer-events-none z-10 uppercase tracking-widest text-center">
                 Main View (Absolute Horizon)
+            </div>
+
+            <!-- CONTROLES DE ZOOM FLOTANTES -->
+            <div id="zoom-controls" class="absolute bottom-4 left-4 flex flex-col space-y-2 z-20">
+                <button onclick="zoomIn()" class="bg-gray-800 bg-opacity-80 text-white font-black text-xl w-10 h-10 rounded shadow-lg hover:bg-gray-600 border border-gray-500 transition">+</button>
+                <button onclick="resetZoom()" class="bg-gray-800 bg-opacity-80 text-white font-bold text-xs w-10 h-10 rounded shadow-lg hover:bg-gray-600 border border-gray-500 transition">RST</button>
+                <button onclick="zoomOut()" class="bg-gray-800 bg-opacity-80 text-white font-black text-xl w-10 h-10 rounded shadow-lg hover:bg-gray-600 border border-gray-500 transition">-</button>
             </div>
 
             <!-- CAJA DE REGISTRO DE VARILLAS (ROD LOG) -->
@@ -208,10 +187,10 @@
                 </ul>
             </div>
 
-            <canvas id="game-canvas" width="1200" height="400" class="w-full h-full object-contain text-center"></canvas>
+            <canvas id="game-canvas" width="1200" height="400" class="w-full h-full object-contain text-center touch-none"></canvas>
             
             <!-- MODAL DE FIN DE JUEGO -->
-            <div id="game-over-modal" class="absolute inset-0 bg-black bg-opacity-60 hidden flex-col items-center justify-center rounded-lg z-20 backdrop-blur-md text-center">
+            <div id="game-over-modal" class="absolute inset-0 bg-black bg-opacity-60 hidden flex-col items-center justify-center rounded-lg z-30 backdrop-blur-md text-center">
                 <div class="bg-gray-800 border-2 border-gray-600 p-6 rounded-lg shadow-2xl max-w-xl w-full flex flex-col items-center mx-4 text-white text-center">
                     <h2 id="game-over-title" class="text-xl lg:text-4xl font-bold mb-2 text-center uppercase text-center"></h2>
                     <div id="star-rating" class="flex space-x-2 mb-2 text-3xl text-center"></div>
@@ -253,7 +232,7 @@
                         </div>
                     </div>
                     <div id="report-container" class="flex-grow flex flex-col lg:flex-row items-center justify-center p-2 text-center gap-4">
-                        <div class="w-full lg:w-3/4 flex justify-center h-full max-h-[60vh] lg:max-h-full">
+                        <div class="w-full lg:w-3/4 flex justify-center h-full max-h-[60vh] lg:max-h-full relative overflow-hidden">
                             <canvas id="report-canvas" width="1200" height="400" class="w-full h-full object-contain bg-white rounded text-center border-2 border-gray-600"></canvas>
                         </div>
                         
@@ -317,14 +296,14 @@
                 <div class="flex flex-col items-center justify-center px-2 text-center border-b md:border-b-0 md:border-r border-gray-700 pb-2 md:pb-0 text-center">
                     <h3 class="text-[10px] lg:text-sm mb-1 text-gray-400 font-bold uppercase tracking-widest leading-tight text-center">Intensity (%/Rod)</h3>
                     <div class="flex space-x-2 w-full max-w-[220px] mb-1 text-center">
-                        <button onclick="programarFuerza(-1)" class="flex-1 bg-red-500 hover:bg-red-400 text-white font-bold py-1 lg:py-2 rounded shadow text-sm lg:text-base text-center">-1</button>
-                        <button onclick="programarFuerza(1)" class="flex-1 bg-blue-500 hover:bg-blue-400 text-white font-bold py-1 lg:py-2 rounded shadow text-sm lg:text-base text-center">+1</button>
+                        <button onclick="window.programarFuerza(-1)" class="flex-1 bg-red-500 hover:bg-red-400 text-white font-bold py-1 lg:py-2 rounded shadow text-sm lg:text-base text-center">-1</button>
+                        <button onclick="window.programarFuerza(1)" class="flex-1 bg-blue-500 hover:bg-blue-400 text-white font-bold py-1 lg:py-2 rounded shadow text-sm lg:text-base text-center">+1</button>
                     </div>
                     <div id="display-programmed" class="text-gray-400 font-bold text-[10px] lg:text-xs text-center h-6 lg:h-8 flex items-center justify-center bg-gray-900 w-full max-w-[220px] rounded border text-center">Power: 12%</div>
-                    <button onclick="limpiarFuerza()" class="text-[9px] text-gray-500 hover:text-white underline uppercase text-center mt-1 mb-2 text-center">Reset Default Power</button>
+                    <button onclick="window.limpiarFuerza()" class="text-[9px] text-gray-500 hover:text-white underline uppercase text-center mt-1 mb-2 text-center">Reset Default Power</button>
                     <div class="w-full max-w-[220px] text-center">
                         <h3 class="text-[9px] text-gray-400 font-bold uppercase text-center text-[8px] lg:text-[10px]">Rod Selection</h3>
-                        <select id="rod-length-select" onchange="cambiarLongitudVarilla(this.value)" class="bg-gray-900 text-yellow-400 font-bold text-[10px] text-center h-6 w-full rounded border border-yellow-600 mb-1 outline-none cursor-pointer">
+                        <select id="rod-length-select" onchange="window.cambiarLongitudVarilla(this.value)" class="bg-gray-900 text-yellow-400 font-bold text-[10px] text-center h-6 w-full rounded border border-yellow-600 mb-1 outline-none cursor-pointer">
                             <option value="6">Rod 6' (Power: 8%)</option>
                             <option value="10" selected>Rod 10' (Power: 12%)</option>
                             <option value="20">Rod 20' (Power: 24%)</option>
@@ -340,49 +319,61 @@
                         <div id="initial-pitch-controls" class="bg-gray-900 border border-gray-600 rounded p-1 flex flex-col items-center">
                             <span class="text-[8px] lg:text-[9px] text-gray-400 uppercase font-bold mb-0.5 tracking-wider">Entrance Pitch</span>
                             <div class="flex space-x-1">
-                                <button onclick="ajustarPitchInicial(-1)" class="bg-red-600 hover:bg-red-500 text-white font-bold text-[10px] px-3 py-0.5 rounded shadow text-center">-</button>
-                                <button onclick="ajustarPitchInicial(1)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10px] px-3 py-0.5 rounded shadow text-center">+</button>
+                                <button onclick="window.ajustarPitchInicial(-1)" class="bg-red-600 hover:bg-red-500 text-white font-bold text-[10px] px-3 py-0.5 rounded shadow text-center">-</button>
+                                <button onclick="window.ajustarPitchInicial(1)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10px] px-3 py-0.5 rounded shadow text-center">+</button>
                             </div>
                         </div>
                     </div>
                     <div class="grid grid-cols-3 gap-1 w-full mb-1 text-center">
-                        <button onclick="iniciarMoverFraccion(0.25, true, 'd14')" class="btn-action bg-green-500 hover:bg-green-400 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">D. 1/4</button>
-                        <button onclick="iniciarMoverFraccion(0.5, true, 'd12')" class="btn-action bg-green-600 hover:bg-green-500 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">D. 1/2</button>
-                        <button onclick="iniciarMoverFraccion(1.0, true, 'df')" class="btn-action bg-green-700 hover:bg-green-600 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">D. Full</button>
+                        <button onclick="window.iniciarMoverFraccion(0.25, true, 'd14')" class="btn-action bg-green-500 hover:bg-green-400 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">D. 1/4</button>
+                        <button onclick="window.iniciarMoverFraccion(0.5, true, 'd12')" class="btn-action bg-green-600 hover:bg-green-500 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">D. 1/2</button>
+                        <button onclick="window.iniciarMoverFraccion(1.0, true, 'df')" class="btn-action bg-green-700 hover:bg-green-600 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">D. Full</button>
                     </div>
                     <div class="grid grid-cols-3 gap-1 w-full mb-1 text-center">
-                        <button onclick="iniciarMoverFraccion(0.25, false, 'p14')" class="btn-action bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">P. 1/4</button>
-                        <button onclick="iniciarMoverFraccion(0.5, false, 'p12')" class="btn-action bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">P. 1/2</button>
-                        <button onclick="iniciarMoverFraccion(1.0, false, 'pf')" class="btn-action bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">P. Full</button>
+                        <button onclick="window.iniciarMoverFraccion(0.25, false, 'p14')" class="btn-action bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">P. 1/4</button>
+                        <button onclick="window.iniciarMoverFraccion(0.5, false, 'p12')" class="btn-action bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">P. 1/2</button>
+                        <button onclick="window.iniciarMoverFraccion(1.0, false, 'pf')" class="btn-action bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">P. Full</button>
                     </div>
                     <div class="grid grid-cols-3 gap-1 w-full text-center">
-                        <button onclick="iniciarRetrocederFraccion(0.25)" class="btn-action bg-gray-500 hover:bg-gray-400 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">B. 1/4</button>
-                        <button onclick="iniciarRetrocederFraccion(0.5)" class="btn-action bg-gray-600 hover:bg-gray-500 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">B. 1/2</button>
-                        <button onclick="iniciarRetrocederFraccion(1.0)" class="btn-action bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">B. Full</button>
+                        <button onclick="window.iniciarRetrocederFraccion(0.25)" class="btn-action bg-gray-500 hover:bg-gray-400 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">B. 1/4</button>
+                        <button onclick="window.iniciarRetrocederFraccion(0.5)" class="btn-action bg-gray-600 hover:bg-gray-500 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">B. 1/2</button>
+                        <button onclick="window.iniciarRetrocederFraccion(1.0)" class="btn-action bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">B. Full</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- REMINDER -->
-    <div class="reminder-box text-center">
-        Remember: alternate between Main view and Aerial view
-    </div>
-
-    <!-- FIREBASE IMPORT Y MANEJO DE ESTADO DE AUTENTICACION -->
+    <!-- SCRIPT ÚNICO CON FIREBASE Y LÓGICA DE JUEGO INTEGRADA -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, query, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
+        // --- VARIABLES GLOBALES DEL JUEGO ---
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        const surfaceBaseY = 120;
+        const startXOffset = 150;
+        const ftToPx = 15;
+        let camera = { zoom: 1, offsetX: 0, offsetY: 0 };
+        
+        let state = {
+            level: 1, view: 'side', distance: 0, absElevation: 0, lat: 0, pitch: -24, latAngle: 0, clock: 12, steeringForce: 12, rods: 0, maxRodLength: 10, path: [], targetDistance: 100, targetDepth: 3.0, targetLat: 0.0, runawayWidth: 2.5, maxAllowedDepthRel: 7.0, gameOver: false, errors: [], potholesVisited: [], surfacePoints: [], utilities: [],
+            locator: null,
+            metrics: { d14: 0, d12: 0, df: 0, p14: 0, p12: 0, pf: 0, back: 0 },
+            startTime: 0, endTime: 0, timerInterval: null, timeElapsed: 0
+        };
+
+        let audioCtx = null, engineOsc = null, engineGain = null, musicGain = null, isMuted = false, isAnimating = false, animationData = null;
+
         // --- FIREBASE CONFIGURATION ---
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'hdd-simulator-v4';
         let db = null;
         let useLocalStorage = false;
         let user = null;
 
-        async function initFirebase() {
+        window.initFirebase = async function() {
             try {
                 const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
                 if(firebaseConfig) {
@@ -390,7 +381,6 @@
                     const auth = getAuth(app);
                     db = getFirestore(app);
 
-                    // Escuchar cambios en el estado de autenticación
                     onAuthStateChanged(auth, (currentUser) => {
                         user = currentUser;
                         if(user) {
@@ -398,7 +388,6 @@
                         }
                     });
 
-                    // Autenticarse
                     if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                         await signInWithCustomToken(auth, __initial_auth_token);
                     } else {
@@ -414,18 +403,11 @@
                 console.log("Firebase init error, using LocalStorage for Leaderboard.", e);
                 window.cargarLeaderboard();
             }
-        }
+        };
 
         // Exportar funciones globales para el juego
         window.dbGuardarRecord = async function(nombre, nivel, tiempoSegundos, scoreEstrellas) {
-            const record = {
-                name: nombre,
-                level: nivel,
-                time: tiempoSegundos,
-                score: scoreEstrellas,
-                timestamp: new Date().toISOString()
-            };
-
+            const record = { name: nombre, level: nivel, time: tiempoSegundos, score: scoreEstrellas, timestamp: new Date().toISOString() };
             if(useLocalStorage) {
                 let records = JSON.parse(localStorage.getItem('hdd_leaderboard') || '[]');
                 records.push(record);
@@ -449,39 +431,29 @@
                 records = JSON.parse(localStorage.getItem('hdd_leaderboard') || '[]');
             } else if (db && user) {
                 try {
-                    // Evitamos consultas complejas que requieren índices
                     const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard'));
                     const querySnapshot = await getDocs(q);
-                    querySnapshot.forEach((doc) => {
-                        records.push(doc.data());
-                    });
+                    querySnapshot.forEach((doc) => { records.push(doc.data()); });
                 } catch(e) { console.error("Error loading from Firebase:", e); }
             }
 
-            // Ordenar: Nivel más alto primero, luego menos tiempo, luego más estrellas en JS
             records.sort((a, b) => {
                 if(b.level !== a.level) return b.level - a.level;
                 if(a.time !== b.time) return a.time - b.time;
                 return b.score - a.score;
             });
 
-            // Tomar los top 10
             records = records.slice(0, 10);
-
             tbody.innerHTML = '';
+            
             if(records.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5" class="text-center text-gray-500 italic py-4">No records yet. Be the first!</td></tr>';
                 return;
             }
 
             records.forEach((r, idx) => {
-                let rankClass = "";
-                if(idx === 0) rankClass = "top-1";
-                else if(idx === 1) rankClass = "top-2";
-                else if(idx === 2) rankClass = "top-3";
-                
+                let rankClass = idx === 0 ? "top-1" : idx === 1 ? "top-2" : idx === 2 ? "top-3" : "";
                 let timeStr = formatTime(r.time);
-                
                 let tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="text-center font-bold ${rankClass}">${idx + 1}</td>
@@ -493,625 +465,80 @@
                 tbody.appendChild(tr);
             });
         };
+
+        // --- FUNCIONES Y EVENTOS GLOBALES (EXPORTE AL OBJETO WINDOW) ---
+        window.zoomIn = function() { camera.zoom *= 1.2; clampCamera(); dibujarEscena(); };
+        window.zoomOut = function() { camera.zoom /= 1.2; clampCamera(); dibujarEscena(); };
+        window.resetZoom = function() { camera.zoom = 1; camera.offsetX = 0; camera.offsetY = 0; dibujarEscena(); };
         
-        function formatTime(secs) {
-            let m = Math.floor(secs / 60);
-            let s = secs % 60;
-            return (m < 10 ? "0"+m : m) + ":" + (s < 10 ? "0"+s : s);
+        function clampCamera() {
+            if(camera.zoom < 0.5) camera.zoom = 0.5;
+            if(camera.zoom > 5) camera.zoom = 5;
         }
 
-        // Iniciar Firebase
-        initFirebase();
-    </script>
+        // Eventos de cámara
+        canvas.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
+            const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
+            let zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
+            camera.offsetX = mouseX - (mouseX - camera.offsetX) * zoomFactor;
+            camera.offsetY = mouseY - (mouseY - camera.offsetY) * zoomFactor;
+            camera.zoom *= zoomFactor;
+            clampCamera(); dibujarEscena();
+        }, {passive: false});
 
-    <script>
-        // ==========================================
-        // 1. VARIABLES Y ESTADO GLOBAL
-        // ==========================================
-        const canvas = document.getElementById('game-canvas');
-        const ctx = canvas.getContext('2d');
-        const surfaceBaseY = 120;
-        const startXOffset = 150;
-        const ftToPx = 15;
+        let isDragging = false; let dragStart = {x:0, y:0}; let lastOffset = {x:0, y:0}; let hasMoved = false;
 
-        // ESTADO GLOBAL CON TRACKING DE MÉTRICAS Y TIEMPO
-        let state = {
-            level: 1, view: 'side', distance: 0, absElevation: 0, lat: 0, pitch: -24, latAngle: 0, clock: 12, steeringForce: 12, rods: 0, maxRodLength: 10, path: [], targetDistance: 100, targetDepth: 3.0, targetLat: 0.0, runawayWidth: 2.5, maxAllowedDepthRel: 7.0, gameOver: false, errors: [], potholesVisited: [], surfacePoints: [], utilities: [],
-            
-            locator: null, // Nuevo estado para el tracker {dist, lat}
+        canvas.addEventListener('mousedown', function(e) { isDragging = true; hasMoved = false; dragStart = {x: e.clientX, y: e.clientY}; lastOffset = {x: camera.offsetX, y: camera.offsetY}; });
+        window.addEventListener('mousemove', function(e) {
+            if(!isDragging) return;
+            let dx = e.clientX - dragStart.x; let dy = e.clientY - dragStart.y;
+            if(Math.abs(dx) > 5 || Math.abs(dy) > 5) hasMoved = true;
+            const rect = canvas.getBoundingClientRect();
+            camera.offsetX = lastOffset.x + dx * (canvas.width / rect.width);
+            camera.offsetY = lastOffset.y + dy * (canvas.height / rect.height);
+            dibujarEscena();
+        });
+        window.addEventListener('mouseup', function(e) {
+            if(!isDragging) return;
+            isDragging = false;
+            if(!hasMoved) handleCanvasInteraction(e.clientX, e.clientY);
+        });
 
-            // METRICAS
-            metrics: {
-                d14: 0, d12: 0, df: 0,
-                p14: 0, p12: 0, pf: 0,
-                back: 0
-            },
-            startTime: 0,
-            endTime: 0,
-            timerInterval: null,
-            timeElapsed: 0
-        };
-
-        let audioCtx = null, engineOsc = null, engineGain = null, musicGain = null, isMuted = false, isAnimating = false, animationData = null;
-
-        // ==========================================
-        // 1.5 EVENT LISTENERS (CLICK EN CANVAS PARA LOCALIZADOR)
-        // ==========================================
-        canvas.addEventListener('mousedown', function(e) { handleCanvasInteraction(e.clientX, e.clientY); });
-        canvas.addEventListener('touchstart', function(e) { if(e.touches.length > 0) handleCanvasInteraction(e.touches[0].clientX, e.touches[0].clientY); }, {passive: true});
+        canvas.addEventListener('touchstart', function(e) {
+            if(e.touches.length === 1) { isDragging = true; hasMoved = false; dragStart = {x: e.touches[0].clientX, y: e.touches[0].clientY}; lastOffset = {x: camera.offsetX, y: camera.offsetY}; }
+        }, {passive: true});
+        window.addEventListener('touchmove', function(e) {
+            if(!isDragging || e.touches.length !== 1) return;
+            let dx = e.touches[0].clientX - dragStart.x; let dy = e.touches[0].clientY - dragStart.y;
+            if(Math.abs(dx) > 5 || Math.abs(dy) > 5) hasMoved = true;
+            const rect = canvas.getBoundingClientRect();
+            camera.offsetX = lastOffset.x + dx * (canvas.width / rect.width);
+            camera.offsetY = lastOffset.y + dy * (canvas.height / rect.height);
+            dibujarEscena();
+        }, {passive: true});
+        window.addEventListener('touchend', function(e) {
+            if(!isDragging) return;
+            isDragging = false;
+            if(!hasMoved && e.changedTouches.length > 0) handleCanvasInteraction(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+        });
 
         function handleCanvasInteraction(clientX, clientY) {
-            if (state.view !== 'top' || state.gameOver) return; // Solo funciona en vista aérea
-            
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            
-            let px = (clientX - rect.left) * scaleX;
-            let py = (clientY - rect.top) * scaleY;
-            
-            let viewMaxDist = state.targetDistance + 40;
-            let dist = (px - startXOffset) / (canvas.width - startXOffset - 40) * viewMaxDist;
-            
-            let centerY = canvas.height / 2;
-            let lat = (py - centerY) / (canvas.height / 2 - 20) * 10;
-            
-            // Restringir a valores de pantalla
-            if (dist < 0) dist = 0;
-            if (dist > viewMaxDist) dist = viewMaxDist;
-            if (lat < -20) lat = -20;
-            if (lat > 20) lat = 20;
-
-            state.locator = { dist: dist, lat: lat };
-            dibujarEscena(); // Redibujar con la nueva posición
+            if (state.view !== 'top' || state.gameOver) return; 
+            const rect = canvas.getBoundingClientRect(); const scaleX = canvas.width / rect.width; const scaleY = canvas.height / rect.height;
+            let screenX = (clientX - rect.left) * scaleX; let screenY = (clientY - rect.top) * scaleY;
+            let px = (screenX - camera.offsetX) / camera.zoom; let py = (screenY - camera.offsetY) / camera.zoom;
+            let viewMaxDist = state.targetDistance + 40; let dist = (px - startXOffset) / (canvas.width - startXOffset - 40) * viewMaxDist;
+            let centerY = canvas.height / 2; let lat = (py - centerY) / (canvas.height / 2 - 20) * 10;
+            if (dist < 0) dist = 0; if (dist > viewMaxDist) dist = viewMaxDist;
+            if (lat < -20) lat = -20; if (lat > 20) lat = 20;
+            state.locator = { dist: dist, lat: lat }; dibujarEscena(); 
         }
 
-        // ==========================================
-        // 2. FUNCIONES DE UTILIDAD (Helpers)
-        // ==========================================
-        function formatPiesPulgadas(decimalFeet) {
-            let isNegative = decimalFeet < 0; let absFeet = Math.abs(decimalFeet);
-            let feet = Math.floor(absFeet); let inches = Math.round((absFeet - feet) * 12);
-            if (inches === 12) { feet += 1; inches = 0; }
-            return (isNegative ? "-" : "") + feet + "." + inches;
-        }
-
-        function formatRodLog(decimalFeet) {
-            let isNegative = decimalFeet < 0; 
-            let absFeet = Math.abs(decimalFeet);
-            let feet = Math.floor(absFeet); 
-            let inches = Math.round((absFeet - feet) * 12);
-            if (inches === 12) { feet += 1; inches = 0; }
-            if (inches === 0) return (isNegative ? "-" : "") + feet + "ft";
-            return (isNegative ? "-" : "") + feet + "'" + inches + '"';
-        }
-
-        function getIdealLat(dist) {
-            let p = dist / state.targetDistance; if (p > 1) p = 1; return state.targetLat * Math.pow(p, 2);
-        }
-
-        function getSurfaceHeight(dist) {
-            let rel = dist + 100; let idx = Math.floor(rel / 5);
-            if (!state.surfacePoints || state.surfacePoints.length === 0) return 0;
-            if (idx < 0) return state.surfacePoints[0].y; 
-            if (idx >= state.surfacePoints.length - 1) return state.surfacePoints[state.surfacePoints.length-1].y;
-            let t = (rel % 5) / 5; return state.surfacePoints[idx].y + (state.surfacePoints[idx+1].y - state.surfacePoints[idx].y) * t;
-        }
-
-        function getPxX(dist) {
-            let m = state.targetDistance + 40; return startXOffset + (dist / m) * (canvas.width - startXOffset - 40);
-        }
-
-        function getPxY_Side(absElevation) {
-            return surfaceBaseY + (absElevation * ftToPx);
-        }
-
-        function getPxY_Top(lat) {
-            let cy = canvas.height / 2; return cy + (lat / 10) * (canvas.height / 2 - 20);
-        }
-
-        function mostrarError(msg) {
-            const errDiv = document.getElementById('error-msg');
-            if (errDiv) { errDiv.innerText = msg; errDiv.classList.remove('hidden'); setTimeout(() => errDiv.classList.add('hidden'), 3000); }
-        }
-
-        function cambiarLongitudVarilla(val) {
-            let num = parseInt(val);
-            let remaining = state.distance % state.maxRodLength;
-            
-            // Permitir cambio solo si la varilla actual está terminada
-            if (state.distance > 0 && remaining > 0.01 && remaining < state.maxRodLength - 0.01) {
-                mostrarError("Finish pushing current rod first!");
-                document.getElementById('rod-length-select').value = state.maxRodLength;
-                return;
-            }
-            state.maxRodLength = num;
-            limpiarFuerza();
-        }
-
-        function volverAlMenu() {
-            document.getElementById('splash-screen').style.display = 'flex';
-            document.getElementById('btn-resume').classList.remove('hidden');
-            document.getElementById('game-over-modal').classList.add('hidden'); // Ocultar si venimos de la pantalla de fin
-            if (audioCtx && audioCtx.state === 'running') {
-                audioCtx.suspend();
-            }
-            if(window.cargarLeaderboard) window.cargarLeaderboard(); // Refrescar leaderboard
-        }
-
-        function resumeGame() {
-            document.getElementById('splash-screen').style.display = 'none';
-            if (audioCtx && audioCtx.state === 'suspended' && !isMuted) {
-                audioCtx.resume();
-            }
-        }
-
-        // --- MANEJO DEL TIEMPO ---
-        function updateTimerDisplay() {
-            if(state.gameOver) return;
-            state.timeElapsed = Math.floor((Date.now() - state.startTime) / 1000);
-            let m = Math.floor(state.timeElapsed / 60);
-            let s = state.timeElapsed % 60;
-            document.getElementById('time-display').innerText = `Time: ${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`;
-        }
-
-        // ==========================================
-        // 3. FUNCIONES DE DIBUJO (Rendering)
-        // ==========================================
-        function dibujarRuta(ctxTarget, getPy, viewType) {
-            if (!state.path || state.path.length === 0) return;
-            
-            ctxTarget.beginPath(); 
-            ctxTarget.strokeStyle = '#C0C0C0'; 
-            ctxTarget.lineWidth = 3; 
-            ctxTarget.lineCap = 'round';
-            
-            let rutaPath = [...state.path]; 
-            if (isAnimating) rutaPath.push({ distance: state.distance, absElevation: state.absElevation, lat: state.lat });
-            
-            for (let i = 0; i < rutaPath.length; i++) {
-                let px = getPxX(rutaPath[i].distance);
-                let py = viewType === 'side' ? getPy(rutaPath[i].absElevation) : getPy(rutaPath[i].lat);
-                if (i === 0) ctxTarget.moveTo(px, py); else ctxTarget.lineTo(px, py);
-            }
-            ctxTarget.stroke();
-
-            if (viewType === 'top') {
-                state.path.forEach(n => {
-                    if (n.distance > 0 && Math.abs(n.distance % state.maxRodLength) < 0.1) {
-                        ctxTarget.beginPath(); ctxTarget.arc(getPxX(n.distance), getPy(n.lat), 3, 0, Math.PI*2); ctxTarget.fillStyle = '#000'; ctxTarget.fill();
-                    }
-                });
-            }
-        }
-
-        // --- MINI RADAR PARA VISTA PRINCIPAL ---
-        function dibujarRadarRadar(tCtx) {
-            let rW = 120;
-            let rH = 120;
-            let rX = canvas.width - rW - 20;
-            let rY = canvas.height - rH - 20;
-
-            // Background del Radar
-            tCtx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-            tCtx.fillRect(rX, rY, rW, rH);
-            tCtx.strokeStyle = '#6b7280';
-            tCtx.lineWidth = 2;
-            tCtx.strokeRect(rX, rY, rW, rH);
-
-            // Cruz Principal (Crosshair)
-            tCtx.beginPath();
-            tCtx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-            tCtx.lineWidth = 1;
-            // Línea Vertical (Centro de la máquina / 0 Lat)
-            tCtx.moveTo(rX + rW/2, rY);
-            tCtx.lineTo(rX + rW/2, rY + rH);
-            // Línea Horizontal (Referencia Distancia Actual)
-            tCtx.moveTo(rX, rY + rH - 25);
-            tCtx.lineTo(rX + rW, rY + rH - 25);
-            tCtx.stroke();
-            
-            // Etiquetas Left / Right
-            tCtx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-            tCtx.font = '10px Arial';
-            tCtx.fillText("L", rX + 5, rY + rH - 30);
-            tCtx.fillText("R", rX + rW - 15, rY + rH - 30);
-            tCtx.fillStyle = '#facc15';
-            tCtx.fillText("TRACKER RADAR", rX + 5, rY + 12);
-
-            let radarRangeLat = 15; // Muestra hasta +/- 15 ft de desviación
-            let radarRangeDist = 50; // Muestra hasta 50 ft por delante
-
-            function getRadarX(lat) {
-                let clampedLat = Math.max(-radarRangeLat, Math.min(radarRangeLat, lat));
-                return rX + rW/2 + (clampedLat / radarRangeLat) * (rW/2 - 10);
-            }
-            
-            function getRadarY(dist) {
-                let relDist = dist - state.distance;
-                if (relDist < -10) relDist = -10; 
-                if (relDist > radarRangeDist) relDist = radarRangeDist;
-                let availableH = rH - 45;
-                return (rY + rH - 25) - (relDist / radarRangeDist) * availableH;
-            }
-
-            // Dibujar Posición de la Barrena (Naranja)
-            let headX = getRadarX(state.lat);
-            let headY = getRadarY(state.distance); // Exactamente en la línea horizontal
-            tCtx.beginPath();
-            tCtx.arc(headX, headY, 5, 0, Math.PI*2);
-            tCtx.fillStyle = '#FF4500';
-            tCtx.fill();
-            tCtx.strokeStyle = '#FFF';
-            tCtx.lineWidth = 1.5;
-            tCtx.stroke();
-
-            // Dibujar Localizador (Blanco con Cruz)
-            if (state.locator) {
-                let locX = getRadarX(state.locator.lat);
-                let locY = getRadarY(state.locator.dist);
-                
-                tCtx.beginPath();
-                tCtx.arc(locX, locY, 4, 0, Math.PI*2);
-                tCtx.fillStyle = '#FFFFFF';
-                tCtx.fill();
-                
-                tCtx.beginPath();
-                tCtx.strokeStyle = '#FFFFFF';
-                tCtx.lineWidth = 1.5;
-                tCtx.moveTo(locX - 6, locY); tCtx.lineTo(locX + 6, locY);
-                tCtx.moveTo(locX, locY - 6); tCtx.lineTo(locX, locY + 6);
-                tCtx.stroke();
-            }
-        }
-
-        function dibujarCuerpoEscena(tCtx, viewType) {
-            if (viewType === 'side') {
-                tCtx.fillStyle = '#87CEEB'; tCtx.fillRect(0,0,1200,400);
-                tCtx.beginPath(); tCtx.moveTo(getPxX(-100), 400);
-                for(let p of state.surfacePoints) tCtx.lineTo(getPxX(p.x), surfaceBaseY - (p.y*10));
-                tCtx.lineTo(1200,400); 
-                let g = tCtx.createLinearGradient(0,0,0,400); g.addColorStop(0,'#5C4033'); g.addColorStop(1,'#3E2723'); tCtx.fillStyle = g; tCtx.fill();
-                tCtx.beginPath(); tCtx.strokeStyle = '#228B22'; tCtx.lineWidth = 4; 
-                for(let p of state.surfacePoints) tCtx.lineTo(getPxX(p.x), surfaceBaseY - (p.y*10)-2); tCtx.stroke();
-                
-                tCtx.beginPath(); tCtx.strokeStyle='#000'; tCtx.lineWidth = 1.5; tCtx.setLineDash([8,8]);
-                for(let x=-100; x<=state.targetDistance+100; x+=5) tCtx.lineTo(getPxX(x), getPxY_Side(-getSurfaceHeight(x)+state.maxAllowedDepthRel));
-                tCtx.stroke(); tCtx.setLineDash([]);
-                
-                // UTILIDADES EN LA VISTA PRINCIPAL
-                state.utilities.forEach(u => { 
-                    let pxX = getPxX(u.dist);
-                    let pxY = getPxY_Side(u.absElevation);
-                    let r = Math.max((u.diamFt/2)*15, 4);
-                    
-                    tCtx.beginPath(); tCtx.arc(pxX, pxY, r, 0, Math.PI*2); 
-                    tCtx.fillStyle = u.color; tCtx.fill();
-                    tCtx.lineWidth = 1; tCtx.strokeStyle = '#000'; tCtx.stroke();
-                    
-                    let label = `${u.name}: ${formatPiesPulgadas(u.depthTarget)} ft`;
-                    tCtx.font = 'bold 11px Arial';
-                    tCtx.lineWidth = 3;
-                    tCtx.strokeStyle = '#000000';
-                    tCtx.strokeText(label, pxX + r + 5, pxY + 4);
-                    tCtx.fillStyle = u.color; 
-                    tCtx.fillText(label, pxX + r + 5, pxY + 4);
-                });
-                
-                let tx = getPxX(state.targetDistance), s = getSurfaceHeight(state.targetDistance), ys = surfaceBaseY-(s*10), yt = getPxY_Side(state.targetDepth-s);
-                tCtx.fillStyle = '#1a202c'; tCtx.fillRect(tx, ys, 40, yt-ys); tCtx.fillStyle = 'rgba(0,255,0,0.5)'; tCtx.fillRect(tx, yt-5, 40, 10);
-                
-                tCtx.save();
-                let startS = getSurfaceHeight(0); tCtx.translate(getPxX(0), surfaceBaseY - (startS * 10));
-                tCtx.fillStyle = '#111'; tCtx.fillRect(-40, -10, 60, 10);
-                tCtx.fillStyle = '#FF9900'; tCtx.fillRect(-35, -30, 50, 20);
-                tCtx.translate(10, -5); tCtx.rotate(Math.atan2(-state.pitch, 100)); 
-                tCtx.fillStyle = '#555'; tCtx.fillRect(-50, -4, 60, 8);
-                tCtx.restore();
-
-                dibujarRuta(tCtx, getPxY_Side, 'side');
-                
-                // Mostrar RADAR en Vista Principal
-                dibujarRadarRadar(tCtx);
-
-            } else {
-                tCtx.fillStyle = '#2d4c1e'; tCtx.fillRect(0,0,1200,400); tCtx.strokeStyle='#000'; tCtx.lineWidth = 1.2;
-                tCtx.beginPath(); for(let x=0; x<=state.targetDistance; x+=5) tCtx.lineTo(getPxX(x), getPxY_Top(getIdealLat(x)-state.runawayWidth)); tCtx.stroke();
-                tCtx.beginPath(); for(let x=0; x<=state.targetDistance; x+=5) tCtx.lineTo(getPxX(x), getPxY_Top(getIdealLat(x)+state.runawayWidth)); tCtx.stroke();
-                
-                // UTILIDADES EN LA VISTA AÉREA
-                state.utilities.forEach(u => { 
-                    let pxX = getPxX(u.dist); 
-                    tCtx.fillStyle = u.color; tCtx.globalAlpha=0.3; tCtx.fillRect(pxX-5,0,10,400); tCtx.globalAlpha=1; 
-                    
-                    let isHit = state.potholesVisited.includes(u.id);
-                    tCtx.fillStyle = isHit ? '#fbbf24':'#1a202c'; 
-                    let pxY = getPxY_Top(u.lat); 
-                    tCtx.fillRect(pxX-12, pxY-12, 24, 24); 
-                    
-                    if (isHit) {
-                        tCtx.fillStyle = "#000"; tCtx.font = "bold 14px Arial"; tCtx.fillText("★", pxX - 6, pxY + 5); 
-                    }
-
-                    let label = `${u.name}`;
-                    tCtx.font = 'bold 11px Arial';
-                    tCtx.lineWidth = 3; tCtx.strokeStyle = '#000000';
-                    tCtx.strokeText(label, pxX + 15, pxY - 15);
-                    tCtx.fillStyle = u.color; 
-                    tCtx.fillText(label, pxX + 15, pxY - 15);
-                });
-                tCtx.fillStyle = '#1a202c'; let tx = getPxX(state.targetDistance), ty = getPxY_Top(state.targetLat); tCtx.fillRect(tx, ty-25, 40, 50);
-                
-                // MÁQUINA EN VISTA AÉREA
-                tCtx.save();
-                tCtx.translate(getPxX(0), getPxY_Top(0));
-                
-                // Orugas (Tracks) izquierda y derecha
-                tCtx.fillStyle = '#111';
-                tCtx.fillRect(-45, -20, 65, 10);
-                tCtx.fillRect(-45, 10, 65, 10);
-                
-                // Cuerpo de la máquina
-                tCtx.fillStyle = '#FF9900';
-                tCtx.fillRect(-40, -10, 55, 20);
-                
-                // Cabina del operador
-                tCtx.fillStyle = '#222';
-                tCtx.fillRect(-25, -6, 20, 12);
-                
-                // Brazo/Guía frontal de entrada
-                tCtx.fillStyle = '#555';
-                tCtx.fillRect(15, -3, 25, 6);
-                tCtx.restore();
-
-                dibujarRuta(tCtx, getPxY_Top, 'top');
-
-                // Dibujar LOCALIZADOR en vista Aérea
-                if (state.locator) {
-                    let locPx = getPxX(state.locator.dist);
-                    let locPy = getPxY_Top(state.locator.lat);
-                    
-                    tCtx.beginPath();
-                    tCtx.arc(locPx, locPy, 6, 0, Math.PI*2);
-                    tCtx.fillStyle = '#FFFFFF';
-                    tCtx.fill();
-                    
-                    tCtx.beginPath();
-                    tCtx.strokeStyle = '#000000';
-                    tCtx.lineWidth = 2;
-                    tCtx.moveTo(locPx - 6, locPy); tCtx.lineTo(locPx + 6, locPy);
-                    tCtx.moveTo(locPx, locPy - 6); tCtx.lineTo(locPx, locPy + 6);
-                    tCtx.stroke();
-                    
-                    tCtx.font = 'bold 10px Arial';
-                    tCtx.lineWidth = 3;
-                    tCtx.strokeStyle = '#000000';
-                    tCtx.strokeText("TRACKER", locPx + 10, locPy + 4);
-                    tCtx.fillStyle = '#FFFFFF';
-                    tCtx.fillText("TRACKER", locPx + 10, locPy + 4);
-                }
-            }
-        }
-
-        function dibujarEscena() {
-            ctx.clearRect(0,0,canvas.width,canvas.height); 
-            dibujarCuerpoEscena(ctx, state.view); 
-        }
-
-        // ==========================================
-        // REPORTING FINAL (MÉTRICAS Y VISTAS)
-        // ==========================================
-        let reportViewType = 'side';
-
-        function generarInformeFinal() {
-            reportViewType = 'side';
-            const btn = document.getElementById('btn-report-view');
-            if (btn) btn.innerText = 'View: MAIN';
-            
-            // Llenar datos de métricas
-            let m = Math.floor(state.timeElapsed / 60); let s = state.timeElapsed % 60;
-            document.getElementById('report-time').innerText = `${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`;
-            
-            document.getElementById('metric-d14').innerText = state.metrics.d14;
-            document.getElementById('metric-d12').innerText = state.metrics.d12;
-            document.getElementById('metric-df').innerText = state.metrics.df;
-            
-            document.getElementById('metric-p14').innerText = state.metrics.p14;
-            document.getElementById('metric-p12').innerText = state.metrics.p12;
-            document.getElementById('metric-pf').innerText = state.metrics.pf;
-            
-            document.getElementById('metric-b').innerText = state.metrics.back;
-            document.getElementById('metric-rods').innerText = state.rods.toFixed(1);
-            
-            dibujarReporte();
-            
-            document.getElementById('report-modal').classList.remove('hidden'); document.getElementById('report-modal').classList.add('flex');
-        }
-
-        function toggleReportView() {
-            reportViewType = reportViewType === 'side' ? 'top' : 'side';
-            const btn = document.getElementById('btn-report-view');
-            if (btn) btn.innerText = reportViewType === 'side' ? 'View: MAIN' : 'View: AERIAL';
-            dibujarReporte();
-        }
-
-        function dibujarReporte() {
-            const rc = document.getElementById('report-canvas'); 
-            const rCtx = rc.getContext('2d'); 
-            rCtx.clearRect(0,0,1200,400);
-            
-            rCtx.save(); 
-            rCtx.beginPath(); 
-            rCtx.rect(0,0,1200,400); 
-            rCtx.clip(); 
-            dibujarCuerpoEscena(rCtx, reportViewType); 
-            
-            rCtx.fillStyle = reportViewType === 'side' ? "black" : "white"; 
-            rCtx.font = "bold 24px Arial"; 
-            rCtx.fillText(reportViewType === 'side' ? "SIDE VIEW REPORT" : "AERIAL VIEW REPORT", 20, 40); 
-            rCtx.restore();
-        }
-
-        function cerrarInforme() {
-            document.getElementById('report-modal').classList.add('hidden'); document.getElementById('report-modal').classList.remove('flex'); 
-        }
-
-        function saveRecord() {
-            const nameInput = document.getElementById('player-name-input');
-            const name = nameInput.value.trim();
-            if(!name) {
-                alert("Please enter a name");
-                return;
-            }
-            if(window.dbGuardarRecord) {
-                window.dbGuardarRecord(name, state.level, state.timeElapsed, state.potholesVisited.length);
-            }
-            document.getElementById('new-record-form').classList.add('hidden');
-            nameInput.value = '';
-            // Ir al siguiente nivel automáticamente tras guardar
-            nextLevel();
-        }
-
-        // ==========================================
-        // 4. FUNCIONES DE UI E INTERFAZ
-        // ==========================================
-        function renderClock() {
-            const container = document.getElementById('clock-container'); if (!container) return; container.innerHTML = '';
-            for(let i=1; i<=12; i++) {
-                let a = (i * 30 - 90) * (Math.PI / 180); let cx = 50 + 40 * Math.cos(a); let cy = 50 + 40 * Math.sin(a);
-                let tick = document.createElement('div'); tick.className = `absolute rounded-full bg-gray-500 transform -translate-x-1/2 -translate-y-1/2 ` + (i % 3 === 0 ? 'w-2 h-2' : 'w-1 h-1'); tick.style.left = `${cx}%`; tick.style.top = `${cy}%`; container.appendChild(tick);
-            }
-            let hw = document.createElement('div'); hw.className = "absolute top-1/2 left-1/2 w-full h-full text-center"; hw.style.transform = `translate(-50%, -50%) rotate(${state.clock * 30}deg)`;
-            let hand = document.createElement('div'); hand.className = "absolute bottom-1/2 left-1/2 transform -translate-x-1/2 w-1.5 h-[35%] rounded-t-sm z-10 bg-[#39ff14] shadow-[0_0_10px_#39ff14] text-center";
-            let ah = document.createElement('div'); ah.className = "absolute -top-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-bottom-[10px] border-bottom-[#39ff14] text-center";
-            hand.appendChild(ah); hw.appendChild(hand); container.appendChild(hw);
-            let sel = document.getElementById('hour-selector'); if (!sel) return; sel.innerHTML = '';
-            for(let i=1; i<=12; i++) {
-                let btn = document.createElement('button'); btn.className = `font-bold text-[10px] py-1 rounded shadow ` + (state.clock === i ? 'bg-red-600 text-white' : 'bg-yellow-400 text-black');
-                btn.innerText = i; btn.onclick = () => { if(!state.gameOver) { state.clock = i; playSound(200,'sine',0.05); renderClock(); actualizarPantallas(); } };
-                sel.appendChild(btn);
-            }
-        }
-
-        function actualizarPantallas() {
-            let relDepth = state.absElevation + getSurfaceHeight(state.distance);
-            const dDepth = document.getElementById('display-depth'), dPitch = document.getElementById('display-pitch'), dLat = document.getElementById('display-lat'), dLatAngle = document.getElementById('display-lat-angle'), dDist = document.getElementById('display-distance'), dRem = document.getElementById('display-remaining'), dRod = document.getElementById('display-rod-left'), dPothole = document.getElementById('pothole-counter');
-            if (dDepth) dDepth.innerText = formatPiesPulgadas(relDepth) + " ft";
-            if (dPitch) dPitch.innerText = (state.pitch > 0 ? "+" : "") + state.pitch.toFixed(1) + " %";
-            if (dLat) dLat.innerText = formatPiesPulgadas(Math.abs(state.lat)) + " ft " + (state.lat > 0.1 ? "(R)" : state.lat < -0.1 ? "(L)" : "(C)");
-            if (dLatAngle) dLatAngle.innerText = (state.latAngle > 0 ? "+" : "") + state.latAngle.toFixed(1) + " %";
-            if (dDist) dDist.innerText = state.distance.toFixed(0) + " ft (" + state.rods.toFixed(1) + "r)";
-            
-            let pDisp = document.getElementById('display-programmed');
-            if (pDisp) { 
-                pDisp.innerText = `Power: ${state.steeringForce}%`; 
-                let abs = Math.abs(state.steeringForce); 
-                pDisp.className = "mt-1 font-bold text-[10px] lg:text-xs text-center h-6 lg:h-8 flex items-center justify-center bg-gray-900 w-full max-w-[220px] rounded border text-center"; 
-                if (abs <= 10) pDisp.classList.add("text-blue-300", "border-blue-500"); else if (abs <= 16) pDisp.classList.add("text-yellow-300", "border-yellow-500"); else pDisp.classList.add("text-red-300", "border-red-500"); 
-            }
-            if (dRem) dRem.innerText = Math.max(0, state.targetDistance - state.distance).toFixed(0) + " ft";
-            
-            let rl = state.maxRodLength - (state.distance % state.maxRodLength); 
-            if (Math.abs(rl - state.maxRodLength) < 0.01 || Math.abs(rl) < 0.01) rl = state.maxRodLength;
-            if (dRod) dRod.innerText = `Left: ${rl.toFixed(1)} ft`;
-            
-            if (dPothole) dPothole.innerText = `Potholes: ${state.potholesVisited.length}/${state.utilities.length}`;
-            let ip = document.getElementById('initial-pitch-controls'); if (ip) state.rods > 0 ? ip.classList.add('hidden') : ip.classList.remove('hidden');
-
-            // ACTUALIZAR CAJA DE REGISTRO DE VARILLAS (ROD LOG)
-            const logList = document.getElementById('rod-log-list');
-            if (logList) {
-                logList.innerHTML = '';
-                let maxRod = Math.floor((state.distance + 0.01) / state.maxRodLength);
-                let currentPath = [...state.path, {distance: state.distance, absElevation: state.absElevation}];
-                
-                for (let i = 1; i <= maxRod; i++) {
-                    let targetDist = i * state.maxRodLength;
-                    let node = currentPath.find(n => Math.abs(n.distance - targetDist) < 0.1);
-                    if (node) {
-                        let nodeRelDepth = node.absElevation + getSurfaceHeight(node.distance);
-                        let li = document.createElement('li');
-                        li.innerText = `Rod ${i}=${formatRodLog(nodeRelDepth)}`;
-                        logList.appendChild(li);
-                    }
-                }
-                const logBox = document.getElementById('rod-log-box');
-                if (logBox) logBox.scrollTop = logBox.scrollHeight;
-            }
-        }
-
-        function toggleView() {
-            state.view = state.view === 'side' ? 'top' : 'side';
-            const btnText = document.getElementById('btn-view-text');
-            const indicator = document.getElementById('view-indicator');
-            if (btnText) btnText.innerText = state.view === 'side' ? 'Main' : 'Aerial';
-            if (indicator) indicator.innerText = state.view === 'side' ? 'Main View (Absolute Horizon)' : 'Aerial View (Runway Corridor)';
-            dibujarEscena();
-        }
-
-        function toggleFullScreen() { 
-            try { 
-                let doc = window.document;
-                let docEl = doc.documentElement;
-                
-                // Soportar diferentes motores de navegadores móviles (Webkit, Moz, MS)
-                let requestFullScreen = docEl.requestFullscreen || docEl.webkitRequestFullScreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
-                let cancelFullScreen = doc.exitFullscreen || doc.webkitExitFullscreen || doc.mozCancelFullScreen || doc.msExitFullscreen;
-
-                if (!doc.fullscreenElement && !doc.webkitFullscreenElement && !doc.mozFullScreenElement && !doc.msFullscreenElement) { 
-                    if (requestFullScreen) {
-                        // Intenta forzar la pantalla completa, atrapa el error si es un entorno bloqueado
-                        requestFullScreen.call(docEl).catch(e => mostrarError("Pantalla completa bloqueada (iOS/Iframe).")); 
-                    } else {
-                        mostrarError("No soportado por este dispositivo (ej. iPhone).");
-                    }
-                } else { 
-                    if (cancelFullScreen) {
-                        cancelFullScreen.call(doc); 
-                    }
-                } 
-            } catch(e) { 
-                mostrarError("Error al intentar pantalla completa."); 
-            } 
-        }
-
-        function mostrarGameOver(tit, msg, col, isWin = false) {
-            state.gameOver = true; 
-            clearInterval(state.timerInterval); // Detener el reloj
-            
-            document.querySelectorAll('.btn-action').forEach(b => b.disabled = true);
-            const m = document.getElementById('game-over-modal'), t = document.getElementById('game-over-title');
-            t.className = `text-xl lg:text-4xl font-bold mb-2 text-center emergency-alert ${col==='red'?'text-red-500':col==='green'?'text-green-500':'text-orange-400'}`;
-            t.innerText = tit; document.getElementById('game-over-msg').innerText = msg;
-            
-            const s = document.getElementById('star-rating'); s.innerHTML = '';
-            const newRecordForm = document.getElementById('new-record-form');
-            
-            if (isWin) { 
-                for(let i=0; i<state.utilities.length; i++) { let span = document.createElement('span'); span.innerText = '★'; span.className = state.potholesVisited.length > i ? 'star-gold' : 'text-gray-600'; s.appendChild(span); }
-                document.getElementById('btn-next').classList.remove('hidden'); document.getElementById('btn-retry').classList.add('hidden');
-                
-                // Evaluar si es un récord rápido y mostrar formulario si todas las estrellas fueron recolectadas
-                if (state.potholesVisited.length === state.utilities.length) {
-                    newRecordForm.classList.remove('hidden');
-                    newRecordForm.classList.add('flex');
-                    document.getElementById('btn-next').classList.add('hidden'); // Obligar a guardar
-                } else {
-                    newRecordForm.classList.add('hidden');
-                    newRecordForm.classList.remove('flex');
-                }
-                
-            } else { 
-                document.getElementById('btn-next').classList.add('hidden'); document.getElementById('btn-retry').classList.remove('hidden'); 
-                newRecordForm.classList.add('hidden'); newRecordForm.classList.remove('flex');
-            }
-            m.classList.remove('hidden'); m.classList.add('flex');
-        }
-
-        // ==========================================
-        // 5. FUNCIONES DE AUDIO
-        // ==========================================
-        function initAudio() {
+        // --- AUDIO ---
+        window.initAudio = function() {
             if (audioCtx) return;
             try {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1122,7 +549,7 @@
                 engineOsc.connect(f); f.connect(engineGain); engineOsc.start();
                 startDynamicActionMusic();
             } catch(e) { console.warn(e); }
-        }
+        };
 
         function startDynamicActionMusic() {
             const heroicNotes = [110, 130.81, 146.83, 164.81, 196, 220, 196, 164.81]; let step = 0;
@@ -1138,7 +565,22 @@
 
         function setEnginePitch(f, v = 0.03) { if (!audioCtx || isMuted) return; engineOsc.frequency.exponentialRampToValueAtTime(f, audioCtx.currentTime + 0.5); engineGain.gain.linearRampToValueAtTime(Math.min(v, 0.08), audioCtx.currentTime + 0.2); }
         function playSound(f, t, d, v = 0.15) { if (!audioCtx || isMuted) return; let o = audioCtx.createOscillator(); let g = audioCtx.createGain(); o.type = t; o.frequency.setValueAtTime(f, audioCtx.currentTime); g.gain.setValueAtTime(v, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + d); o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime + d); }
-        function toggleMute() { 
+        
+        // --- SONIDO DE ÉXITO (ESTRELLA) ---
+        window.playSuccessChime = function() {
+            if (!audioCtx || isMuted) return;
+            let o1 = audioCtx.createOscillator(); let g1 = audioCtx.createGain();
+            o1.type = 'sine'; o1.frequency.setValueAtTime(523.25, audioCtx.currentTime); // Nota Do
+            g1.gain.setValueAtTime(0, audioCtx.currentTime); g1.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.05); g1.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2);
+            o1.connect(g1); g1.connect(audioCtx.destination); o1.start(); o1.stop(audioCtx.currentTime + 0.2);
+
+            let o2 = audioCtx.createOscillator(); let g2 = audioCtx.createGain();
+            o2.type = 'sine'; o2.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // Nota Mi
+            g2.gain.setValueAtTime(0, audioCtx.currentTime + 0.1); g2.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.15); g2.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.6);
+            o2.connect(g2); g2.connect(audioCtx.destination); o2.start(audioCtx.currentTime + 0.1); o2.stop(audioCtx.currentTime + 0.6);
+        };
+
+        window.toggleMute = function() { 
             isMuted = !isMuted; const icon = document.getElementById('speaker-icon'); 
             if (isMuted) { 
                 icon.innerHTML = '<path d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019 10a9.972 9.972 0 00-2.929-7.071 1 1 0 01-1.414 1.414A7.971 7.971 0 0117 10c0 1.282-.303 2.493-.842 3.572l-1.436-1.436a5.98 5.98 0 00.278-2.136 5.984 5.984 0 00-1.757-4.243 1 1 0 011.415-1.415A3.984 3.984 0 0113 10a3.983 3.983 0 01-.172 1.172l-1.445-1.445A1.984 1.984 0 0011 10a1.984 1.984 0 00-.586-1.414l-3-3a1.984 1.984 0 00-1.414-.586V4a1 1 0 011.707-.707L9.383 7.001l1.414 1.414L18.414 16.03l-1.414 1.414L15.352 15.8l-1.414-1.414-4.555-4.555-3.676-3.676L3.707 2.293z"/>'; 
@@ -1147,29 +589,255 @@
                 icon.innerHTML = '<path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"></path>'; 
                 if (engineGain) engineGain.gain.setValueAtTime(0.03, audioCtx.currentTime); if (musicGain) musicGain.gain.setValueAtTime(0.10, audioCtx.currentTime); 
             } 
+        };
+
+        // --- HELPERS Y MATES ---
+        function formatPiesPulgadas(decimalFeet) {
+            let isNegative = decimalFeet < 0; let absFeet = Math.abs(decimalFeet);
+            let feet = Math.floor(absFeet); let inches = Math.round((absFeet - feet) * 12);
+            if (inches === 12) { feet += 1; inches = 0; }
+            return (isNegative ? "-" : "") + feet + "." + inches;
         }
 
-        // ==========================================
-        // 6. LÓGICA DEL JUEGO (Física y Control)
-        // ==========================================
+        function formatRodLog(decimalFeet) {
+            let isNegative = decimalFeet < 0; let absFeet = Math.abs(decimalFeet);
+            let feet = Math.floor(absFeet); let inches = Math.round((absFeet - feet) * 12);
+            if (inches === 12) { feet += 1; inches = 0; }
+            if (inches === 0) return (isNegative ? "-" : "") + feet + "ft";
+            return (isNegative ? "-" : "") + feet + "'" + inches + '"';
+        }
+
+        function getIdealLat(dist) { let p = dist / state.targetDistance; if (p > 1) p = 1; return state.targetLat * Math.pow(p, 2); }
+        function getSurfaceHeight(dist) {
+            let rel = dist + 100; let idx = Math.floor(rel / 5);
+            if (!state.surfacePoints || state.surfacePoints.length === 0) return 0;
+            if (idx < 0) return state.surfacePoints[0].y; 
+            if (idx >= state.surfacePoints.length - 1) return state.surfacePoints[state.surfacePoints.length-1].y;
+            let t = (rel % 5) / 5; return state.surfacePoints[idx].y + (state.surfacePoints[idx+1].y - state.surfacePoints[idx].y) * t;
+        }
+
+        function getPxX(dist) { return startXOffset + (dist / (state.targetDistance + 40)) * (canvas.width - startXOffset - 40); }
+        function getPxY_Side(absElevation) { return surfaceBaseY + (absElevation * ftToPx); }
+        function getPxY_Top(lat) { return (canvas.height / 2) + (lat / 10) * (canvas.height / 2 - 20); }
+
+        function mostrarError(msg) {
+            const errDiv = document.getElementById('error-msg');
+            if (errDiv) { errDiv.innerText = msg; errDiv.classList.remove('hidden'); setTimeout(() => errDiv.classList.add('hidden'), 3000); }
+        }
+
+        function getClockMultipliers(c) {
+            if (c === 12) return { p: 1, l: 0 }; if (c === 3) return { p: 0, l: 1 };
+            if (c === 6) return { p: -1, l: 0 }; if (c === 9) return { p: 0, l: -1 };
+            let r = (c * 30) * (Math.PI / 180);
+            return { p: Math.round(Math.cos(r)*1000)/1000, l: Math.round(Math.sin(r)*1000)/1000 };
+        }
+
+        window.cambiarLongitudVarilla = function(val) {
+            let num = parseInt(val); let remaining = state.distance % state.maxRodLength;
+            if (state.distance > 0 && remaining > 0.01 && remaining < state.maxRodLength - 0.01) {
+                mostrarError("Finish pushing current rod first!"); document.getElementById('rod-length-select').value = state.maxRodLength; return;
+            }
+            state.maxRodLength = num; window.limpiarFuerza();
+        };
+
+        window.volverAlMenu = function() {
+            document.getElementById('splash-screen').style.display = 'flex';
+            document.getElementById('btn-resume').classList.remove('hidden');
+            document.getElementById('game-over-modal').classList.add('hidden'); 
+            if (audioCtx && audioCtx.state === 'running') audioCtx.suspend();
+            if (window.cargarLeaderboard) window.cargarLeaderboard();
+        };
+
+        window.resumeGame = function() {
+            document.getElementById('splash-screen').style.display = 'none';
+            if (audioCtx && audioCtx.state === 'suspended' && !isMuted) audioCtx.resume();
+        };
+
+        function updateTimerDisplay() {
+            if(state.gameOver) return;
+            state.timeElapsed = Math.floor((Date.now() - state.startTime) / 1000);
+            let m = Math.floor(state.timeElapsed / 60); let s = state.timeElapsed % 60;
+            document.getElementById('time-display').innerText = `Time: ${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`;
+        }
+
+        // --- RENDERIZADO ---
+        function dibujarIndicadoresHUD(tCtx) {
+            let relDepth = state.absElevation + getSurfaceHeight(state.distance); let pVal = parseFloat(state.pitch.toFixed(1)); let rem = Math.max(0, state.targetDistance - state.distance);
+            let lines = [ "DEPTH:   " + formatPiesPulgadas(relDepth) + " ft", "PITCH:   " + (pVal > 0 ? "+" : "") + pVal.toFixed(1) + " %", "DIST:    " + state.distance.toFixed(0) + " ft", "TARGET:  " + rem.toFixed(0) + " ft" ];
+            let startX = canvas.width - 330; let startY = canvas.height - 120; 
+            tCtx.font = 'bold 18px "Courier New", Courier, monospace'; tCtx.textAlign = 'left';
+            for (let i = 0; i < lines.length; i++) {
+                let y = startY + (i * 26); tCtx.lineWidth = 4; tCtx.strokeStyle = 'black'; tCtx.strokeText(lines[i], startX, y); tCtx.fillStyle = 'white'; tCtx.fillText(lines[i], startX, y);
+            }
+        }
+
+        function dibujarRadarRadar(tCtx) {
+            let rW = 120, rH = 120, rX = canvas.width - rW - 20, rY = canvas.height - rH - 20;
+            tCtx.fillStyle = 'rgba(0, 0, 0, 0.7)'; tCtx.fillRect(rX, rY, rW, rH);
+            tCtx.strokeStyle = '#6b7280'; tCtx.lineWidth = 2; tCtx.strokeRect(rX, rY, rW, rH);
+            tCtx.beginPath(); tCtx.strokeStyle = 'rgba(255, 255, 255, 0.4)'; tCtx.lineWidth = 1;
+            tCtx.moveTo(rX + rW/2, rY); tCtx.lineTo(rX + rW/2, rY + rH); tCtx.moveTo(rX, rY + rH - 25); tCtx.lineTo(rX + rW, rY + rH - 25); tCtx.stroke();
+            tCtx.fillStyle = 'rgba(255, 255, 255, 0.5)'; tCtx.font = '10px Arial'; tCtx.fillText("L", rX + 5, rY + rH - 30); tCtx.fillText("R", rX + rW - 15, rY + rH - 30);
+            tCtx.fillStyle = '#facc15'; tCtx.fillText("TRACKER RADAR", rX + 5, rY + 12);
+
+            let radarRangeLat = 15, radarRangeDist = 50;
+            function getRadarX(lat) { let clampedLat = Math.max(-radarRangeLat, Math.min(radarRangeLat, lat)); return rX + rW/2 + (clampedLat / radarRangeLat) * (rW/2 - 10); }
+            function getRadarY(dist) { let relDist = dist - state.distance; if (relDist < -10) relDist = -10; if (relDist > radarRangeDist) relDist = radarRangeDist; return (rY + rH - 25) - (relDist / radarRangeDist) * (rH - 45); }
+
+            let headX = getRadarX(state.lat), headY = getRadarY(state.distance);
+            tCtx.beginPath(); tCtx.arc(headX, headY, 5, 0, Math.PI*2); tCtx.fillStyle = '#FF4500'; tCtx.fill(); tCtx.strokeStyle = '#FFF'; tCtx.lineWidth = 1.5; tCtx.stroke();
+
+            if (state.locator) {
+                let locX = getRadarX(state.locator.lat), locY = getRadarY(state.locator.dist);
+                tCtx.beginPath(); tCtx.arc(locX, locY, 4, 0, Math.PI*2); tCtx.fillStyle = '#FFFFFF'; tCtx.fill();
+                tCtx.beginPath(); tCtx.strokeStyle = '#FFFFFF'; tCtx.lineWidth = 1.5;
+                tCtx.moveTo(locX - 6, locY); tCtx.lineTo(locX + 6, locY); tCtx.moveTo(locX, locY - 6); tCtx.lineTo(locX, locY + 6); tCtx.stroke();
+            }
+        }
+
+        function dibujarRuta(ctxTarget, getPy, viewType) {
+            if (!state.path || state.path.length === 0) return;
+            ctxTarget.beginPath(); ctxTarget.strokeStyle = '#C0C0C0'; ctxTarget.lineWidth = 3; ctxTarget.lineCap = 'round';
+            let rutaPath = [...state.path]; if (isAnimating) rutaPath.push({ distance: state.distance, absElevation: state.absElevation, lat: state.lat });
+            for (let i = 0; i < rutaPath.length; i++) { let px = getPxX(rutaPath[i].distance); let py = viewType === 'side' ? getPy(rutaPath[i].absElevation) : getPy(rutaPath[i].lat); if (i === 0) ctxTarget.moveTo(px, py); else ctxTarget.lineTo(px, py); }
+            ctxTarget.stroke();
+            if (viewType === 'top') {
+                state.path.forEach(n => { if (n.distance > 0 && Math.abs(n.distance % state.maxRodLength) < 0.1) { ctxTarget.beginPath(); ctxTarget.arc(getPxX(n.distance), getPy(n.lat), 3, 0, Math.PI*2); ctxTarget.fillStyle = '#000'; ctxTarget.fill(); } });
+            }
+        }
+
+        // --- DIBUJO DE ESTRELLAS HUD ---
+        function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius, fillCol, strokeCol) {
+            let rot = Math.PI / 2 * 3;
+            let x = cx; let y = cy;
+            let step = Math.PI / spikes;
+
+            ctx.beginPath();
+            ctx.moveTo(cx, cy - outerRadius);
+            for (let i = 0; i < spikes; i++) {
+                x = cx + Math.cos(rot) * outerRadius; y = cy + Math.sin(rot) * outerRadius; ctx.lineTo(x, y); rot += step;
+                x = cx + Math.cos(rot) * innerRadius; y = cy + Math.sin(rot) * innerRadius; ctx.lineTo(x, y); rot += step;
+            }
+            ctx.lineTo(cx, cy - outerRadius);
+            ctx.closePath();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = strokeCol;
+            ctx.stroke();
+            if (fillCol !== 'transparent') {
+                ctx.fillStyle = fillCol;
+                ctx.fill();
+            }
+        }
+
+        function dibujarEstrellasHUD(tCtx) {
+            let total = state.utilities.length;
+            let recogidas = state.potholesVisited.length;
+            if(total === 0) return;
+
+            let starSpacing = 35;
+            let startX = (canvas.width / 2) - ((total - 1) * starSpacing / 2);
+            let startY = canvas.height - 30;
+
+            // Fondo oscuro para dar contraste
+            tCtx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+            tCtx.fillRect(startX - 25, startY - 20, (total - 1) * starSpacing + 50, 40);
+
+            for(let i=0; i<total; i++) {
+                let isCollected = i < recogidas;
+                let fillCol = isCollected ? '#facc15' : 'transparent';
+                let strokeCol = isCollected ? '#ca8a04' : '#6b7280'; // Borde dorado o gris oscuro
+                drawStar(tCtx, startX + (i * starSpacing), startY, 5, 12, 6, fillCol, strokeCol);
+            }
+        }
+
+        function dibujarCuerpoEscena(tCtx, viewType) {
+            if (viewType === 'side') {
+                tCtx.fillStyle = '#87CEEB'; tCtx.fillRect(-5000, -5000, 10000, 5000 + surfaceBaseY);
+                tCtx.beginPath(); tCtx.moveTo(-5000, 5000); for(let p of state.surfacePoints) tCtx.lineTo(getPxX(p.x), surfaceBaseY - (p.y*10)); tCtx.lineTo(5000, 5000); 
+                let g = tCtx.createLinearGradient(0,0,0,1000); g.addColorStop(0,'#5C4033'); g.addColorStop(1,'#3E2723'); tCtx.fillStyle = g; tCtx.fill();
+                
+                tCtx.beginPath(); tCtx.strokeStyle = '#228B22'; tCtx.lineWidth = 4; 
+                tCtx.moveTo(-5000, surfaceBaseY - (state.surfacePoints[0]?.y*10)-2);
+                for(let p of state.surfacePoints) tCtx.lineTo(getPxX(p.x), surfaceBaseY - (p.y*10)-2); 
+                tCtx.lineTo(5000, surfaceBaseY - (state.surfacePoints[state.surfacePoints.length-1]?.y*10)-2);
+                tCtx.stroke();
+                
+                tCtx.beginPath(); tCtx.strokeStyle='#000'; tCtx.lineWidth = 1.5; tCtx.setLineDash([8,8]);
+                for(let x=-100; x<=state.targetDistance+100; x+=5) tCtx.lineTo(getPxX(x), getPxY_Side(-getSurfaceHeight(x)+state.maxAllowedDepthRel));
+                tCtx.stroke(); tCtx.setLineDash([]);
+                
+                state.utilities.forEach(u => { 
+                    let pxX = getPxX(u.dist), pxY = getPxY_Side(u.absElevation), r = Math.max((u.diamFt/2)*15, 4);
+                    tCtx.beginPath(); tCtx.arc(pxX, pxY, r, 0, Math.PI*2); tCtx.fillStyle = u.color; tCtx.fill(); tCtx.lineWidth = 1; tCtx.strokeStyle = '#000'; tCtx.stroke();
+                    let label = `${u.name}: ${formatPiesPulgadas(u.depthTarget)} ft`; tCtx.font = 'bold 11px Arial'; tCtx.lineWidth = 3 / camera.zoom; tCtx.strokeStyle = '#000000'; tCtx.strokeText(label, pxX + r + 5, pxY + 4); tCtx.fillStyle = u.color; tCtx.fillText(label, pxX + r + 5, pxY + 4);
+                });
+                
+                let tx = getPxX(state.targetDistance), s = getSurfaceHeight(state.targetDistance), ys = surfaceBaseY-(s*10), yt = getPxY_Side(state.targetDepth-s);
+                tCtx.fillStyle = '#1a202c'; tCtx.fillRect(tx, ys, 40, yt-ys); tCtx.fillStyle = 'rgba(0,255,0,0.5)'; tCtx.fillRect(tx, yt-5, 40, 10);
+                
+                tCtx.save(); let startS = getSurfaceHeight(0); tCtx.translate(getPxX(0), surfaceBaseY - (startS * 10)); tCtx.fillStyle = '#111'; tCtx.fillRect(-40, -10, 60, 10); tCtx.fillStyle = '#FF9900'; tCtx.fillRect(-35, -30, 50, 20); tCtx.translate(10, -5); tCtx.rotate(Math.atan2(-state.pitch, 100)); tCtx.fillStyle = '#555'; tCtx.fillRect(-50, -4, 60, 8); tCtx.restore();
+
+                dibujarRuta(tCtx, getPxY_Side, 'side');
+            } else {
+                tCtx.fillStyle = '#2d4c1e'; tCtx.fillRect(-5000,-5000,10000,10000); tCtx.strokeStyle='#000'; tCtx.lineWidth = 1.2;
+                
+                tCtx.beginPath(); tCtx.moveTo(-5000, getPxY_Top(getIdealLat(0)-state.runawayWidth)); for(let x=0; x<=state.targetDistance; x+=5) tCtx.lineTo(getPxX(x), getPxY_Top(getIdealLat(x)-state.runawayWidth)); tCtx.lineTo(5000, getPxY_Top(getIdealLat(state.targetDistance)-state.runawayWidth)); tCtx.stroke();
+                tCtx.beginPath(); tCtx.moveTo(-5000, getPxY_Top(getIdealLat(0)+state.runawayWidth)); for(let x=0; x<=state.targetDistance; x+=5) tCtx.lineTo(getPxX(x), getPxY_Top(getIdealLat(x)+state.runawayWidth)); tCtx.lineTo(5000, getPxY_Top(getIdealLat(state.targetDistance)+state.runawayWidth)); tCtx.stroke();
+                
+                state.utilities.forEach(u => { 
+                    let pxX = getPxX(u.dist); tCtx.fillStyle = u.color; tCtx.globalAlpha=0.3; tCtx.fillRect(pxX-5,-5000,10,10000); tCtx.globalAlpha=1; 
+                    let isHit = state.potholesVisited.includes(u.id); tCtx.fillStyle = isHit ? '#fbbf24':'#1a202c'; let pxY = getPxY_Top(u.lat); tCtx.fillRect(pxX-12, pxY-12, 24, 24); 
+                    if (isHit) { tCtx.fillStyle = "#000"; tCtx.font = "bold 14px Arial"; tCtx.fillText("★", pxX - 6, pxY + 5); }
+                    let label = `${u.name}`; tCtx.font = 'bold 11px Arial'; tCtx.lineWidth = 3 / camera.zoom; tCtx.strokeStyle = '#000000'; tCtx.strokeText(label, pxX + 15, pxY - 15); tCtx.fillStyle = u.color; tCtx.fillText(label, pxX + 15, pxY - 15);
+                });
+                tCtx.fillStyle = '#1a202c'; let tx = getPxX(state.targetDistance), ty = getPxY_Top(state.targetLat); tCtx.fillRect(tx, ty-25, 40, 50);
+                
+                tCtx.save(); tCtx.translate(getPxX(0), getPxY_Top(0)); tCtx.fillStyle = '#111'; tCtx.fillRect(-45, -20, 65, 10); tCtx.fillRect(-45, 10, 65, 10); tCtx.fillStyle = '#FF9900'; tCtx.fillRect(-40, -10, 55, 20); tCtx.fillStyle = '#222'; tCtx.fillRect(-25, -6, 20, 12); tCtx.fillStyle = '#555'; tCtx.fillRect(15, -3, 25, 6); tCtx.restore();
+
+                dibujarRuta(tCtx, getPxY_Top, 'top');
+
+                if (state.locator) {
+                    let locPx = getPxX(state.locator.dist), locPy = getPxY_Top(state.locator.lat);
+                    tCtx.beginPath(); tCtx.arc(locPx, locPy, 6 / camera.zoom, 0, Math.PI*2); tCtx.fillStyle = '#FFFFFF'; tCtx.fill();
+                    tCtx.beginPath(); tCtx.strokeStyle = '#000000'; tCtx.lineWidth = 2 / camera.zoom; let crossSize = 6 / camera.zoom;
+                    tCtx.moveTo(locPx - crossSize, locPy); tCtx.lineTo(locPx + crossSize, locPy); tCtx.moveTo(locPx, locPy - crossSize); tCtx.lineTo(locPx, locPy + crossSize); tCtx.stroke();
+                    tCtx.font = `bold ${10 / camera.zoom}px Arial`; tCtx.lineWidth = 3 / camera.zoom; tCtx.strokeStyle = '#000000'; tCtx.strokeText("TRACKER", locPx + (10 / camera.zoom), locPy + (4 / camera.zoom)); tCtx.fillStyle = '#FFFFFF'; tCtx.fillText("TRACKER", locPx + (10 / camera.zoom), locPy + (4 / camera.zoom));
+                }
+            }
+        }
+
+        function dibujarEscena() { 
+            ctx.clearRect(0,0,canvas.width,canvas.height); 
+            ctx.save(); ctx.translate(camera.offsetX, camera.offsetY); ctx.scale(camera.zoom, camera.zoom);
+            dibujarCuerpoEscena(ctx, state.view); 
+            ctx.restore();
+            if (state.view === 'side') { dibujarRadarRadar(ctx); dibujarIndicadoresHUD(ctx); }
+            
+            // Dibujar las estrellas fuera del escalado de cámara para que siempre se vean centradas
+            dibujarEstrellasHUD(ctx);
+        }
+
+        // --- CONTROL DEL JUEGO ---
         function chequearCondiciones(finalCheck) {
             let iL = getIdealLat(state.distance); if (Math.abs(state.lat - iL) > state.runawayWidth) { mostrarGameOver("OUT OF AREA", "Safety corridor breach.", "red"); return true; }
             let relD = state.absElevation + getSurfaceHeight(state.distance);
-            
             if (relD > state.maxAllowedDepthRel) { mostrarGameOver("FAIL BORE SHUT TOO DEEP", "Permit violation.", "red"); return true; }
-            
-            if (relD <= 1.0 && state.distance >= state.maxRodLength) { 
-                mostrarGameOver("FAIL BORE TOO SHALLOW", "Minimum cover violation: Rod is 12 inches or less from surface.", "orange"); 
-                return true; 
-            }
+            if (relD <= 1.0 && state.distance >= state.maxRodLength) { mostrarGameOver("FAIL BORE TOO SHALLOW", "Minimum cover violation: Rod is 12 inches or less from surface.", "orange"); return true; }
 
             let rP = [...state.path]; if (!isAnimating) rP.push({ distance: state.distance, absElevation: state.absElevation });
             for (let i = 1; i < rP.length; i++) {
                 for (let u of state.utilities) {
                     if (u.dist >= Math.min(rP[i-1].distance, rP[i].distance)-1 && u.dist <= Math.max(rP[i-1].distance, rP[i].distance)+1) {
                         let t = (u.dist - rP[i-1].distance) / (rP[i].distance - rP[i-1].distance || 1);
-                        let e = rP[i-1].absElevation + (rP[i].absElevation - rP[i-1].absElevation) * t;
-                        if (Math.abs(e - u.absElevation) <= 0.8) { playSound(50, 'square', 0.8, 0.3); mostrarGameOver("UTILITY STRUCK!", "Critical hit.", "red"); return true; }
+                        if (t >= 0 && t <= 1) {
+                            let e = rP[i-1].absElevation + (rP[i].absElevation - rP[i-1].absElevation) * t;
+                            let rodRadiusFt = 1.5 / 12; let utilityRadiusFt = u.diamFt / 2;
+                            let gapFt = Math.abs(e - u.absElevation) - utilityRadiusFt - rodRadiusFt; let clearanceInches = gapFt * 12;
+                            if (clearanceInches <= 1.0) { 
+                                playSound(50, 'square', 0.8, 0.3); let safeMsg = clearanceInches < 0 ? "Direct Hit!" : `Grazed at ${clearanceInches.toFixed(1)}"`;
+                                mostrarGameOver("UTILITY STRUCK!", `Critical hit! ${safeMsg} (Safe clearance is > 1").`, "red"); return true; 
+                            }
+                        }
                     }
                 }
             }
@@ -1182,161 +850,204 @@
             return false;
         }
 
+        function verificarEstrellas() {
+            state.utilities.forEach(u => {
+                // Rango generoso para obtener la estrella si se pasó la utilidad de manera segura
+                if (Math.abs(state.distance - u.dist) < 1.5 && Math.abs(state.lat - u.lat) < 1.0) {
+                    if (!state.potholesVisited.includes(u.id)) {
+                        state.potholesVisited.push(u.id);
+                        if (window.playSuccessChime) window.playSuccessChime();
+                    }
+                }
+            });
+        }
+
         function animTick() {
             animationData.progress += animationData.speed;
             if (animationData.progress >= 1) {
                 let to = animationData.current.type === 'push' ? animationData.current.end : animationData.current.start;
                 Object.assign(state, to); if (animationData.current.type === 'push') state.path.push(animationData.current.end); else state.path.pop();
-                actualizarPantallas(); dibujarEscena();
+                
+                verificarEstrellas(); // Verificación real-time
+
+                window.actualizarPantallas(); dibujarEscena();
                 if (chequearCondiciones(false)) { isAnimating = false; setEnginePitch(35); return; }
                 if (animationData.queue.length > 0) { animationData.current = animationData.queue.shift(); animationData.progress = 0; requestAnimationFrame(animTick); }
                 else { isAnimating = false; document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); setEnginePitch(35); chequearCondiciones(true); }
             } else {
                 let t = animationData.progress; let f = animationData.current.type === 'push' ? animationData.current.start : animationData.current.end; let to = animationData.current.type === 'push' ? animationData.current.end : animationData.current.start;
                 state.distance = f.distance + (to.distance - f.distance) * t; state.absElevation = f.absElevation + (to.absElevation - f.absElevation) * t; state.lat = f.lat + (to.lat - f.lat) * t;
-                actualizarPantallas(); dibujarEscena(); requestAnimationFrame(animTick);
+                state.pitch = f.pitch + (to.pitch - f.pitch) * t; state.latAngle = f.latAngle + (to.latAngle - f.latAngle) * t; state.rods = f.rods + (to.rods - f.rods) * t;
+                
+                verificarEstrellas(); // Verificación real-time
+
+                window.actualizarPantallas(); dibujarEscena(); requestAnimationFrame(animTick);
             }
         }
 
-        function iniciarAnim(q) { 
-            isAnimating = true; 
-            document.querySelectorAll('.btn-action').forEach(b => b.disabled = true); 
-            animationData = { queue: q, current: q.shift(), progress: 0, speed: 0.032 }; 
-            requestAnimationFrame(animTick); 
-        }
+        function iniciarAnim(q) { isAnimating = true; document.querySelectorAll('.btn-action').forEach(b => b.disabled = true); animationData = { queue: q, current: q.shift(), progress: 0, speed: 0.032 }; requestAnimationFrame(animTick); }
         
-        function iniciarMoverFraccion(frac, isDrill, metricKey) {
+        window.iniciarMoverFraccion = function(frac, isDrill, metricKey) {
             if (isAnimating || state.gameOver) return;
-            
-            // Tracking de la acción
             if(metricKey) state.metrics[metricKey]++;
-
-            let pies = state.maxRodLength * frac;
-            let remainingRod = state.maxRodLength - (state.distance % state.maxRodLength);
+            let pies = state.maxRodLength * frac; let remainingRod = state.maxRodLength - (state.distance % state.maxRodLength);
             if (Math.abs(remainingRod - state.maxRodLength) < 0.01) remainingRod = state.maxRodLength;
-            
             if (pies > remainingRod + 0.01) pies = remainingRod;
-
-            let af = isDrill ? 0 : state.steeringForce; 
-            let numChunks = Math.ceil(pies / 2.5);
-            if (numChunks === 0) return;
-            let distPerChunk = pies / numChunks;
-            
-            let q = []; let s = { ...state };
+            let af = isDrill ? 0 : state.steeringForce; let numChunks = Math.ceil(pies / 2.5); if (numChunks === 0) return;
+            let distPerChunk = pies / numChunks; let q = []; let s = { ...state };
             for(let i=0; i<numChunks; i++) {
-                let start = { ...s }; 
-                let rodsPerChunk = distPerChunk / state.maxRodLength;
-                
-                if (!isDrill && af !== 0) { 
-                    let r = (s.clock * 30) * (Math.PI/180); 
-                    let pitchChange = af * rodsPerChunk;
-                    s.pitch += pitchChange * Math.cos(r); 
-                    s.latAngle += pitchChange * Math.sin(r); 
-                }
-                
-                s.distance += distPerChunk; 
-                s.rods += rodsPerChunk; 
-                s.absElevation += -(s.pitch / 100) * distPerChunk; 
-                s.lat += (s.latAngle / 100) * distPerChunk;
-                state.utilities.forEach(u => { if (Math.abs(s.distance - u.dist) < 1.2 && Math.abs(s.lat - u.lat) < 0.5) if (!state.potholesVisited.includes(u.id)) state.potholesVisited.push(u.id); });
+                let start = { ...s }; let rodsPerChunk = distPerChunk / state.maxRodLength;
+                if (!isDrill && af !== 0) { let mults = getClockMultipliers(s.clock); let pitchChange = af * rodsPerChunk; s.pitch += pitchChange * mults.p; s.latAngle += pitchChange * mults.l; }
+                s.distance += distPerChunk; s.rods += rodsPerChunk; s.absElevation += -(s.pitch / 100) * distPerChunk; s.lat += (s.latAngle / 100) * distPerChunk;
+                // LA LÍNEA DE COLECCIÓN FUE ELIMINADA DE AQUÍ, AHORA LO MANEJA animTick()
                 q.push({ type: 'push', start: start, end: { ...s } });
             }
             setEnginePitch(60, 0.08); iniciarAnim(q);
-        }
+        };
         
-        function iniciarRetrocederFraccion(frac) {
+        window.iniciarRetrocederFraccion = function(frac) {
             if (isAnimating || state.path.length <= 1) return;
-
-            // Tracking action
-            state.metrics.back++;
-
-            let pies = state.maxRodLength * frac;
-            let targetDist = Math.max(0, state.distance - pies);
-            
-            let q = [];
-            let poppedDist = 0;
-            
+            state.metrics.back++; let pies = state.maxRodLength * frac; let targetDist = Math.max(0, state.distance - pies);
+            let q = []; let poppedDist = 0;
             for(let i=1; i < state.path.length; i++) {
-                let endNode = state.path[state.path.length - i];
-                let startNode = state.path[state.path.length - 1 - i];
-                q.push({ type: 'pull', start: startNode, end: endNode });
-                poppedDist += (endNode.distance - startNode.distance);
-                if (state.distance - poppedDist <= targetDist + 0.01) break; 
+                let endNode = state.path[state.path.length - i]; let startNode = state.path[state.path.length - 1 - i]; q.push({ type: 'pull', start: startNode, end: endNode });
+                poppedDist += (endNode.distance - startNode.distance); if (state.distance - poppedDist <= targetDist + 0.01) break; 
             }
+            if (q.length > 0) { setEnginePitch(50, 0.05); iniciarAnim(q); }
+        };
+
+        window.programarFuerza = function(v) { if(state.gameOver) return; state.steeringForce = Math.max(-50, Math.min(50, state.steeringForce + v)); if(Math.abs(state.steeringForce)>=27) { mostrarError("SNAP ALERT!"); playSound(800,'square',0.3,0.05); } else playSound(300,'sine',0.1); window.actualizarPantallas(); };
+        window.limpiarFuerza = function() { if (state.maxRodLength === 6) state.steeringForce = 8; else if (state.maxRodLength === 20) state.steeringForce = 24; else state.steeringForce = 12; playSound(100,'sine',0.2); window.actualizarPantallas(); };
+        window.ajustarPitchInicial = function(v) { if(state.gameOver || state.rods>0) return; state.pitch = Math.max(-35, Math.min(50, state.pitch+v)); state.path[0].pitch = state.pitch; playSound(150,'sine',0.1); window.actualizarPantallas(); dibujarEscena(); };
+        
+        window.setClock = function(h) { if(state.gameOver) return; state.clock = h; playSound(200,'sine',0.05); window.renderClock(); window.actualizarPantallas(); };
+        
+        window.renderClock = function() {
+            const container = document.getElementById('clock-container'); if (!container) return; container.innerHTML = '';
+            for(let i=1; i<=12; i++) {
+                let a = (i * 30 - 90) * (Math.PI / 180); let cx = 50 + 40 * Math.cos(a); let cy = 50 + 40 * Math.sin(a);
+                let tick = document.createElement('div'); tick.className = `absolute rounded-full bg-gray-500 transform -translate-x-1/2 -translate-y-1/2 ` + (i % 3 === 0 ? 'w-2 h-2' : 'w-1 h-1'); tick.style.left = `${cx}%`; tick.style.top = `${cy}%`; container.appendChild(tick);
+            }
+            let hw = document.createElement('div'); hw.className = "absolute top-1/2 left-1/2 w-full h-full text-center"; hw.style.transform = `translate(-50%, -50%) rotate(${state.clock * 30}deg)`;
+            let hand = document.createElement('div'); hand.className = "absolute bottom-1/2 left-1/2 transform -translate-x-1/2 w-1.5 h-[35%] rounded-t-sm z-10 bg-[#39ff14] shadow-[0_0_10px_#39ff14] text-center";
+            let ah = document.createElement('div'); ah.className = "absolute -top-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-bottom-[10px] border-bottom-[#39ff14] text-center";
+            hand.appendChild(ah); hw.appendChild(hand); container.appendChild(hw);
+            let sel = document.getElementById('hour-selector'); if (!sel) return; sel.innerHTML = '';
+            for(let i=1; i<=12; i++) {
+                let btn = document.createElement('button'); btn.className = `font-bold text-[10px] py-1 rounded shadow ` + (state.clock === i ? 'bg-red-600 text-white' : 'bg-yellow-400 text-black');
+                btn.innerText = i; btn.onclick = () => { if(!state.gameOver) { window.setClock(i); } };
+                sel.appendChild(btn);
+            }
+        };
+        
+        window.actualizarPantallas = function() {
+            let relDepth = state.absElevation + getSurfaceHeight(state.distance);
+            const dDepth = document.getElementById('display-depth'), dPitch = document.getElementById('display-pitch'), dLat = document.getElementById('display-lat'), dLatAngle = document.getElementById('display-lat-angle'), dDist = document.getElementById('display-distance'), dRem = document.getElementById('display-remaining'), dRod = document.getElementById('display-rod-left'), dPothole = document.getElementById('pothole-counter');
+            if (dDepth) dDepth.innerText = formatPiesPulgadas(relDepth) + " ft";
+            let pVal = parseFloat(state.pitch.toFixed(1)); let lVal = parseFloat(state.latAngle.toFixed(1));
+            if (dPitch) dPitch.innerText = (pVal > 0 ? "+" : "") + pVal.toFixed(1) + " %";
+            if (dLatAngle) dLatAngle.innerText = (lVal > 0 ? "+" : "") + lVal.toFixed(1) + " %";
+            if (dLat) dLat.innerText = formatPiesPulgadas(Math.abs(state.lat)) + " ft " + (state.lat > 0.1 ? "(R)" : state.lat < -0.1 ? "(L)" : "(C)");
+            if (dDist) dDist.innerText = state.distance.toFixed(0) + " ft (" + state.rods.toFixed(1) + "r)";
             
-            if (q.length > 0) {
-                setEnginePitch(50, 0.05); iniciarAnim(q);
+            let pDisp = document.getElementById('display-programmed');
+            if (pDisp) { 
+                pDisp.innerText = `Power: ${state.steeringForce}%`; let abs = Math.abs(state.steeringForce); 
+                pDisp.className = "mt-1 font-bold text-[10px] lg:text-xs text-center h-6 lg:h-8 flex items-center justify-center bg-gray-900 w-full max-w-[220px] rounded border text-center"; 
+                if (abs <= 10) pDisp.classList.add("text-blue-300", "border-blue-500"); else if (abs <= 16) pDisp.classList.add("text-yellow-300", "border-yellow-500"); else pDisp.classList.add("text-red-300", "border-red-500"); 
             }
+            if (dRem) dRem.innerText = Math.max(0, state.targetDistance - state.distance).toFixed(0) + " ft";
+            
+            let rl = state.maxRodLength - (state.distance % state.maxRodLength); if (Math.abs(rl - state.maxRodLength) < 0.01 || Math.abs(rl) < 0.01) rl = state.maxRodLength;
+            if (dRod) dRod.innerText = `Left: ${rl.toFixed(1)} ft`;
+            if (dPothole) dPothole.innerText = `Potholes: ${state.potholesVisited.length}/${state.utilities.length}`;
+            let ip = document.getElementById('initial-pitch-controls'); if (ip) state.rods > 0 ? ip.classList.add('hidden') : ip.classList.remove('hidden');
+
+            const logList = document.getElementById('rod-log-list');
+            if (logList) {
+                logList.innerHTML = '';
+                let maxRod = Math.floor((state.distance + 0.01) / state.maxRodLength);
+                let currentPath = [...state.path, {distance: state.distance, absElevation: state.absElevation}];
+                for (let i = 1; i <= maxRod; i++) {
+                    let targetDist = i * state.maxRodLength;
+                    let node = currentPath.find(n => Math.abs(n.distance - targetDist) < 0.1);
+                    if (node) {
+                        let nodeRelDepth = node.absElevation + getSurfaceHeight(node.distance);
+                        let li = document.createElement('li');
+                        li.innerText = `Rod ${i}=${formatRodLog(nodeRelDepth)}`;
+                        logList.appendChild(li);
+                    }
+                }
+                const logBox = document.getElementById('rod-log-box'); if (logBox) logBox.scrollTop = logBox.scrollHeight;
+            }
+        };
+
+        // --- MANEJO DE VISTAS Y FINALES ---
+        window.toggleView = function() { state.view = state.view === 'side' ? 'top' : 'side'; const btnText = document.getElementById('btn-view-text'); const indicator = document.getElementById('view-indicator'); if (btnText) btnText.innerText = state.view === 'side' ? 'Main' : 'Aerial'; if (indicator) indicator.innerText = state.view === 'side' ? 'Main View (Absolute Horizon)' : 'Aerial View (Runway Corridor)'; dibujarEscena(); };
+        window.toggleFullScreen = function() { try { if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(e => mostrarError("Fullscreen blocked.")); } else { if (document.exitFullscreen) document.exitFullscreen(); } } catch(e) { mostrarError("Full screen not supported."); } };
+        
+        function mostrarGameOver(tit, msg, col, isWin = false) {
+            state.gameOver = true; clearInterval(state.timerInterval); document.querySelectorAll('.btn-action').forEach(b => b.disabled = true);
+            const m = document.getElementById('game-over-modal'), t = document.getElementById('game-over-title');
+            t.className = `text-xl lg:text-4xl font-bold mb-2 text-center emergency-alert ${col==='red'?'text-red-500':col==='green'?'text-green-500':'text-orange-400'}`;
+            t.innerText = tit; document.getElementById('game-over-msg').innerText = msg;
+            const s = document.getElementById('star-rating'); s.innerHTML = ''; const newRecordForm = document.getElementById('new-record-form');
+            if (isWin) { 
+                for(let i=0; i<state.utilities.length; i++) { let span = document.createElement('span'); span.innerText = '★'; span.className = state.potholesVisited.length > i ? 'star-gold' : 'text-gray-600'; s.appendChild(span); }
+                document.getElementById('btn-next').classList.remove('hidden'); document.getElementById('btn-retry').classList.add('hidden');
+                if (state.potholesVisited.length === state.utilities.length) { newRecordForm.classList.remove('hidden'); newRecordForm.classList.add('flex'); document.getElementById('btn-next').classList.add('hidden'); } else { newRecordForm.classList.add('hidden'); newRecordForm.classList.remove('flex'); }
+            } else { document.getElementById('btn-next').classList.add('hidden'); document.getElementById('btn-retry').classList.remove('hidden'); newRecordForm.classList.add('hidden'); newRecordForm.classList.remove('flex'); }
+            m.classList.remove('hidden'); m.classList.add('flex');
         }
 
-        function programarFuerza(v) { if(state.gameOver) return; state.steeringForce = Math.max(-50, Math.min(50, state.steeringForce + v)); if(Math.abs(state.steeringForce)>=27) { mostrarError("SNAP ALERT!"); playSound(800,'square',0.3,0.05); } else playSound(300,'sine',0.1); actualizarPantallas(); }
-        function limpiarFuerza() { 
-            if (state.maxRodLength === 6) state.steeringForce = 8;
-            else if (state.maxRodLength === 20) state.steeringForce = 24;
-            else state.steeringForce = 12;
-            playSound(100,'sine',0.2); actualizarPantallas(); 
+        window.generarInformeFinal = function() {
+            reportViewType = 'side'; const btn = document.getElementById('btn-report-view'); if (btn) btn.innerText = 'View: MAIN';
+            let m = Math.floor(state.timeElapsed / 60); let s = state.timeElapsed % 60; document.getElementById('report-time').innerText = `${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`;
+            document.getElementById('metric-d14').innerText = state.metrics.d14; document.getElementById('metric-d12').innerText = state.metrics.d12; document.getElementById('metric-df').innerText = state.metrics.df;
+            document.getElementById('metric-p14').innerText = state.metrics.p14; document.getElementById('metric-p12').innerText = state.metrics.p12; document.getElementById('metric-pf').innerText = state.metrics.pf;
+            document.getElementById('metric-b').innerText = state.metrics.back; document.getElementById('metric-rods').innerText = state.rods.toFixed(1);
+            dibujarReporte(); document.getElementById('report-modal').classList.remove('hidden'); document.getElementById('report-modal').classList.add('flex');
+        };
+        window.toggleReportView = function() { reportViewType = reportViewType === 'side' ? 'top' : 'side'; const btn = document.getElementById('btn-report-view'); if (btn) btn.innerText = reportViewType === 'side' ? 'View: MAIN' : 'View: AERIAL'; dibujarReporte(); };
+        function dibujarReporte() {
+            const rc = document.getElementById('report-canvas'); const rCtx = rc.getContext('2d'); rCtx.clearRect(0,0,1200,400);
+            rCtx.save(); rCtx.beginPath(); rCtx.rect(0,0,1200,400); rCtx.clip(); let tempCamera = {...camera}; camera = {zoom: 1, offsetX: 0, offsetY: 0}; dibujarCuerpoEscena(rCtx, reportViewType); camera = tempCamera;
+            rCtx.fillStyle = reportViewType === 'side' ? "black" : "white"; rCtx.font = "bold 24px Arial"; rCtx.fillText(reportViewType === 'side' ? "SIDE VIEW REPORT" : "AERIAL VIEW REPORT", 20, 40); rCtx.restore();
         }
-        function ajustarPitchInicial(v) { if(state.gameOver || state.rods>0) return; state.pitch = Math.max(-35, Math.min(50, state.pitch+v)); state.path[0].pitch = state.pitch; playSound(150,'sine',0.1); actualizarPantallas(); dibujarEscena(); }
-        function setClock(h) { if(state.gameOver) return; state.clock = h; playSound(200,'sine',0.05); renderClock(); actualizarPantallas(); }
+        window.cerrarInforme = function() { document.getElementById('report-modal').classList.add('hidden'); document.getElementById('report-modal').classList.remove('flex'); };
+        window.saveRecord = function() {
+            const nameInput = document.getElementById('player-name-input'); const name = nameInput.value.trim();
+            if(!name) { alert("Please enter a name"); return; }
+            if(window.dbGuardarRecord) { window.dbGuardarRecord(name, state.level, state.timeElapsed, state.potholesVisited.length); }
+            document.getElementById('new-record-form').classList.add('hidden'); nameInput.value = ''; window.nextLevel();
+        };
 
-        // ==========================================
-        // 7. INICIALIZACIÓN DE NIVELES
-        // ==========================================
-        const apwaTypes = [
-            { name: "SEWER", color: '#32CD32', diam: 12/12 },
-            { name: "POWER", color: '#FF0000', diam: 4/12 },
-            { name: "WATER", color: '#00BFFF', diam: 6/12 },
-            { name: "TELECOM", color: '#FFA500', diam: 4/12 }
-        ];
-
+        // --- NIVELES E INICIO ---
+        const apwaTypes = [ { name: "SEWER", color: '#32CD32', diam: 12/12 }, { name: "POWER", color: '#FF0000', diam: 4/12 }, { name: "WATER", color: '#00BFFF', diam: 6/12 }, { name: "TELECOM", color: '#FFA500', diam: 4/12 } ];
         function generateLevel(lvl) {
-            clearInterval(state.timerInterval); 
-            
-            let currentRodSize = parseInt(document.getElementById('rod-length-select').value) || 10;
-
+            clearInterval(state.timerInterval); let currentRodSize = parseInt(document.getElementById('rod-length-select').value) || 10;
             state.level = lvl; state.distance = 0; state.lat = 0; state.rods = 0; state.pitch = -18 - Math.random() * 8; state.latAngle = 0; state.gameOver = false; state.errors = []; state.potholesVisited = []; state.surfacePoints = [];
-            state.maxRodLength = currentRodSize;
-            state.locator = null;
-            
-            limpiarFuerza();
-
-            state.metrics = { d14: 0, d12: 0, df: 0, p14: 0, p12: 0, pf: 0, back: 0 };
-            state.startTime = Date.now();
-            state.timeElapsed = 0;
-            state.timerInterval = setInterval(updateTimerDisplay, 1000);
-            document.getElementById('time-display').innerText = "Time: 00:00";
-
+            state.maxRodLength = currentRodSize; state.locator = null; window.resetZoom(); window.limpiarFuerza();
+            state.metrics = { d14: 0, d12: 0, df: 0, p14: 0, p12: 0, pf: 0, back: 0 }; state.startTime = Date.now(); state.timeElapsed = 0; state.timerInterval = setInterval(updateTimerDisplay, 1000); document.getElementById('time-display').innerText = "Time: 00:00";
             for (let i = -100; i <= (100 + (lvl - 1) * 15) + 100; i += 5) state.surfacePoints.push({ x: i, y: Math.sin(i * 0.04) * 2.5 + Math.cos(i * 0.015) * 2.0 });
-            state.absElevation = -getSurfaceHeight(0); state.path = [{ distance: 0, absElevation: state.absElevation, lat: 0, pitch: state.pitch, latAngle: 0, rods: 0 }];
-            state.targetDistance = 100 + (lvl - 1) * 15; state.targetLat = (Math.random() - 0.5) * 8; state.targetDepth = 2.0 + Math.random() * 2.0;
-            
-            state.utilities = []; let deep = 0;
-            let numUtils = state.targetDistance < 150 ? 3 : 5;
-            let step = state.targetDistance / (numUtils + 1);
-
+            state.absElevation = -getSurfaceHeight(0); state.path = [{ distance: 0, absElevation: state.absElevation, lat: 0, pitch: state.pitch, latAngle: 0, rods: 0 }]; state.targetDistance = 100 + (lvl - 1) * 15; state.targetLat = (Math.random() - 0.5) * 8; state.targetDepth = 2.0 + Math.random() * 2.0;
+            state.utilities = []; let deep = 0; let numUtils = state.targetDistance < 150 ? 3 : 5; let step = state.targetDistance / (numUtils + 1);
             for (let i = 1; i <= numUtils; i++) { 
-                let d = step * i; 
-                let dp = 2.5 + Math.random() * 2.5; 
-                deep = Math.max(deep, dp); 
-                let type = apwaTypes[(i - 1) % apwaTypes.length];
-                
-                let offsetLateral = (Math.random() - 0.5) * 1.5; 
-                let targetL = (i === numUtils) ? getIdealLat(d) : getIdealLat(d) + offsetLateral;
-
+                let d = step * i; let dp = 2.5 + Math.random() * 2.5; deep = Math.max(deep, dp); let type = apwaTypes[(i - 1) % apwaTypes.length];
+                let offsetLateral = (Math.random() - 0.5) * 1.5; let targetL = (i === numUtils) ? getIdealLat(d) : getIdealLat(d) + offsetLateral;
                 state.utilities.push({ id: i, name: type.name, dist: d, lat: targetL, absElevation: -getSurfaceHeight(d) + dp, depthTarget: dp, diamFt: type.diam, color: type.color }); 
             }
-
-            state.maxAllowedDepthRel = deep + 2.0; const ln = document.getElementById('lvl-number'); if(ln) ln.innerText = lvl; setEnginePitch(35); actualizarPantallas(); dibujarEscena();
+            state.maxAllowedDepthRel = deep + 2.0; const ln = document.getElementById('lvl-number'); if(ln) ln.innerText = lvl; setEnginePitch(35); window.actualizarPantallas(); dibujarEscena();
         }
 
-        function startGame() { 
+        window.startGame = function() { 
             const splash = document.getElementById('splash-screen'); if (splash) splash.style.display = 'none'; 
-            initAudio(); if (audioCtx && audioCtx.state === 'suspended' && !isMuted) audioCtx.resume(); 
-            generateLevel(state.level); renderClock(); 
-        }
+            window.initAudio(); if (audioCtx && audioCtx.state === 'suspended' && !isMuted) audioCtx.resume(); 
+            generateLevel(state.level); window.renderClock(); 
+        };
+        window.nextLevel = function() { if (state.level < 20) { state.level++; generateLevel(state.level); document.getElementById('game-over-modal').classList.add('hidden'); document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); } };
+        window.reiniciarJuego = function() { generateLevel(state.level); document.getElementById('game-over-modal').classList.add('hidden'); document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); };
 
-        function nextLevel() { if (state.level < 20) { state.level++; generateLevel(state.level); document.getElementById('game-over-modal').classList.add('hidden'); document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); } }
-        function reiniciarJuego() { generateLevel(state.level); document.getElementById('game-over-modal').classList.add('hidden'); document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); }
     </script>
 </body>
 </html>
