@@ -818,6 +818,17 @@
                 state.utilities.forEach(u => { 
                     let pxX = getPxX(u.dist), pxY = getPxY_Side(u.absElevation), r = Math.max((u.diamFt/2)*15, 4);
                     tCtx.beginPath(); tCtx.arc(pxX, pxY, r, 0, Math.PI*2); tCtx.fillStyle = u.color; tCtx.fill(); tCtx.lineWidth = 1; tCtx.strokeStyle = '#000'; tCtx.stroke();
+                    
+                    // Indicador de profundidad en la parte azul (cielo)
+                    let depthLabel = formatPiesPulgadas(u.depthTarget) + " ft";
+                    let surfY = surfaceBaseY - (getSurfaceHeight(u.dist) * 10);
+                    tCtx.font = `bold ${14 / camera.zoom}px Arial`;
+                    tCtx.textAlign = 'center';
+                    tCtx.lineWidth = 3 / camera.zoom;
+                    tCtx.strokeStyle = '#000000';
+                    tCtx.strokeText(depthLabel, pxX, surfY - (20 / camera.zoom));
+                    tCtx.fillStyle = u.color;
+                    tCtx.fillText(depthLabel, pxX, surfY - (20 / camera.zoom));
                 });
                 
                 let tx = getPxX(state.targetDistance), s = getSurfaceHeight(state.targetDistance), ys = surfaceBaseY-(s*10), yt = getPxY_Side(state.targetDepth-s);
