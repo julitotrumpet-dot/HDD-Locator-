@@ -328,14 +328,28 @@
                         </div>
                     </div>
                     <div class="grid grid-cols-3 gap-1 w-full mb-1 text-center">
-                        <button onclick="window.iniciarMoverFraccion(0.25, true, 'd14')" class="btn-action bg-green-600 hover:bg-green-500 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-green-400 uppercase text-center">D. 1/4</button>
-                        <button onclick="window.iniciarMoverFraccion(0.5, true, 'd12')" class="btn-action bg-green-700 hover:bg-green-600 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-green-500 uppercase text-center">D. 1/2</button>
-                        <button onclick="window.iniciarMoverFraccion(1.0, true, 'df')" class="btn-action bg-green-800 hover:bg-green-700 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-green-600 uppercase text-center">D. Full</button>
+                        <!-- ICONOS DE ROTACIÓN (VERDE) -->
+                        <button onclick="window.iniciarMoverFraccion(0.25, true, 'd14')" class="btn-action bg-green-600 hover:bg-green-500 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-green-400 uppercase text-center flex items-center justify-center">
+                            <svg class="w-3 h-3 lg:w-3.5 lg:h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg> 1/4
+                        </button>
+                        <button onclick="window.iniciarMoverFraccion(0.5, true, 'd12')" class="btn-action bg-green-700 hover:bg-green-600 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-green-500 uppercase text-center flex items-center justify-center">
+                            <svg class="w-3 h-3 lg:w-3.5 lg:h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg> 1/2
+                        </button>
+                        <button onclick="window.iniciarMoverFraccion(1.0, true, 'df')" class="btn-action bg-green-800 hover:bg-green-700 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-green-600 uppercase text-center flex items-center justify-center">
+                            <svg class="w-3 h-3 lg:w-3.5 lg:h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg> Full
+                        </button>
                     </div>
                     <div class="grid grid-cols-3 gap-1 w-full mb-1 text-center">
-                        <button onclick="window.iniciarMoverFraccion(0.25, false, 'p14')" class="btn-action bg-yellow-500 hover:bg-yellow-400 text-black font-black py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-yellow-300 uppercase text-center">P. 1/4</button>
-                        <button onclick="window.iniciarMoverFraccion(0.5, false, 'p12')" class="btn-action bg-yellow-600 hover:bg-yellow-500 text-black font-black py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-yellow-400 uppercase text-center">P. 1/2</button>
-                        <button onclick="window.iniciarMoverFraccion(1.0, false, 'pf')" class="btn-action bg-yellow-700 hover:bg-yellow-600 text-black font-black py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-yellow-500 uppercase text-center">P. Full</button>
+                        <!-- ICONOS DE DIRECCIONAMIENTO (AMARILLO) ACTUALIZADOS -->
+                        <button onclick="window.iniciarMoverFraccion(0.25, false, 'p14')" class="btn-action bg-yellow-500 hover:bg-yellow-400 text-black font-black py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-yellow-300 uppercase text-center flex items-center justify-center">
+                            <svg class="w-3 h-3 lg:w-4 lg:h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l10 10m-3 0h3v-3"/><path d="M12 4l6 6m-4 0h4v-4"/></svg> 1/4
+                        </button>
+                        <button onclick="window.iniciarMoverFraccion(0.5, false, 'p12')" class="btn-action bg-yellow-600 hover:bg-yellow-500 text-black font-black py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-yellow-400 uppercase text-center flex items-center justify-center">
+                            <svg class="w-3 h-3 lg:w-4 lg:h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l10 10m-3 0h3v-3"/><path d="M12 4l6 6m-4 0h4v-4"/></svg> 1/2
+                        </button>
+                        <button onclick="window.iniciarMoverFraccion(1.0, false, 'pf')" class="btn-action bg-yellow-700 hover:bg-yellow-600 text-black font-black py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-yellow-500 uppercase text-center flex items-center justify-center">
+                            <svg class="w-3 h-3 lg:w-4 lg:h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l10 10m-3 0h3v-3"/><path d="M12 4l6 6m-4 0h4v-4"/></svg> Full
+                        </button>
                     </div>
                     <div class="grid grid-cols-3 gap-1 w-full text-center">
                         <button onclick="window.iniciarRetrocederFraccion(0.25)" class="btn-action bg-gray-600 hover:bg-gray-500 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-gray-400 uppercase text-center">B. 1/4</button>
@@ -507,7 +521,7 @@
             document.getElementById('levels-modal').classList.add('flex');
         };
 
-        // --- FIREBASE CONFIGURATION ---
+        // --- FIREBASE ---
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'hdd-simulator-v4';
         let db = null; let useLocalStorage = false; let user = null;
 
@@ -519,7 +533,7 @@
                     onAuthStateChanged(auth, (currentUser) => { user = currentUser; if(user) { window.cargarLeaderboard(); } });
                     if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) { await signInWithCustomToken(auth, __initial_auth_token); } else { await signInAnonymously(auth); }
                 } else { useLocalStorage = true; window.cargarLeaderboard(); }
-            } catch(e) { useLocalStorage = true; console.log("Firebase init error, using LocalStorage for Leaderboard.", e); window.cargarLeaderboard(); }
+            } catch(e) { useLocalStorage = true; window.cargarLeaderboard(); }
         };
 
         window.dbGuardarRecord = async function(nombre, nivel, tiempoSegundos, scoreEstrellas) {
@@ -539,7 +553,7 @@
             }
             records.sort((a, b) => { if(b.level !== a.level) return b.level - a.level; if(a.time !== b.time) return a.time - b.time; return b.score - a.score; });
             records = records.slice(0, 10); tbody.innerHTML = '';
-            if(records.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="text-center text-gray-500 italic py-4">No records yet. Be the first!</td></tr>'; return; }
+            if(records.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="text-center text-gray-500 italic py-4">No records yet.</td></tr>'; return; }
             records.forEach((r, idx) => {
                 let rankClass = idx === 0 ? "top-1" : idx === 1 ? "top-2" : idx === 2 ? "top-3" : "";
                 let timeStr = formatTime(r.time);
@@ -632,7 +646,7 @@
             else { icon.innerHTML = '<path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"></path>'; if (engineGain) engineGain.gain.setValueAtTime(0.03, audioCtx.currentTime); if (musicGain) musicGain.gain.setValueAtTime(0.10, audioCtx.currentTime); } 
         };
 
-        // --- HELPERS Y MATES ---
+        // --- HELPERS ---
         function formatPiesPulgadas(decimalFeet) {
             let isNegative = decimalFeet < 0; let absFeet = Math.abs(decimalFeet);
             let feet = Math.floor(absFeet); let inches = Math.round((absFeet - feet) * 12);
@@ -676,7 +690,7 @@
         window.resumeGame = function() { document.getElementById('splash-screen').style.display = 'none'; if (audioCtx && audioCtx.state === 'suspended' && !isMuted) audioCtx.resume(); };
         function updateTimerDisplay() { if(state.gameOver) return; state.timeElapsed = Math.floor((Date.now() - state.startTime) / 1000); let m = Math.floor(state.timeElapsed / 60); let s = state.timeElapsed % 60; document.getElementById('time-display').innerText = `Time: ${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`; }
 
-        // --- RENDERIZADO ---
+        // --- RENDERING ---
         function dibujarIndicadoresHUD(tCtx) {
             let relDepth = state.absElevation + getSurfaceHeight(state.distance); let pVal = parseFloat(state.pitch.toFixed(1)); let rem = Math.max(0, state.targetDistance - state.distance);
             let lines = [ "DEPTH:   " + formatPiesPulgadas(relDepth) + " ft", "PITCH:   " + (pVal > 0 ? "+" : "") + pVal.toFixed(1) + " %", "DIST:    " + state.distance.toFixed(0) + " ft", "TARGET:  " + rem.toFixed(0) + " ft" ];
@@ -761,23 +775,16 @@
                     tCtx.lineWidth = 2 / camera.zoom; tCtx.strokeStyle = '#000000'; tCtx.stroke();
                     tCtx.beginPath(); tCtx.strokeStyle = '#000000'; tCtx.lineWidth = 2 / camera.zoom; let crossSize = baseRadius / camera.zoom;
                     tCtx.moveTo(locPx - crossSize, locPy); tCtx.lineTo(locPx + crossSize, locPy); tCtx.moveTo(locPx, locPy - crossSize); tCtx.lineTo(locPx, locPy + crossSize); tCtx.stroke();
-                    
-                    // INDICADOR DE DISTANCIA (NUEVO)
                     let diff = Math.abs(state.locator.dist - state.distance);
                     let distLabel = diff.toFixed(1) + " ft";
-                    tCtx.font = `bold ${12 / camera.zoom}px Arial`;
-                    tCtx.textAlign = 'center';
-                    tCtx.lineWidth = 3 / camera.zoom;
-                    tCtx.strokeStyle = '#000000';
-                    tCtx.strokeText(distLabel, locPx, locPy - (baseRadius / camera.zoom + 5));
-                    tCtx.fillStyle = '#FFFFFF';
-                    tCtx.fillText(distLabel, locPx, locPy - (baseRadius / camera.zoom + 5));
+                    tCtx.font = `bold ${12 / camera.zoom}px Arial`; tCtx.textAlign = 'center'; tCtx.lineWidth = 3 / camera.zoom; tCtx.strokeStyle = '#000000'; tCtx.strokeText(distLabel, locPx, locPy - (baseRadius / camera.zoom + 5)); tCtx.fillStyle = '#FFFFFF'; tCtx.fillText(distLabel, locPx, locPy - (baseRadius / camera.zoom + 5));
                 }
             }
         }
 
         function dibujarEscena() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.save(); ctx.translate(camera.offsetX, camera.offsetY); ctx.scale(camera.zoom, camera.zoom); dibujarCuerpoEscena(ctx, state.view); ctx.restore(); if (state.view === 'side') { dibujarRadarRadar(ctx); dibujarIndicadoresHUD(ctx); } dibujarEstrellasHUD(ctx); }
 
+        // --- GAME CONTROL ---
         function chequearCondiciones(finalCheck) {
             let iL = getIdealLat(state.distance); if (Math.abs(state.lat - iL) > state.runawayWidth) { mostrarGameOver("OUT OF AREA", "Safety corridor breach.", "red"); return true; }
             let relD = state.absElevation + getSurfaceHeight(state.distance);
