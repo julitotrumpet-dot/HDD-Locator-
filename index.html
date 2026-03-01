@@ -174,7 +174,11 @@
             <div class="flex flex-col items-center border-t border-gray-600 pt-4">
                 <div class="flex space-x-3 mb-2">
                     <button onclick="startGame()" class="bg-orange-600 hover:bg-orange-500 text-white font-black text-lg py-2 px-6 rounded-full shadow-[0_0_15px_rgba(234,88,12,0.6)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-orange-400">
-                        Start Training
+                        Start
+                    </button>
+                    <!-- NUEVO BOTÓN DE NIVELES -->
+                    <button onclick="window.openLevels()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-lg py-2 px-6 rounded-full shadow-[0_0_15px_rgba(37,99,235,0.6)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-blue-400">
+                        Levels
                     </button>
                     <button id="btn-resume" onclick="resumeGame()" class="hidden bg-green-600 hover:bg-green-500 text-white font-black text-lg py-2 px-6 rounded-full shadow-[0_0_15px_rgba(22,163,74,0.6)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-green-400">
                         Resume
@@ -185,6 +189,23 @@
                 </div>
                 <p class="mt-2 text-[10px] text-gray-400 font-bold tracking-widest uppercase text-center">Know what's below. Call <span class="text-orange-500">811</span> before you dig.</p>
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE SELECCIÓN DE NIVELES -->
+    <div id="levels-modal" class="fixed inset-0 bg-black bg-opacity-90 hidden flex-col items-center justify-center z-[120] p-4 text-center backdrop-blur-md">
+        <div class="panel-metal p-6 rounded-xl shadow-[0_0_50px_rgba(234,88,12,0.4)] max-w-3xl w-full relative border border-orange-600">
+            <div class="screw screw-big screw-tl"></div><div class="screw screw-big screw-tr"></div><div class="screw screw-big screw-bl"></div><div class="screw screw-big screw-br"></div>
+            
+            <h2 class="text-2xl lg:text-4xl font-black text-yellow-400 mb-6 uppercase tracking-widest" style="text-shadow: 2px 2px 4px #000;">Select Level</h2>
+            
+            <div id="levels-grid" class="grid grid-cols-4 md:grid-cols-5 gap-3 lg:gap-4 mb-6">
+                <!-- Se generará dinámicamente desde JS -->
+            </div>
+            
+            <button onclick="document.getElementById('levels-modal').classList.add('hidden')" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-10 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.5)] transition border border-gray-400 uppercase tracking-widest">
+                Back
+            </button>
         </div>
     </div>
 
@@ -217,16 +238,16 @@
                 <div id="audio-toggle" onclick="toggleMute()" class="icon-btn text-gray-300 text-center" title="Mute/Unmute">
                     <svg class="w-6 h-6 text-center drop-shadow-md" id="speaker-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"></path></svg>
                 </div>
-                <div id="fullscreen-toggle" onclick="toggleFullScreen()" class="icon-btn text-gray-300 text-center" title="Fullscreen">
+                <div id="fullscreen-toggle" onclick="window.toggleFullScreen()" class="icon-btn text-gray-300 text-center" title="Fullscreen">
                     <svg class="w-6 h-6 text-center drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
                 </div>
                 <button onclick="volverAlMenu()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 px-3 lg:px-4 rounded shadow-[2px_2px_4px_rgba(0,0,0,0.6)] transition text-[10px] lg:text-xs uppercase text-center border border-gray-500">
                     Close
                 </button>
-                <button onclick="reiniciarJuego()" class="bg-red-800 hover:bg-red-700 text-white font-bold py-1 px-3 lg:px-4 rounded shadow-[2px_2px_4px_rgba(0,0,0,0.6)] transition text-[10px] lg:text-xs uppercase text-center border border-red-600">
+                <button onclick="window.reiniciarJuego()" class="bg-red-800 hover:bg-red-700 text-white font-bold py-1 px-3 lg:px-4 rounded shadow-[2px_2px_4px_rgba(0,0,0,0.6)] transition text-[10px] lg:text-xs uppercase text-center border border-red-600">
                     Reset
                 </button>
-                <button onclick="toggleView()" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-1 px-3 lg:px-6 rounded shadow-[2px_2px_4px_rgba(0,0,0,0.6)] transition text-xs lg:text-sm uppercase text-center border border-indigo-500">
+                <button onclick="window.toggleView()" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-1 px-3 lg:px-6 rounded shadow-[2px_2px_4px_rgba(0,0,0,0.6)] transition text-xs lg:text-sm uppercase text-center border border-indigo-500">
                     View: <span id="btn-view-text">Main</span>
                 </button>
             </div>
@@ -437,6 +458,71 @@
         };
 
         let audioCtx = null, engineOsc = null, engineGain = null, musicGain = null, isMuted = false, isAnimating = false, animationData = null;
+
+        // --- PROGRESS SYSTEM ---
+        window.obtenerProgreso = function() {
+            // El formato es: { "1": { stars: 3, unlocked: true }, "2": { stars: 0, unlocked: true } }
+            let saved = localStorage.getItem('hdd_progress');
+            return saved ? JSON.parse(saved) : { "1": { stars: 0, unlocked: true } };
+        };
+
+        window.guardarProgresoLocal = function(lvl, stars) {
+            let prog = window.obtenerProgreso();
+            if (!prog[lvl]) prog[lvl] = { stars: 0, unlocked: true };
+            if (stars > prog[lvl].stars) prog[lvl].stars = stars;
+            
+            // Desbloquear el siguiente nivel
+            if (lvl < 20) {
+                if (!prog[lvl + 1]) prog[lvl + 1] = { stars: 0, unlocked: true };
+            }
+            localStorage.setItem('hdd_progress', JSON.stringify(prog));
+        };
+
+        window.openLevels = function() {
+            const grid = document.getElementById('levels-grid');
+            grid.innerHTML = '';
+            let prog = window.obtenerProgreso();
+
+            for (let i = 1; i <= 20; i++) {
+                let p = prog[i];
+                let isUnlocked = p && p.unlocked;
+                let btn = document.createElement('button');
+                
+                // Calcular máximo de estrellas para este nivel
+                let targetD = 100 + (i - 1) * 15;
+                let mStars = targetD < 150 ? 3 : 5;
+                
+                if (isUnlocked) {
+                    let earned = p.stars || 0;
+                    let starHTML = '';
+                    for(let s=0; s<mStars; s++) {
+                        starHTML += s < earned 
+                            ? '<span class="text-yellow-400 drop-shadow-[0_0_2px_#000]">★</span>' 
+                            : '<span class="text-gray-600">★</span>';
+                    }
+
+                    btn.className = "panel-inset rounded flex flex-col items-center justify-center p-2 lg:p-3 hover:bg-gray-800 transition transform hover:scale-105 border border-orange-500 cursor-pointer bg-gradient-to-b from-gray-700 to-gray-900";
+                    btn.innerHTML = `
+                        <span class="text-lg lg:text-xl font-black text-white mb-1" style="text-shadow: 1px 1px 2px #000;">LVL ${i}</span>
+                        <div class="flex text-[10px] lg:text-xs">${starHTML}</div>
+                    `;
+                    btn.onclick = () => {
+                        state.level = i;
+                        document.getElementById('levels-modal').classList.add('hidden');
+                        window.startGame();
+                    };
+                } else {
+                    btn.className = "panel-inset rounded flex flex-col items-center justify-center p-2 lg:p-3 opacity-50 cursor-not-allowed border border-gray-700 bg-gray-900";
+                    btn.innerHTML = `
+                        <span class="text-2xl mb-1">🔒</span>
+                        <span class="text-[10px] lg:text-xs text-gray-500 font-bold">LVL ${i}</span>
+                    `;
+                }
+                grid.appendChild(btn);
+            }
+            document.getElementById('levels-modal').classList.remove('hidden');
+            document.getElementById('levels-modal').classList.add('flex');
+        };
 
         // --- FIREBASE CONFIGURATION ---
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'hdd-simulator-v4';
@@ -847,7 +933,6 @@
                     let pxX = getPxX(u.dist); tCtx.fillStyle = u.color; tCtx.globalAlpha=0.3; tCtx.fillRect(pxX-5,-5000,10,10000); tCtx.globalAlpha=1; 
                     let isHit = state.potholesVisited.includes(u.id); tCtx.fillStyle = isHit ? '#fbbf24':'#1a202c'; let pxY = getPxY_Top(u.lat); tCtx.fillRect(pxX-12, pxY-12, 24, 24); 
                     if (isHit) { tCtx.fillStyle = "#000"; tCtx.font = "bold 14px Arial"; tCtx.fillText("★", pxX - 6, pxY + 5); }
-                    let label = `${u.name}`; tCtx.font = 'bold 11px Arial'; tCtx.lineWidth = 3 / camera.zoom; tCtx.strokeStyle = '#000000'; tCtx.strokeText(label, pxX + 15, pxY - 15); tCtx.fillStyle = u.color; tCtx.fillText(label, pxX + 15, pxY - 15);
                 });
                 tCtx.fillStyle = '#1a202c'; let tx = getPxX(state.targetDistance), ty = getPxY_Top(state.targetLat); tCtx.fillRect(tx, ty-25, 40, 50);
                 
@@ -857,9 +942,8 @@
 
                 if (state.locator) {
                     let locPx = getPxX(state.locator.dist), locPy = getPxY_Top(state.locator.lat);
-                    let baseRadius = 10; // Tamaño más visible
+                    let baseRadius = 10; 
                     
-                    // Bolita blanca con borde negro
                     tCtx.beginPath(); 
                     tCtx.arc(locPx, locPy, baseRadius / camera.zoom, 0, Math.PI*2); 
                     tCtx.fillStyle = '#FFFFFF'; 
@@ -868,7 +952,6 @@
                     tCtx.strokeStyle = '#000000'; 
                     tCtx.stroke();
                     
-                    // Cruz negra en el centro
                     tCtx.beginPath(); 
                     tCtx.strokeStyle = '#000000'; 
                     tCtx.lineWidth = 2 / camera.zoom; 
@@ -915,7 +998,10 @@
             }
             if (relD < -0.15 && state.distance > 5) { mostrarGameOver("FRACOUT!", "Pressure breach.", "red"); return true; }
             if (finalCheck && state.distance >= state.targetDistance) {
-                if (Math.abs(relD - state.targetDepth) <= 0.7 && Math.abs(state.lat - state.targetLat) <= 1.5) { playSound(600, 'sine', 0.5, 0.2); setTimeout(()=>playSound(800, 'sine', 0.5, 0.15), 200); mostrarGameOver("EXCELLENT SHOT!", `Level ${state.level} Complete!`, "green", true); }
+                if (Math.abs(relD - state.targetDepth) <= 0.7 && Math.abs(state.lat - state.targetLat) <= 1.5) { 
+                    playSound(600, 'sine', 0.5, 0.2); setTimeout(()=>playSound(800, 'sine', 0.5, 0.15), 200); 
+                    mostrarGameOver("EXCELLENT SHOT!", `Level ${state.level} Complete!`, "green", true); 
+                }
                 else { mostrarGameOver("FAILED SHOT", "Accuracy requirements not met.", "orange"); }
                 return true;
             }
@@ -1063,10 +1149,13 @@
         function mostrarGameOver(tit, msg, col, isWin = false) {
             state.gameOver = true; clearInterval(state.timerInterval); document.querySelectorAll('.btn-action').forEach(b => b.disabled = true);
             const m = document.getElementById('game-over-modal'), t = document.getElementById('game-over-title');
-            t.className = `text-xl lg:text-4xl font-bold mb-2 text-center emergency-alert ${col==='red'?'text-red-500':col==='green'?'text-green-500':'text-orange-400'}`;
+            t.className = `text-xl lg:text-4xl font-black mb-2 text-center emergency-alert ${col==='red'?'text-red-500':col==='green'?'text-green-500':'text-orange-400'}`;
             t.innerText = tit; document.getElementById('game-over-msg').innerText = msg;
             const s = document.getElementById('star-rating'); s.innerHTML = ''; const newRecordForm = document.getElementById('new-record-form');
             if (isWin) { 
+                // GUARDAR EL PROGRESO CUANDO GANA
+                window.guardarProgresoLocal(state.level, state.potholesVisited.length);
+
                 for(let i=0; i<state.utilities.length; i++) { let span = document.createElement('span'); span.innerText = '★'; span.className = state.potholesVisited.length > i ? 'star-gold' : 'text-gray-600'; s.appendChild(span); }
                 document.getElementById('btn-next').classList.remove('hidden'); document.getElementById('btn-retry').classList.add('hidden');
                 if (state.potholesVisited.length === state.utilities.length) { newRecordForm.classList.remove('hidden'); newRecordForm.classList.add('flex'); document.getElementById('btn-next').classList.add('hidden'); } else { newRecordForm.classList.add('hidden'); newRecordForm.classList.remove('flex'); }
@@ -1091,7 +1180,7 @@
         window.cerrarInforme = function() { document.getElementById('report-modal').classList.add('hidden'); document.getElementById('report-modal').classList.remove('flex'); };
         window.saveRecord = function() {
             const nameInput = document.getElementById('player-name-input'); const name = nameInput.value.trim();
-            if(!name) { alert("Please enter a name"); return; }
+            if(!name) { mostrarError("Please enter a name"); return; }
             if(window.dbGuardarRecord) { window.dbGuardarRecord(name, state.level, state.timeElapsed, state.potholesVisited.length); }
             document.getElementById('new-record-form').classList.add('hidden'); nameInput.value = ''; window.nextLevel();
         };
