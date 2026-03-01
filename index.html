@@ -198,7 +198,7 @@
 
     <!-- ORIENTATION WARNING -->
     <div class="portrait:flex landscape:hidden fixed inset-0 bg-gray-900 z-[110] flex-col items-center justify-center text-center p-6 text-white">
-        <svg class="w-24 h-24 mb-6 text-yellow-500 animate-pulse text-center" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10V6a2 2-0 012-2h12a2 2(0 012 2v4m-16 4v4a2 2(0 002 2h12a2 2(0 002-2v-4m-16-4h16"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v4m-4-4l4 4 4-4"></path></svg>
+        <svg class="w-24 h-24 mb-6 text-yellow-500 animate-pulse text-center" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10V6a2 2-0 012-2h12a2 2-0 012 2v4m-16 4v4a2 2-0 002 2h12a2 2-0 002-2v-4m-16-4h16"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v4m-4-4l4 4 4-4"></path></svg>
         <h2 class="text-3xl font-bold text-yellow-400 mb-4 text-center">Rotate Your Device</h2>
         <p class="text-xl text-gray-300 text-center">Horizontal orientation required for simulation.</p>
     </div>
@@ -223,7 +223,7 @@
                     <svg class="w-6 h-6 text-center drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
                 </div>
                 <div id="audio-toggle" onclick="toggleMute()" class="icon-btn text-gray-300 text-center" title="Mute/Unmute">
-                    <svg class="w-6 h-6 text-center drop-shadow-md" id="speaker-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"></path></svg>
+                    <svg class="w-6 h-6 text-center drop-shadow-md" id="speaker-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9.383 3.076a1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"></path></svg>
                 </div>
                 <div id="fullscreen-toggle" onclick="window.toggleFullScreen()" class="icon-btn text-gray-300 text-center" title="Fullscreen">
                     <svg class="w-6 h-6 text-center drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
@@ -563,13 +563,12 @@
 
         function dibujarIndicadoresHUD(tCtx) {
             let relDepth = state.absElevation + getSurfaceHeight(state.distance); let pVal = parseFloat(state.pitch.toFixed(1)); let rem = Math.max(0, state.targetDistance - state.distance);
-            let lines = [ "DEPTH:   " + formatPiesPulgadas(relDepth) + " ft", "PITCH:   " + (pVal > 0 ? "+" : "") + pVal.toFixed(1) + " %", "DIST:    " + state.distance.toFixed(0) + " ft", "TARGET:  " + rem.toFixed(0) + " ft" ];
+            let lines = [ "DEPTH:    " + formatPiesPulgadas(relDepth) + " ft", "PITCH:    " + (pVal > 0 ? "+" : "") + pVal.toFixed(1) + " %", "DIST:    " + state.distance.toFixed(0) + " ft", "TARGET:  " + rem.toFixed(0) + " ft" ];
             let startX = canvas.width - 330; let startY = canvas.height - 120; tCtx.font = 'bold 18px "Courier New", Courier, monospace'; tCtx.textAlign = 'left';
             for (let i = 0; i < lines.length; i++) { let y = startY + (i * 26); tCtx.lineWidth = 4; tCtx.strokeStyle = 'black'; tCtx.strokeText(lines[i], startX, y); tCtx.fillStyle = 'white'; tCtx.fillText(lines[i], startX, y); }
         }
         function dibujarRadarRadar(tCtx) {
             let rW = 120, rH = 120, rX = canvas.width - rW - 20, rY = canvas.height - rH - 20; tCtx.fillStyle = 'rgba(0, 0, 0, 0.7)'; tCtx.fillRect(rX, rY, rW, rH); tCtx.strokeStyle = '#6b7280'; tCtx.lineWidth = 2; tCtx.strokeRect(rX, rY, rW, rH); tCtx.beginPath(); tCtx.strokeStyle = 'rgba(255, 255, 255, 0.4)'; tCtx.lineWidth = 1; tCtx.moveTo(rX + rW/2, rY); tCtx.lineTo(rX + rW/2, rY + rH); tCtx.moveTo(rX, rY + rH - 25); tCtx.lineTo(rX + rW, rY + rH - 25); tCtx.stroke(); tCtx.fillStyle = 'rgba(255, 255, 255, 0.5)'; tCtx.font = '10px Arial'; tCtx.fillText("L", rX + 5, rY + rH - 30); tCtx.fillText("R", rX + rW - 15, rY + rH - 30); tCtx.fillStyle = '#facc15'; tCtx.fillText("TRACKER RADAR", rX + 20, rY + rH + 15);
-            let headX = startXOffset + (state.lat / 15) * (rW/2 - 10); // Simplified for briefing
             let radarRangeLat = 15, radarRangeDist = 50; function getRadarX(lat) { let clampedLat = Math.max(-radarRangeLat, Math.min(radarRangeLat, lat)); return rX + rW/2 + (clampedLat / radarRangeLat) * (rW/2 - 10); } function getRadarY(dist) { let relDist = dist - state.distance; if (relDist < -10) relDist = -10; if (relDist > radarRangeDist) relDist = radarRangeDist; return (rY + rH - 25) - (relDist / radarRangeDist) * (rH - 45); }
             let hX = getRadarX(state.lat), hY = getRadarY(state.distance); tCtx.beginPath(); tCtx.arc(hX, hY, 5, 0, Math.PI*2); tCtx.fillStyle = '#FF4500'; tCtx.fill(); tCtx.strokeStyle = '#FFF'; tCtx.lineWidth = 1.5; tCtx.stroke();
             if (state.locator) { let locX = getRadarX(state.locator.lat), locY = getRadarY(state.locator.dist); tCtx.beginPath(); tCtx.arc(locX, locY, 4, 0, Math.PI*2); tCtx.fillStyle = '#FFFFFF'; tCtx.fill(); tCtx.beginPath(); tCtx.strokeStyle = '#FFFFFF'; tCtx.lineWidth = 1.5; tCtx.moveTo(locX - 6, locY); tCtx.lineTo(locX + 6, locY); tCtx.moveTo(locX, locY - 6); tCtx.lineTo(locX, locY + 6); tCtx.stroke(); }
@@ -679,7 +678,26 @@
             const logList = document.getElementById('rod-log-list'); if (logList) { logList.innerHTML = ''; let maxRod = Math.floor((state.distance + 0.01) / state.maxRodLength); let currentPath = [...state.path, {distance: state.distance, absElevation: state.absElevation}]; for (let i = 1; i <= maxRod; i++) { let targetDist = i * state.maxRodLength; let node = currentPath.find(n => Math.abs(n.distance - targetDist) < 0.1); if (node) { let nodeRelDepth = node.absElevation + getSurfaceHeight(node.distance); let li = document.createElement('li'); li.innerText = `Rod ${i}=${formatRodLog(nodeRelDepth)}`; logList.appendChild(li); } } const logBox = document.getElementById('rod-log-box'); if (logBox) logBox.scrollTop = logBox.scrollHeight; }
         };
         window.toggleView = function() { state.view = state.view === 'side' ? 'top' : 'side'; const btnText = document.getElementById('btn-view-text'); const indicator = document.getElementById('view-indicator'); if (btnText) btnText.innerText = state.view === 'side' ? 'Main' : 'Aerial'; if (indicator) indicator.innerText = state.view === 'side' ? 'Main View (Absolute Horizon)' : 'Aerial View (Runway Corridor)'; dibujarEscena(); };
-        window.toggleFullScreen = function() { try { let doc = document.documentElement; let isFull = document.fullscreenElement || document.webkitFullscreenElement; if (!isFull) { if (doc.requestFullscreen) { doc.requestFullscreen().catch(e => mostrarError("Fullscreen blocked.")); } else if (doc.webkitRequestFullscreen) { doc.webkitRequestFullscreen(); } else { mostrarError("iOS: Add to Home Screen to play Fullscreen"); } } else { if (document.exitFullscreen) document.exitFullscreen(); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); } } catch(e) { mostrarError("Full screen not supported."); } };
+        
+        window.toggleFullScreen = function() { 
+            try { 
+                let doc = document.documentElement; 
+                let isFull = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement; 
+                if (!isFull) { 
+                    if (doc.requestFullscreen) { doc.requestFullscreen().catch(e => console.warn("Fullscreen blocked.")); } 
+                    else if (doc.webkitRequestFullscreen) { doc.webkitRequestFullscreen(); } 
+                    else if (doc.mozRequestFullScreen) { doc.mozRequestFullScreen(); }
+                    else if (doc.msRequestFullscreen) { doc.msRequestFullscreen(); }
+                    else { mostrarError("Fullscreen: Use 'Add to Home Screen'"); } 
+                } else { 
+                    if (document.exitFullscreen) document.exitFullscreen(); 
+                    else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); 
+                    else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+                    else if (document.msExitFullscreen) document.msExitFullscreen();
+                } 
+            } catch(e) { console.warn("Full screen error:", e); } 
+        };
+
         function mostrarGameOver(tit, msg, col, isWin = false) { state.gameOver = true; clearInterval(state.timerInterval); document.querySelectorAll('.btn-action').forEach(b => b.disabled = true); const m = document.getElementById('game-over-modal'), t = document.getElementById('game-over-title'); t.className = `text-xl lg:text-4xl font-black mb-2 text-center emergency-alert ${col==='red'?'text-red-500':col==='green'?'text-green-500':'text-orange-400'}`; t.innerText = tit; document.getElementById('game-over-msg').innerText = msg; const s = document.getElementById('star-rating'); s.innerHTML = ''; const newRecordForm = document.getElementById('new-record-form'); if (isWin) { window.guardarProgresoLocal(state.level, state.potholesVisited.length); for(let i=0; i<state.utilities.length; i++) { let span = document.createElement('span'); span.innerText = '★'; span.className = state.potholesVisited.length > i ? 'star-gold' : 'text-gray-600'; s.appendChild(span); } document.getElementById('btn-next').classList.remove('hidden'); document.getElementById('btn-retry').classList.add('hidden'); if (state.potholesVisited.length === state.utilities.length) { newRecordForm.classList.remove('hidden'); newRecordForm.classList.add('flex'); document.getElementById('btn-next').classList.add('hidden'); } else { newRecordForm.classList.add('hidden'); newRecordForm.classList.remove('flex'); } } else { document.getElementById('btn-next').classList.add('hidden'); document.getElementById('btn-retry').classList.remove('hidden'); newRecordForm.classList.add('hidden'); newRecordForm.classList.remove('flex'); } m.classList.remove('hidden'); m.classList.add('flex'); }
         window.generarInformeFinal = function() { reportViewType = 'side'; const btn = document.getElementById('btn-report-view'); if (btn) btn.innerText = 'View: MAIN'; let m = Math.floor(state.timeElapsed / 60); let s = state.timeElapsed % 60; document.getElementById('report-time').innerText = `${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`; document.getElementById('metric-d14').innerText = state.metrics.d14; document.getElementById('metric-d12').innerText = state.metrics.d12; document.getElementById('metric-df').innerText = state.metrics.df; document.getElementById('metric-p14').innerText = state.metrics.p14; document.getElementById('metric-p12').innerText = state.metrics.p12; document.getElementById('metric-pf').innerText = state.metrics.pf; document.getElementById('metric-b').innerText = state.metrics.back; document.getElementById('metric-rods').innerText = state.rods.toFixed(1); dibujarReporte(); document.getElementById('report-modal').classList.remove('hidden'); document.getElementById('report-modal').classList.add('flex'); };
         window.toggleReportView = function() { reportViewType = reportViewType === 'side' ? 'top' : 'side'; const btn = document.getElementById('btn-report-view'); if (btn) btn.innerText = reportViewType === 'side' ? 'View: MAIN' : 'View: AERIAL'; dibujarReporte(); };
@@ -703,7 +721,20 @@
             }
             state.maxAllowedDepthRel = deep + 2.0; const ln = document.getElementById('lvl-number'); if(ln) ln.innerText = lvl; setEnginePitch(35); window.actualizarPantallas(); dibujarEscena();
         }
-        window.startGame = function() { const splash = document.getElementById('splash-screen'); if (splash) splash.style.display = 'none'; window.initAudio(); if (audioCtx && audioCtx.state === 'suspended' && !isMuted) audioCtx.resume(); generateLevel(state.level); window.renderClock(); };
+        
+        window.startGame = function() { 
+            const splash = document.getElementById('splash-screen'); 
+            if (splash) splash.style.display = 'none'; 
+            
+            // Trigger Fullscreen on user interaction
+            window.toggleFullScreen();
+            
+            window.initAudio(); 
+            if (audioCtx && audioCtx.state === 'suspended' && !isMuted) audioCtx.resume(); 
+            generateLevel(state.level); 
+            window.renderClock(); 
+        };
+        
         window.nextLevel = function() { if (state.level < 20) { state.level++; generateLevel(state.level); document.getElementById('game-over-modal').classList.add('hidden'); document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); } };
         window.reiniciarJuego = function() { generateLevel(state.level); document.getElementById('game-over-modal').classList.add('hidden'); document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); };
         window.initFirebase();
