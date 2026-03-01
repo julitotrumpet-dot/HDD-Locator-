@@ -6,18 +6,76 @@
     <title>HDD Professional Multi-Level Simulator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #1a202c; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; overscroll-behavior: none; }
-        #game-canvas { background-color: #2d3748; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.5); cursor: crosshair; }
-        .lcd-screen { background-color: #bbf7d0; color: #166534; font-family: 'Courier New', Courier, monospace; font-weight: bold; }
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        
+        body { 
+            background-color: #1f2937;
+            background-image: 
+                radial-gradient(#000000 15%, transparent 16%),
+                radial-gradient(#000000 15%, transparent 16%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            color: white; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            overflow: hidden; 
+            overscroll-behavior: none; 
+        }
+
+        /* Metallic Casing Panels */
+        .panel-metal {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 40%, #374151 100%);
+            border-top: 2px solid #9ca3af;
+            border-left: 2px solid #9ca3af;
+            border-bottom: 3px solid #111827;
+            border-right: 3px solid #111827;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.6), inset 0 0 30px rgba(0,0,0,0.3);
+            color: #f3f4f6;
+        }
+
+        /* Inset parts (Screens, Radars, Inner Canvas) */
+        .panel-inset {
+            background-color: #0f172a;
+            box-shadow: inset 4px 4px 10px rgba(0,0,0,0.9), inset -1px -1px 3px rgba(255,255,255,0.1);
+            border-bottom: 1px solid #4b5563;
+            border-right: 1px solid #4b5563;
+        }
+
+        /* Screws */
+        .screw {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e5e7eb, #9ca3af);
+            border: 1px solid #1f2937;
+            box-shadow: inset 1px 1px 3px rgba(255,255,255,0.8), 2px 2px 4px rgba(0,0,0,0.6);
+            z-index: 10;
+        }
+        .screw::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 15%; right: 15%;
+            height: 2px;
+            background: #374151;
+            transform: translateY(-50%);
+            box-shadow: 0 1px 0 rgba(255,255,255,0.6);
+        }
+        .screw-tl { top: 8px; left: 8px; transform: rotate(45deg); }
+        .screw-tr { top: 8px; right: 8px; transform: rotate(-15deg); }
+        .screw-bl { bottom: 8px; left: 8px; transform: rotate(70deg); }
+        .screw-br { bottom: 8px; right: 8px; transform: rotate(10deg); }
+
+        .screw-big { width: 22px; height: 22px; }
+        .screw-big::after { height: 3px; }
+
+        #game-canvas { background-color: #2d3748; cursor: crosshair; }
         .btn-action:disabled { opacity: 0.5; cursor: not-allowed; }
         .star-gold { color: #fbbf24; text-shadow: 0 0 10px #f59e0b; }
-        .emergency-alert { animation: blinker 1s linear infinite; color: #ff0000; font-weight: 900; }
+        .emergency-alert { animation: blinker 1s linear infinite; color: #ff0000; font-weight: 900; text-shadow: 2px 2px 5px #000; }
         @keyframes blinker { 50% { opacity: 0; } }
         
         #splash-screen {
-            background: linear-gradient(rgba(26, 32, 44, 0.95), rgba(26, 32, 44, 0.95)), url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
+            background-color: rgba(17, 24, 39, 0.9);
         }
 
         .icon-btn { cursor: pointer; transition: color 0.2s; }
@@ -33,7 +91,7 @@
             border-radius: 8px;
             font-weight: 800;
             font-size: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             z-index: 90;
             pointer-events: none;
             border: 2px solid #854d0e;
@@ -41,9 +99,9 @@
         }
 
         /* Estilos para el Leaderboard */
-        .leaderboard-table th { background-color: #4a5568; color: #facc15; padding: 8px; text-transform: uppercase; font-size: 12px;}
-        .leaderboard-table td { padding: 8px; border-bottom: 1px solid #4a5568; font-size: 14px;}
-        .leaderboard-table tr:nth-child(even) { background-color: #2d3748; }
+        .leaderboard-table th { background-color: #1f2937; color: #facc15; padding: 8px; text-transform: uppercase; font-size: 12px; border-bottom: 1px solid #374151;}
+        .leaderboard-table td { padding: 8px; border-bottom: 1px solid #374151; font-size: 14px;}
+        .leaderboard-table tr:nth-child(even) { background-color: rgba(255,255,255,0.05); }
         .top-1 { font-weight: bold; color: #fbbf24; }
         .top-2 { font-weight: bold; color: #e2e8f0; }
         .top-3 { font-weight: bold; color: #b45309; }
@@ -52,33 +110,35 @@
 <body class="h-screen w-screen m-0 p-0 flex flex-col overflow-hidden text-center">
 
     <!-- PRESENTACIÓN INICIAL -->
-    <div id="splash-screen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-6 text-center text-white overflow-y-auto">
-        <div class="max-w-4xl bg-gray-800 bg-opacity-95 p-8 rounded-2xl border-2 border-yellow-500 shadow-2xl backdrop-blur-md my-auto">
-            <h1 class="text-4xl lg:text-6xl font-black text-yellow-500 mb-2 uppercase tracking-tighter">HDD PROFESSIONAL</h1>
-            <h2 class="text-xl lg:text-2xl font-bold text-white mb-2 uppercase tracking-widest text-center">Precision Drilling Simulator v5.0</h2>
-            <p class="text-yellow-400 font-bold mb-6 italic tracking-wide text-lg text-center">by Julio Sarracent</p>
+    <div id="splash-screen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-2 lg:p-4 text-center text-white overflow-y-auto">
+        <div class="max-w-4xl w-full panel-metal p-5 lg:p-6 rounded-xl shadow-2xl my-auto relative border border-orange-700">
+            <div class="screw screw-big screw-tl"></div><div class="screw screw-big screw-tr"></div><div class="screw screw-big screw-bl"></div><div class="screw screw-big screw-br"></div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left mb-6 border-t border-gray-600 pt-6">
+            <h1 class="text-3xl lg:text-5xl font-black uppercase tracking-tighter" style="color: #f97316; text-shadow: 1px 1px 0px #fdba74, -1px -1px 0px #7c2d12, 3px 3px 5px rgba(0,0,0,0.8);">HDD LOCATOR SIMULATOR</h1>
+            <p class="text-xs lg:text-sm text-orange-300 font-bold mb-2 italic tracking-wide text-center">by Julio Sarracent</p>
+            <h2 class="text-xs lg:text-sm font-bold text-gray-300 mb-3 uppercase tracking-widest text-center" style="text-shadow: 1px 1px 2px #000;">Precision Drilling Simulator v5.0</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-3 border-t border-gray-600 pt-3">
                 <div>
-                    <h3 class="text-yellow-500 font-bold uppercase mb-2 flex items-center text-base">
-                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13zM7 13a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13z" clip-rule="evenodd"></path></svg>
+                    <h3 class="text-orange-500 font-bold uppercase mb-1 flex items-center text-xs lg:text-sm" style="text-shadow: 1px 1px 2px #000;">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13zM7 13a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13z" clip-rule="evenodd"></path></svg>
                         Training Objectives
                     </h3>
-                    <ul class="text-sm text-gray-300 space-y-2">
+                    <ul class="text-[10px] lg:text-xs text-gray-200 space-y-1">
                         <li>• Complete <span class="text-white font-bold">20 levels</span> with Dynamic Music.</li>
                         <li>• Master <span class="text-white font-bold">Absolute Horizon</span> and Depth Permits.</li>
-                        <li>• <span class="text-yellow-400 font-bold">NEW:</span> Camera Zoom & Panning System.</li>
+                        <li>• <span class="text-orange-400 font-bold">NEW:</span> Camera Zoom & Panning System.</li>
                         <li>• Compete for the fastest time and best accuracy!</li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-yellow-500 font-bold uppercase mb-2 flex items-center text-base">
-                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 4.946-3.076 9.168-7.391 10.82a.5.5 0 01-.218 0C6.076 16.168 3 11.946 3 7.001c0-.681.056-1.35.166-2.001zm6.39 5.847a.75.75 0 00-1.06 1.06L9.44 13.85a.75.75 0 001.06 0l3.5-3.5a.75.75 0 10-1.06-1.06L10 12.293 8.556 10.846z" clip-rule="evenodd"></path></svg>
+                    <h3 class="text-orange-500 font-bold uppercase mb-1 flex items-center text-xs lg:text-sm" style="text-shadow: 1px 1px 2px #000;">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 4.946-3.076 9.168-7.391 10.82a.5.5 0 01-.218 0C6.076 16.168 3 11.946 3 7.001c0-.681.056-1.35.166-2.001zm6.39 5.847a.75.75 0 00-1.06 1.06L9.44 13.85a.75.75 0 001.06 0l3.5-3.5a.75.75 0 10-1.06-1.06L10 12.293 8.556 10.846z" clip-rule="evenodd"></path></svg>
                         Safety Protocols
                     </h3>
-                    <ul class="text-sm text-gray-300 space-y-2 text-left">
+                    <ul class="text-[10px] lg:text-xs text-gray-200 space-y-1 text-left">
                         <li>• <span class="text-orange-400 font-bold">Potholing:</span> Standard utility verification.</li>
-                        <li>• <span class="text-red-500 font-bold">Emergency Strike:</span> Call 911 immediately.</li>
+                        <li>• <span class="text-red-400 font-bold">Emergency Strike:</span> Call 911 immediately.</li>
                         <li>• <span class="text-blue-400 font-bold">Snap Alert:</span> Respect rod bend limits.</li>
                         <li>• <span class="text-green-400 font-bold">Real-World Use:</span> These protocols are for life saving.</li>
                     </ul>
@@ -86,16 +146,16 @@
             </div>
 
             <!-- Sección de Leaderboard en Pantalla de Inicio -->
-            <div class="mb-6 border-t border-gray-600 pt-4">
-                <h3 class="text-yellow-500 font-bold uppercase mb-2 flex justify-center items-center text-lg">
-                    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L11 6.477V16h2a1 1 0 110 2H7a1 1 0 110-2h2V6.477L6.237 7.582l1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.617a1 1 0 01.894-1.788l1.599.799L9 4.323V3a1 1 0 011-1zm-5 8.274l-.818 2.552c.25.112.526.174.818.174.292 0 .569-.062.818-.174L5 10.274zm10 0l-.818 2.552c.25.112.526.174.818.174.292 0 .569-.062.818-.174L15 10.274z" clip-rule="evenodd"></path></svg>
+            <div class="mb-4 border-t border-gray-600 pt-3">
+                <h3 class="text-orange-500 font-bold uppercase mb-2 flex justify-center items-center text-xs lg:text-sm" style="text-shadow: 1px 1px 2px #000;">
+                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L11 6.477V16h2a1 1 0 110 2H7a1 1 0 110-2h2V6.477L6.237 7.582l1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.617a1 1 0 01.894-1.788l1.599.799L9 4.323V3a1 1 0 011-1zm-5 8.274l-.818 2.552c.25.112.526.174.818.174.292 0 .569-.062.818-.174L5 10.274zm10 0l-.818 2.552c.25.112.526.174.818.174.292 0 .569-.062.818-.174L15 10.274z" clip-rule="evenodd"></path></svg>
                     Top Operators (Fastest Times)
                 </h3>
-                <div class="bg-gray-900 rounded-lg overflow-hidden shadow-inner max-h-40 overflow-y-auto">
+                <div class="panel-inset rounded-lg overflow-hidden max-h-28 overflow-y-auto">
                     <table class="w-full text-left leaderboard-table">
                         <thead>
                             <tr>
-                                <th class="text-center w-12">#</th>
+                                <th class="text-center w-10">#</th>
                                 <th>Operator</th>
                                 <th class="text-center">Level</th>
                                 <th class="text-center">Time</th>
@@ -103,25 +163,25 @@
                             </tr>
                         </thead>
                         <tbody id="home-leaderboard-body">
-                            <tr><td colspan="5" class="text-center text-gray-500 italic py-4">Loading records...</td></tr>
+                            <tr><td colspan="5" class="text-center text-gray-500 italic py-2">Loading records...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="flex flex-col items-center border-t border-gray-700 pt-6">
-                <div class="flex space-x-4 mb-4">
-                    <button onclick="startGame()" class="bg-yellow-500 hover:bg-yellow-400 text-black font-black text-xl py-3 px-8 rounded-full shadow-[0_0_20px_rgba(245,158,11,0.5)] transition transform hover:scale-105 active:scale-95 uppercase text-center">
+            <div class="flex flex-col items-center border-t border-gray-600 pt-4">
+                <div class="flex space-x-3 mb-2">
+                    <button onclick="startGame()" class="bg-orange-600 hover:bg-orange-500 text-white font-black text-lg py-2 px-6 rounded-full shadow-[0_0_15px_rgba(234,88,12,0.6)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-orange-400">
                         Start Training
                     </button>
-                    <button id="btn-resume" onclick="resumeGame()" class="hidden bg-green-500 hover:bg-green-400 text-black font-black text-xl py-3 px-8 rounded-full shadow-[0_0_20px_rgba(34,197,94,0.5)] transition transform hover:scale-105 active:scale-95 uppercase text-center">
+                    <button id="btn-resume" onclick="resumeGame()" class="hidden bg-green-600 hover:bg-green-500 text-white font-black text-lg py-2 px-6 rounded-full shadow-[0_0_15px_rgba(22,163,74,0.6)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-green-400">
                         Resume
                     </button>
                 </div>
-                <div class="max-w-2xl text-[10px] text-gray-400 font-medium tracking-tight italic text-center">
+                <div class="max-w-2xl text-[9px] text-gray-400 font-medium tracking-tight italic text-center leading-tight">
                     <p>DISCLAIMER: This application is a simulator for training purposes only. The safety protocols and operational steps shown should always be applied in real-life drilling projects. Always follow OSHA regulations, local utility laws, and manufacturer safety manuals on actual job sites.</p>
                 </div>
-                <p class="mt-4 text-xs text-gray-500 font-bold tracking-widest uppercase text-center">Know what's below. Call <span class="text-white">811</span> before you dig.</p>
+                <p class="mt-2 text-[10px] text-gray-400 font-bold tracking-widest uppercase text-center">Know what's below. Call <span class="text-orange-500">811</span> before you dig.</p>
             </div>
         </div>
     </div>
@@ -134,210 +194,218 @@
     </div>
 
     <!-- INTERFAZ PRINCIPAL DEL JUEGO -->
-    <div class="portrait:hidden landscape:flex flex-col h-full w-full p-2 lg:p-4 text-center">
+    <div class="portrait:hidden landscape:flex flex-col h-full w-full p-2 lg:p-4 text-center gap-1">
         
-        <!-- HEADER -->
-        <div class="flex justify-between items-center mb-1 shrink-0 text-center">
-            <div>
-                <h1 class="text-lg lg:text-2xl font-bold text-yellow-400 leading-tight uppercase tracking-tighter text-center">HDD SIMULATOR <span class="text-white ml-2 text-sm lg:text-base">LEVEL <span id="lvl-number">1</span>/20</span></h1>
-                <div class="flex items-center space-x-2 text-white text-center">
-                    <p class="text-[9px] lg:text-xs text-gray-400 uppercase tracking-widest font-bold text-center">Precision Horizon v5.0</p>
-                    <span class="text-[9px] text-gray-500 italic text-center" id="time-display">Time: 00:00</span>
+        <!-- HEADER PANEL -->
+        <div class="panel-metal rounded-lg p-2 shrink-0 relative flex justify-between items-center text-center z-10">
+            <div class="screw screw-tl"></div><div class="screw screw-tr"></div><div class="screw screw-bl"></div><div class="screw screw-br"></div>
+            
+            <div class="flex flex-col items-start ml-8 lg:ml-10">
+                <h1 class="text-lg lg:text-2xl font-bold text-yellow-400 leading-tight uppercase tracking-tighter text-center" style="text-shadow: 1px 1px 2px #000;">HDD SIMULATOR <span class="text-white ml-2 text-sm lg:text-base">LEVEL <span id="lvl-number">1</span>/20</span></h1>
+                <div class="flex items-center space-x-2 text-white text-center mt-1">
+                    <p class="text-[9px] lg:text-xs text-gray-300 uppercase tracking-widest font-bold text-center">Precision Horizon v5.0</p>
+                    <span class="text-[9px] text-gray-400 italic text-center panel-inset px-2 py-0.5 rounded" id="time-display">Time: 00:00</span>
                 </div>
             </div>
-            <div class="flex items-center space-x-2 lg:space-x-4 text-center">
-                <div id="home-toggle" onclick="volverAlMenu()" class="icon-btn text-gray-400 text-center" title="Main Menu">
-                    <svg class="w-6 h-6 text-center" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            
+            <div class="flex items-center space-x-2 lg:space-x-4 text-center mr-2">
+                <div id="home-toggle" onclick="volverAlMenu()" class="icon-btn text-gray-300 text-center" title="Main Menu">
+                    <svg class="w-6 h-6 text-center drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
                 </div>
-                <div id="audio-toggle" onclick="toggleMute()" class="icon-btn text-gray-400 text-center" title="Mute/Unmute">
-                    <svg class="w-6 h-6 text-center" id="speaker-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"></path></svg>
+                <div id="audio-toggle" onclick="toggleMute()" class="icon-btn text-gray-300 text-center" title="Mute/Unmute">
+                    <svg class="w-6 h-6 text-center drop-shadow-md" id="speaker-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"></path></svg>
                 </div>
-                <div id="fullscreen-toggle" onclick="toggleFullScreen()" class="icon-btn text-gray-400 text-center" title="Fullscreen">
-                    <svg class="w-6 h-6 text-center" fill="currentColor" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                <div id="fullscreen-toggle" onclick="toggleFullScreen()" class="icon-btn text-gray-300 text-center" title="Fullscreen">
+                    <svg class="w-6 h-6 text-center drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
                 </div>
-                <button onclick="volverAlMenu()" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-1 px-3 lg:px-4 rounded shadow-lg transition text-[10px] lg:text-xs uppercase text-center">
+                <button onclick="volverAlMenu()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 px-3 lg:px-4 rounded shadow-[2px_2px_4px_rgba(0,0,0,0.6)] transition text-[10px] lg:text-xs uppercase text-center border border-gray-500">
                     Close
                 </button>
-                <button onclick="reiniciarJuego()" class="bg-red-700 hover:bg-red-600 text-white font-bold py-1 px-3 lg:px-4 rounded shadow-lg transition text-[10px] lg:text-xs uppercase text-center">
+                <button onclick="reiniciarJuego()" class="bg-red-800 hover:bg-red-700 text-white font-bold py-1 px-3 lg:px-4 rounded shadow-[2px_2px_4px_rgba(0,0,0,0.6)] transition text-[10px] lg:text-xs uppercase text-center border border-red-600">
                     Reset
                 </button>
-                <button onclick="toggleView()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-1 px-3 lg:px-6 rounded shadow-lg transition text-xs lg:text-sm uppercase text-center">
+                <button onclick="toggleView()" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-1 px-3 lg:px-6 rounded shadow-[2px_2px_4px_rgba(0,0,0,0.6)] transition text-xs lg:text-sm uppercase text-center border border-indigo-500">
                     View: <span id="btn-view-text">Main</span>
                 </button>
             </div>
         </div>
 
-        <!-- ÁREA DEL CANVAS -->
-        <div class="relative flex-grow min-h-0 w-full mb-1 bg-gray-900 rounded-lg overflow-hidden shadow-inner text-center">
-            <div id="view-indicator" class="absolute top-2 left-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded font-bold text-[10px] lg:text-sm pointer-events-none z-10 uppercase tracking-widest text-center">
+        <!-- ÁREA DEL CANVAS PANEL -->
+        <div class="panel-metal flex-grow min-h-0 w-full rounded-lg p-2 relative flex flex-col text-center z-10">
+            <div class="screw screw-tl z-20"></div><div class="screw screw-tr z-20"></div><div class="screw screw-bl z-20"></div><div class="screw screw-br z-20"></div>
+            
+            <div id="view-indicator" class="absolute top-4 left-4 panel-inset text-yellow-400 px-2 py-1 rounded font-bold text-[10px] lg:text-sm pointer-events-none z-20 uppercase tracking-widest text-center opacity-90">
                 Main View (Absolute Horizon)
             </div>
 
             <!-- CONTROLES DE ZOOM FLOTANTES -->
-            <div id="zoom-controls" class="absolute bottom-4 left-4 flex flex-col space-y-2 z-20">
-                <button onclick="zoomIn()" class="bg-gray-800 bg-opacity-80 text-white font-black text-xl w-10 h-10 rounded shadow-lg hover:bg-gray-600 border border-gray-500 transition">+</button>
-                <button onclick="resetZoom()" class="bg-gray-800 bg-opacity-80 text-white font-bold text-xs w-10 h-10 rounded shadow-lg hover:bg-gray-600 border border-gray-500 transition">RST</button>
-                <button onclick="zoomOut()" class="bg-gray-800 bg-opacity-80 text-white font-black text-xl w-10 h-10 rounded shadow-lg hover:bg-gray-600 border border-gray-500 transition">-</button>
+            <div id="zoom-controls" class="absolute bottom-6 left-4 flex flex-col space-y-2 z-20">
+                <button onclick="window.zoomIn()" class="panel-metal text-white font-black text-xl w-10 h-10 rounded shadow-lg hover:brightness-125 active:scale-95 transition border border-gray-400">+</button>
+                <button onclick="window.resetZoom()" class="panel-metal text-white font-bold text-xs w-10 h-10 rounded shadow-lg hover:brightness-125 active:scale-95 transition border border-gray-400">RST</button>
+                <button onclick="window.zoomOut()" class="panel-metal text-white font-black text-xl w-10 h-10 rounded shadow-lg hover:brightness-125 active:scale-95 transition border border-gray-400">-</button>
             </div>
 
             <!-- CAJA DE REGISTRO DE VARILLAS (ROD LOG) -->
-            <div id="rod-log-box" class="absolute top-2 right-2 w-[100px] lg:w-[130px] max-h-[80%] bg-white bg-opacity-95 rounded border-2 border-gray-400 p-1 lg:p-2 overflow-y-auto text-left z-10 shadow-xl pointer-events-auto">
-                <h4 class="font-black border-b border-gray-400 pb-1 mb-1 text-center text-[9px] lg:text-[11px] uppercase text-black tracking-widest">Rod Log</h4>
-                <ul id="rod-log-list" class="space-y-1 font-mono text-[9px] lg:text-[11px] font-bold text-gray-800">
+            <div id="rod-log-box" class="absolute top-4 right-4 w-[100px] lg:w-[130px] max-h-[80%] panel-inset rounded p-1 lg:p-2 overflow-y-auto text-left z-20 pointer-events-auto text-green-400 opacity-90">
+                <h4 class="font-black border-b border-gray-600 pb-1 mb-1 text-center text-[9px] lg:text-[11px] uppercase text-gray-300 tracking-widest">Rod Log</h4>
+                <ul id="rod-log-list" class="space-y-1 font-mono text-[9px] lg:text-[11px] font-bold">
                 </ul>
             </div>
 
-            <canvas id="game-canvas" width="1200" height="400" class="w-full h-full object-contain text-center touch-none"></canvas>
-            
-            <!-- MODAL DE FIN DE JUEGO -->
-            <div id="game-over-modal" class="absolute inset-0 bg-black bg-opacity-60 hidden flex-col items-center justify-center rounded-lg z-30 backdrop-blur-md text-center">
-                <div class="bg-gray-800 border-2 border-gray-600 p-6 rounded-lg shadow-2xl max-w-xl w-full flex flex-col items-center mx-4 text-white text-center">
-                    <h2 id="game-over-title" class="text-xl lg:text-4xl font-bold mb-2 text-center uppercase text-center"></h2>
-                    <div id="star-rating" class="flex space-x-2 mb-2 text-3xl text-center"></div>
-                    <p id="game-over-msg" class="text-sm lg:text-lg mb-4 text-center px-4 max-w-2xl font-medium text-center"></p>
-                    
-                    <!-- NEW RECORD FORM -->
-                    <div id="new-record-form" class="hidden flex-col items-center w-full mb-4 bg-yellow-900 bg-opacity-50 p-4 rounded border border-yellow-500">
-                        <h4 class="text-yellow-400 font-bold mb-2 uppercase animate-pulse">🎉 NEW RECORD! 🎉</h4>
-                        <p class="text-sm text-gray-300 mb-2">Enter your name for the Leaderboard:</p>
-                        <div class="flex space-x-2">
-                            <input type="text" id="player-name-input" class="px-3 py-1 rounded text-black font-bold uppercase" placeholder="YOUR NAME" maxlength="15">
-                            <button onclick="saveRecord()" class="bg-green-600 hover:bg-green-500 text-white font-bold py-1 px-4 rounded shadow">SAVE</button>
-                        </div>
-                    </div>
-
-                    <div id="game-over-errors" class="w-full mb-6 text-left hidden bg-gray-900 p-4 rounded border border-red-900 text-center">
-                        <h4 class="text-red-500 font-bold mb-2 text-sm uppercase underline text-center">Incident Log:</h4>
-                        <ul id="game-over-errors-list" class="list-disc pl-5 text-xs lg:text-sm text-red-400 text-center"></ul>
-                    </div>
-                    <div class="flex flex-wrap justify-center gap-3 text-center">
-                        <button id="btn-report" onclick="generarInformeFinal()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-6 rounded shadow-lg transition uppercase text-sm lg:text-base text-center">
-                            View Final Record
-                        </button>
-                        <button id="btn-retry" onclick="reiniciarJuego()" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-8 rounded shadow-lg transition uppercase text-sm lg:text-base text-center">Retry</button>
-                        <button id="btn-next" onclick="nextLevel()" class="hidden bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-8 rounded shadow-lg transition uppercase text-sm lg:text-base text-center">Next Level</button>
-                        <button onclick="volverAlMenu()" class="bg-gray-800 border border-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded shadow-lg transition uppercase text-sm lg:text-base text-center">Close</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- INFORME FINAL (CON DESGLOSE DE ACCIONES) -->
-            <div id="report-modal" class="absolute inset-0 bg-black bg-opacity-95 hidden flex-col items-center justify-center z-50 p-4 text-center">
-                <div class="bg-gray-900 border-4 border-yellow-500 p-2 rounded-lg w-full max-w-5xl overflow-auto flex flex-col text-center h-full">
-                    <div class="flex justify-between items-center bg-gray-800 p-2 border-b border-gray-700 text-center">
-                        <h2 class="text-yellow-500 font-black text-xl uppercase tracking-tighter text-center">HDD FINAL SHOT RECORD</h2>
-                        <div class="flex space-x-2">
-                            <button id="btn-report-view" onclick="toggleReportView()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-1 rounded text-sm uppercase text-center">View: MAIN</button>
-                            <button onclick="cerrarInforme()" class="bg-red-600 hover:bg-red-500 text-white font-bold px-4 py-1 rounded text-sm text-center">CLOSE</button>
-                        </div>
-                    </div>
-                    <div id="report-container" class="flex-grow flex flex-col lg:flex-row items-center justify-center p-2 text-center gap-4">
-                        <div class="w-full lg:w-3/4 flex justify-center h-full max-h-[60vh] lg:max-h-full relative overflow-hidden">
-                            <canvas id="report-canvas" width="1200" height="400" class="w-full h-full object-contain bg-white rounded text-center border-2 border-gray-600"></canvas>
-                        </div>
-                        
-                        <!-- PANEL DE MÉTRICAS -->
-                        <div class="w-full lg:w-1/4 bg-gray-800 p-4 rounded border border-gray-600 flex flex-col text-left h-full overflow-y-auto">
-                            <h3 class="text-yellow-400 font-bold uppercase tracking-wider mb-4 border-b border-gray-600 pb-2 text-center">Operation Metrics</h3>
-                            
-                            <div class="space-y-4 text-sm">
-                                <div>
-                                    <p class="text-gray-400 uppercase text-xs">Total Operation Time</p>
-                                    <p class="text-2xl font-mono font-bold text-white" id="report-time">00:00</p>
-                                </div>
-                                
-                                <div>
-                                    <p class="text-gray-400 uppercase text-xs mb-1 border-b border-gray-700 pb-1">Drill Actions (Rotation)</p>
-                                    <div class="grid grid-cols-2 gap-2 text-white font-mono">
-                                        <div><span class="text-gray-500">1/4:</span> <span id="metric-d14">0</span></div>
-                                        <div><span class="text-gray-500">1/2:</span> <span id="metric-d12">0</span></div>
-                                        <div><span class="text-gray-500">Full:</span> <span id="metric-df">0</span></div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <p class="text-gray-400 uppercase text-xs mb-1 border-b border-gray-700 pb-1">Push Actions (Steering)</p>
-                                    <div class="grid grid-cols-2 gap-2 text-white font-mono">
-                                        <div><span class="text-gray-500">1/4:</span> <span id="metric-p14">0</span></div>
-                                        <div><span class="text-gray-500">1/2:</span> <span id="metric-p12">0</span></div>
-                                        <div><span class="text-gray-500">Full:</span> <span id="metric-pf">0</span></div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <p class="text-gray-400 uppercase text-xs mb-1 border-b border-gray-700 pb-1">Retract Actions</p>
-                                    <div class="grid grid-cols-2 gap-2 text-white font-mono">
-                                        <div><span class="text-gray-500">Back:</span> <span id="metric-b">0</span></div>
-                                        <div><span class="text-gray-500">Rods:</span> <span id="metric-rods">0</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- THE ACTUAL CANVAS INSET -->
+            <div class="relative w-full h-full panel-inset rounded overflow-hidden shadow-inner">
+                <canvas id="game-canvas" width="1200" height="400" class="w-full h-full object-contain text-center touch-none"></canvas>
             </div>
         </div>
 
-        <!-- CONTROLES -->
-        <div class="bg-gray-800 p-2 lg:p-4 rounded-lg shadow-lg shrink-0 relative text-center">
-            <div id="error-msg" class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-red-600 text-white font-bold text-sm px-4 py-2 rounded shadow-lg hidden z-50 mb-1 border-2 border-white max-w-sm text-center uppercase text-center">Error</div>
+        <!-- CONTROLS PANEL -->
+        <div class="panel-metal p-2 lg:p-4 rounded-lg shrink-0 relative text-center z-10">
+            <div class="screw screw-tl"></div><div class="screw screw-tr"></div><div class="screw screw-bl"></div><div class="screw screw-br"></div>
+            <div id="error-msg" class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-red-600 text-white font-bold text-sm px-4 py-2 rounded shadow-[0_0_10px_#f00] hidden z-50 mb-1 border-2 border-red-300 max-w-sm text-center uppercase">Error</div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-2 lg:gap-4 h-full text-center">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2 lg:gap-4 h-full text-center relative z-10">
                 <!-- Clock -->
-                <div class="flex flex-row md:flex-col items-center justify-around md:justify-center shrink-0 border-b md:border-b-0 md:border-r border-gray-700 pb-2 md:pb-0 text-center">
+                <div class="flex flex-row md:flex-col items-center justify-around md:justify-center shrink-0 border-b md:border-b-0 md:border-r border-gray-600 pb-2 md:pb-0 text-center">
                     <div class="flex flex-col items-center text-center">
-                        <h3 class="text-[10px] lg:text-sm mb-1 text-gray-400 font-bold uppercase tracking-widest text-center">Clock</h3>
-                        <div id="clock-container" class="relative w-16 h-16 lg:w-20 lg:h-20 shrink-0 rounded-full border-4 border-gray-600 bg-gray-700 aspect-square mb-1 shadow-inner text-center"></div>
+                        <h3 class="text-[10px] lg:text-sm mb-1 text-gray-200 font-bold uppercase tracking-widest text-center" style="text-shadow: 1px 1px 2px #000;">Clock</h3>
+                        <div id="clock-container" class="relative w-16 h-16 lg:w-20 lg:h-20 shrink-0 rounded-full panel-inset aspect-square mb-1 text-center"></div>
                     </div>
-                    <div id="hour-selector" class="grid grid-cols-4 gap-1 w-full max-w-[140px] px-2 text-center"></div>
+                    <div id="hour-selector" class="grid grid-cols-4 gap-1 w-full max-w-[140px] px-2 text-center mt-1"></div>
                 </div>
 
                 <!-- Intensidad y Capacidad -->
-                <div class="flex flex-col items-center justify-center px-2 text-center border-b md:border-b-0 md:border-r border-gray-700 pb-2 md:pb-0 text-center">
-                    <h3 class="text-[10px] lg:text-sm mb-1 text-gray-400 font-bold uppercase tracking-widest leading-tight text-center">Intensity (%/Rod)</h3>
+                <div class="flex flex-col items-center justify-center px-2 text-center border-b md:border-b-0 md:border-r border-gray-600 pb-2 md:pb-0 text-center">
+                    <h3 class="text-[10px] lg:text-sm mb-1 text-gray-200 font-bold uppercase tracking-widest leading-tight text-center" style="text-shadow: 1px 1px 2px #000;">Intensity (%/Rod)</h3>
                     <div class="flex space-x-2 w-full max-w-[220px] mb-1 text-center">
-                        <button onclick="window.programarFuerza(-1)" class="flex-1 bg-red-500 hover:bg-red-400 text-white font-bold py-1 lg:py-2 rounded shadow text-sm lg:text-base text-center">-1</button>
-                        <button onclick="window.programarFuerza(1)" class="flex-1 bg-blue-500 hover:bg-blue-400 text-white font-bold py-1 lg:py-2 rounded shadow text-sm lg:text-base text-center">+1</button>
+                        <button onclick="window.programarFuerza(-1)" class="flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-1 lg:py-2 rounded shadow-[1px_1px_3px_#000] text-sm lg:text-base text-center border border-red-400">-1</button>
+                        <button onclick="window.programarFuerza(1)" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-1 lg:py-2 rounded shadow-[1px_1px_3px_#000] text-sm lg:text-base text-center border border-blue-400">+1</button>
                     </div>
-                    <div id="display-programmed" class="text-gray-400 font-bold text-[10px] lg:text-xs text-center h-6 lg:h-8 flex items-center justify-center bg-gray-900 w-full max-w-[220px] rounded border text-center">Power: 12%</div>
-                    <button onclick="window.limpiarFuerza()" class="text-[9px] text-gray-500 hover:text-white underline uppercase text-center mt-1 mb-2 text-center">Reset Default Power</button>
+                    <div id="display-programmed" class="text-gray-300 font-bold text-[10px] lg:text-xs text-center h-6 lg:h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded text-center">Power: 12%</div>
+                    <button onclick="window.limpiarFuerza()" class="text-[9px] text-gray-400 hover:text-white underline uppercase text-center mt-1 mb-2 text-center">Reset Default Power</button>
                     <div class="w-full max-w-[220px] text-center">
-                        <h3 class="text-[9px] text-gray-400 font-bold uppercase text-center text-[8px] lg:text-[10px]">Rod Selection</h3>
-                        <select id="rod-length-select" onchange="window.cambiarLongitudVarilla(this.value)" class="bg-gray-900 text-yellow-400 font-bold text-[10px] text-center h-6 w-full rounded border border-yellow-600 mb-1 outline-none cursor-pointer">
+                        <h3 class="text-[9px] text-gray-200 font-bold uppercase text-center text-[8px] lg:text-[10px]" style="text-shadow: 1px 1px 2px #000;">Rod Selection</h3>
+                        <select id="rod-length-select" onchange="window.cambiarLongitudVarilla(this.value)" class="panel-inset text-yellow-400 font-bold text-[10px] text-center h-6 w-full rounded mb-1 outline-none cursor-pointer">
                             <option value="6">Rod 6' (Power: 8%)</option>
                             <option value="10" selected>Rod 10' (Power: 12%)</option>
                             <option value="20">Rod 20' (Power: 24%)</option>
                         </select>
-                        <div id="display-rod-left" class="text-white font-bold text-[10px] text-center h-6 flex items-center justify-center bg-gray-800 w-full rounded border border-gray-600">Left: 10.0 ft</div>
+                        <div id="display-rod-left" class="text-white font-bold text-[10px] text-center h-6 flex items-center justify-center panel-inset w-full rounded">Left: 10.0 ft</div>
                     </div>
                 </div>
 
                 <!-- Acciones & Entrance Pitch -->
                 <div class="flex flex-col justify-center pt-2 md:pt-0 text-center">
                     <div class="flex justify-between items-end mb-2 w-full text-center">
-                        <h3 class="text-xs lg:text-sm text-gray-400 font-bold uppercase text-left pb-1">Run Controls</h3>
-                        <div id="initial-pitch-controls" class="bg-gray-900 border border-gray-600 rounded p-1 flex flex-col items-center">
+                        <h3 class="text-xs lg:text-sm text-gray-200 font-bold uppercase text-left pb-1" style="text-shadow: 1px 1px 2px #000;">Run Controls</h3>
+                        <div id="initial-pitch-controls" class="panel-inset rounded p-1 flex flex-col items-center">
                             <span class="text-[8px] lg:text-[9px] text-gray-400 uppercase font-bold mb-0.5 tracking-wider">Entrance Pitch</span>
                             <div class="flex space-x-1">
-                                <button onclick="window.ajustarPitchInicial(-1)" class="bg-red-600 hover:bg-red-500 text-white font-bold text-[10px] px-3 py-0.5 rounded shadow text-center">-</button>
-                                <button onclick="window.ajustarPitchInicial(1)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10px] px-3 py-0.5 rounded shadow text-center">+</button>
+                                <button onclick="window.ajustarPitchInicial(-1)" class="bg-red-700 hover:bg-red-600 text-white font-bold text-[10px] px-3 py-0.5 rounded shadow text-center border border-red-500">-</button>
+                                <button onclick="window.ajustarPitchInicial(1)" class="bg-blue-700 hover:bg-blue-600 text-white font-bold text-[10px] px-3 py-0.5 rounded shadow text-center border border-blue-500">+</button>
                             </div>
                         </div>
                     </div>
                     <div class="grid grid-cols-3 gap-1 w-full mb-1 text-center">
-                        <button onclick="window.iniciarMoverFraccion(0.25, true, 'd14')" class="btn-action bg-green-500 hover:bg-green-400 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">D. 1/4</button>
-                        <button onclick="window.iniciarMoverFraccion(0.5, true, 'd12')" class="btn-action bg-green-600 hover:bg-green-500 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">D. 1/2</button>
-                        <button onclick="window.iniciarMoverFraccion(1.0, true, 'df')" class="btn-action bg-green-700 hover:bg-green-600 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">D. Full</button>
+                        <button onclick="window.iniciarMoverFraccion(0.25, true, 'd14')" class="btn-action bg-green-600 hover:bg-green-500 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-green-400 uppercase text-center">D. 1/4</button>
+                        <button onclick="window.iniciarMoverFraccion(0.5, true, 'd12')" class="btn-action bg-green-700 hover:bg-green-600 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-green-500 uppercase text-center">D. 1/2</button>
+                        <button onclick="window.iniciarMoverFraccion(1.0, true, 'df')" class="btn-action bg-green-800 hover:bg-green-700 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-green-600 uppercase text-center">D. Full</button>
                     </div>
                     <div class="grid grid-cols-3 gap-1 w-full mb-1 text-center">
-                        <button onclick="window.iniciarMoverFraccion(0.25, false, 'p14')" class="btn-action bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">P. 1/4</button>
-                        <button onclick="window.iniciarMoverFraccion(0.5, false, 'p12')" class="btn-action bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">P. 1/2</button>
-                        <button onclick="window.iniciarMoverFraccion(1.0, false, 'pf')" class="btn-action bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">P. Full</button>
+                        <button onclick="window.iniciarMoverFraccion(0.25, false, 'p14')" class="btn-action bg-yellow-500 hover:bg-yellow-400 text-black font-black py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-yellow-300 uppercase text-center">P. 1/4</button>
+                        <button onclick="window.iniciarMoverFraccion(0.5, false, 'p12')" class="btn-action bg-yellow-600 hover:bg-yellow-500 text-black font-black py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-yellow-400 uppercase text-center">P. 1/2</button>
+                        <button onclick="window.iniciarMoverFraccion(1.0, false, 'pf')" class="btn-action bg-yellow-700 hover:bg-yellow-600 text-black font-black py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-yellow-500 uppercase text-center">P. Full</button>
                     </div>
                     <div class="grid grid-cols-3 gap-1 w-full text-center">
-                        <button onclick="window.iniciarRetrocederFraccion(0.25)" class="btn-action bg-gray-500 hover:bg-gray-400 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">B. 1/4</button>
-                        <button onclick="window.iniciarRetrocederFraccion(0.5)" class="btn-action bg-gray-600 hover:bg-gray-500 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">B. 1/2</button>
-                        <button onclick="window.iniciarRetrocederFraccion(1.0)" class="btn-action bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow uppercase text-center">B. Full</button>
+                        <button onclick="window.iniciarRetrocederFraccion(0.25)" class="btn-action bg-gray-600 hover:bg-gray-500 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-gray-400 uppercase text-center">B. 1/4</button>
+                        <button onclick="window.iniciarRetrocederFraccion(0.5)" class="btn-action bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-gray-500 uppercase text-center">B. 1/2</button>
+                        <button onclick="window.iniciarRetrocederFraccion(1.0)" class="btn-action bg-gray-800 hover:bg-gray-700 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-gray-600 uppercase text-center">B. Full</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE FIN DE JUEGO -->
+    <div id="game-over-modal" class="absolute inset-0 bg-black bg-opacity-80 hidden flex-col items-center justify-center z-30 backdrop-blur-sm text-center">
+        <div class="panel-metal border-none p-6 rounded-lg shadow-[0_0_50px_rgba(0,0,0,1)] max-w-xl w-full flex flex-col items-center mx-4 text-white text-center relative">
+            <div class="screw screw-tl"></div><div class="screw screw-tr"></div><div class="screw screw-bl"></div><div class="screw screw-br"></div>
+            <h2 id="game-over-title" class="text-xl lg:text-4xl font-black mb-2 text-center uppercase text-center" style="text-shadow: 2px 2px 5px #000;"></h2>
+            <div id="star-rating" class="flex space-x-2 mb-2 text-4xl text-center drop-shadow-lg"></div>
+            <p id="game-over-msg" class="text-sm lg:text-lg mb-4 text-center px-4 max-w-2xl font-bold text-gray-200" style="text-shadow: 1px 1px 2px #000;"></p>
+            
+            <div id="new-record-form" class="hidden flex-col items-center w-full mb-4 panel-inset p-4 rounded border border-yellow-500">
+                <h4 class="text-yellow-400 font-bold mb-2 uppercase animate-pulse">🎉 NEW RECORD! 🎉</h4>
+                <p class="text-sm text-gray-300 mb-2">Enter your name for the Leaderboard:</p>
+                <div class="flex space-x-2">
+                    <input type="text" id="player-name-input" class="px-3 py-1 rounded text-black font-bold uppercase" placeholder="YOUR NAME" maxlength="15">
+                    <button onclick="window.saveRecord()" class="bg-green-600 hover:bg-green-500 text-white font-bold py-1 px-4 rounded shadow border border-green-400">SAVE</button>
+                </div>
+            </div>
+
+            <div id="game-over-errors" class="w-full mb-6 text-left hidden panel-inset p-4 rounded border border-red-900 text-center">
+                <h4 class="text-red-500 font-bold mb-2 text-sm uppercase underline text-center">Incident Log:</h4>
+                <ul id="game-over-errors-list" class="list-disc pl-5 text-xs lg:text-sm text-red-400 text-center font-mono"></ul>
+            </div>
+            <div class="flex flex-wrap justify-center gap-3 text-center relative z-10">
+                <button id="btn-report" onclick="window.generarInformeFinal()" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded shadow-[1px_1px_3px_#000] transition uppercase text-sm lg:text-base text-center border border-indigo-400">
+                    View Final Record
+                </button>
+                <button id="btn-retry" onclick="window.reiniciarJuego()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-8 rounded shadow-[1px_1px_3px_#000] transition uppercase text-sm lg:text-base text-center border border-gray-400">Retry</button>
+                <button id="btn-next" onclick="window.nextLevel()" class="hidden bg-yellow-500 hover:bg-yellow-400 text-black font-black py-2 px-8 rounded shadow-[1px_1px_3px_#000] transition uppercase text-sm lg:text-base text-center border border-yellow-700">Next Level</button>
+                <button onclick="window.volverAlMenu()" class="bg-gray-900 hover:bg-gray-800 text-white font-bold py-2 px-6 rounded shadow-[1px_1px_3px_#000] transition uppercase text-sm lg:text-base text-center border border-gray-600">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- INFORME FINAL -->
+    <div id="report-modal" class="absolute inset-0 bg-black bg-opacity-90 hidden flex-col items-center justify-center z-50 p-4 text-center">
+        <div class="panel-metal p-2 rounded-lg w-full max-w-5xl overflow-auto flex flex-col text-center h-full relative shadow-[0_0_50px_rgba(0,0,0,1)]">
+            <div class="screw screw-tl"></div><div class="screw screw-tr"></div><div class="screw screw-bl"></div><div class="screw screw-br"></div>
+            
+            <div class="flex justify-between items-center panel-inset p-2 mb-2 rounded text-center relative z-10">
+                <h2 class="text-yellow-500 font-black text-xl uppercase tracking-tighter text-center">HDD FINAL SHOT RECORD</h2>
+                <div class="flex space-x-2">
+                    <button id="btn-report-view" onclick="window.toggleReportView()" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold px-4 py-1 rounded text-sm uppercase text-center border border-indigo-500">View: MAIN</button>
+                    <button onclick="window.cerrarInforme()" class="bg-red-700 hover:bg-red-600 text-white font-bold px-4 py-1 rounded text-sm text-center border border-red-500">CLOSE</button>
+                </div>
+            </div>
+            <div id="report-container" class="flex-grow flex flex-col lg:flex-row items-center justify-center p-2 text-center gap-4 relative z-10">
+                <div class="w-full lg:w-3/4 flex justify-center h-full max-h-[60vh] lg:max-h-full relative overflow-hidden panel-inset rounded border border-gray-500">
+                    <canvas id="report-canvas" width="1200" height="400" class="w-full h-full object-contain bg-white rounded text-center"></canvas>
+                </div>
+                
+                <!-- PANEL DE MÉTRICAS -->
+                <div class="w-full lg:w-1/4 panel-inset p-4 rounded flex flex-col text-left h-full overflow-y-auto">
+                    <h3 class="text-yellow-400 font-bold uppercase tracking-wider mb-4 border-b border-gray-600 pb-2 text-center">Operation Metrics</h3>
+                    
+                    <div class="space-y-4 text-sm">
+                        <div>
+                            <p class="text-gray-400 uppercase text-xs">Total Operation Time</p>
+                            <p class="text-2xl font-mono font-bold text-white" id="report-time">00:00</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-400 uppercase text-xs mb-1 border-b border-gray-700 pb-1">Drill Actions (Rotation)</p>
+                            <div class="grid grid-cols-2 gap-2 text-green-400 font-mono">
+                                <div><span class="text-gray-500">1/4:</span> <span id="metric-d14">0</span></div>
+                                <div><span class="text-gray-500">1/2:</span> <span id="metric-d12">0</span></div>
+                                <div><span class="text-gray-500">Full:</span> <span id="metric-df">0</span></div>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-gray-400 uppercase text-xs mb-1 border-b border-gray-700 pb-1">Push Actions (Steering)</p>
+                            <div class="grid grid-cols-2 gap-2 text-yellow-400 font-mono">
+                                <div><span class="text-gray-500">1/4:</span> <span id="metric-p14">0</span></div>
+                                <div><span class="text-gray-500">1/2:</span> <span id="metric-p12">0</span></div>
+                                <div><span class="text-gray-500">Full:</span> <span id="metric-pf">0</span></div>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-gray-400 uppercase text-xs mb-1 border-b border-gray-700 pb-1">Retract Actions</p>
+                            <div class="grid grid-cols-2 gap-2 text-red-400 font-mono">
+                                <div><span class="text-gray-500">Back:</span> <span id="metric-b">0</span></div>
+                                <div><span class="text-gray-500">Rods:</span> <span id="metric-rods">0</span></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -357,6 +425,7 @@
         const startXOffset = 150;
         const ftToPx = 15;
         let camera = { zoom: 1, offsetX: 0, offsetY: 0 };
+        let reportViewType = 'side';
         
         let state = {
             level: 1, view: 'side', distance: 0, absElevation: 0, lat: 0, pitch: -24, latAngle: 0, clock: 12, steeringForce: 12, rods: 0, maxRodLength: 10, path: [], targetDistance: 100, targetDepth: 3.0, targetLat: 0.0, runawayWidth: 2.5, maxAllowedDepthRel: 7.0, gameOver: false, errors: [], potholesVisited: [], surfacePoints: [], utilities: [],
@@ -405,7 +474,6 @@
             }
         };
 
-        // Exportar funciones globales para el juego
         window.dbGuardarRecord = async function(nombre, nivel, tiempoSegundos, scoreEstrellas) {
             const record = { name: nombre, level: nivel, time: tiempoSegundos, score: scoreEstrellas, timestamp: new Date().toISOString() };
             if(useLocalStorage) {
@@ -466,7 +534,12 @@
             });
         };
 
-        // --- FUNCIONES Y EVENTOS GLOBALES (EXPORTE AL OBJETO WINDOW) ---
+        function formatTime(secs) {
+            let m = Math.floor(secs / 60); let s = secs % 60;
+            return (m < 10 ? "0"+m : m) + ":" + (s < 10 ? "0"+s : s);
+        }
+
+        // --- FUNCIONES Y EVENTOS GLOBALES ---
         window.zoomIn = function() { camera.zoom *= 1.2; clampCamera(); dibujarEscena(); };
         window.zoomOut = function() { camera.zoom /= 1.2; clampCamera(); dibujarEscena(); };
         window.resetZoom = function() { camera.zoom = 1; camera.offsetX = 0; camera.offsetY = 0; dibujarEscena(); };
@@ -476,7 +549,6 @@
             if(camera.zoom > 5) camera.zoom = 5;
         }
 
-        // Eventos de cámara
         canvas.addEventListener('wheel', function(e) {
             e.preventDefault();
             const rect = canvas.getBoundingClientRect();
@@ -566,18 +638,12 @@
         function setEnginePitch(f, v = 0.03) { if (!audioCtx || isMuted) return; engineOsc.frequency.exponentialRampToValueAtTime(f, audioCtx.currentTime + 0.5); engineGain.gain.linearRampToValueAtTime(Math.min(v, 0.08), audioCtx.currentTime + 0.2); }
         function playSound(f, t, d, v = 0.15) { if (!audioCtx || isMuted) return; let o = audioCtx.createOscillator(); let g = audioCtx.createGain(); o.type = t; o.frequency.setValueAtTime(f, audioCtx.currentTime); g.gain.setValueAtTime(v, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + d); o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime + d); }
         
-        // --- SONIDO DE ÉXITO (ESTRELLA) ---
         window.playSuccessChime = function() {
             if (!audioCtx || isMuted) return;
-            let o1 = audioCtx.createOscillator(); let g1 = audioCtx.createGain();
-            o1.type = 'sine'; o1.frequency.setValueAtTime(523.25, audioCtx.currentTime); // Nota Do
-            g1.gain.setValueAtTime(0, audioCtx.currentTime); g1.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.05); g1.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2);
-            o1.connect(g1); g1.connect(audioCtx.destination); o1.start(); o1.stop(audioCtx.currentTime + 0.2);
-
-            let o2 = audioCtx.createOscillator(); let g2 = audioCtx.createGain();
-            o2.type = 'sine'; o2.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // Nota Mi
-            g2.gain.setValueAtTime(0, audioCtx.currentTime + 0.1); g2.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.15); g2.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.6);
-            o2.connect(g2); g2.connect(audioCtx.destination); o2.start(audioCtx.currentTime + 0.1); o2.stop(audioCtx.currentTime + 0.6);
+            let o1 = audioCtx.createOscillator(); let g1 = audioCtx.createGain(); o1.type = 'sine'; o1.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+            g1.gain.setValueAtTime(0, audioCtx.currentTime); g1.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.05); g1.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2); o1.connect(g1); g1.connect(audioCtx.destination); o1.start(); o1.stop(audioCtx.currentTime + 0.2);
+            let o2 = audioCtx.createOscillator(); let g2 = audioCtx.createGain(); o2.type = 'sine'; o2.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); 
+            g2.gain.setValueAtTime(0, audioCtx.currentTime + 0.1); g2.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.15); g2.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.6); o2.connect(g2); g2.connect(audioCtx.destination); o2.start(audioCtx.currentTime + 0.1); o2.stop(audioCtx.currentTime + 0.6);
         };
 
         window.toggleMute = function() { 
@@ -706,48 +772,29 @@
             }
         }
 
-        // --- DIBUJO DE ESTRELLAS HUD ---
         function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius, fillCol, strokeCol) {
-            let rot = Math.PI / 2 * 3;
-            let x = cx; let y = cy;
-            let step = Math.PI / spikes;
-
-            ctx.beginPath();
-            ctx.moveTo(cx, cy - outerRadius);
+            let rot = Math.PI / 2 * 3; let x = cx; let y = cy; let step = Math.PI / spikes;
+            ctx.beginPath(); ctx.moveTo(cx, cy - outerRadius);
             for (let i = 0; i < spikes; i++) {
                 x = cx + Math.cos(rot) * outerRadius; y = cy + Math.sin(rot) * outerRadius; ctx.lineTo(x, y); rot += step;
                 x = cx + Math.cos(rot) * innerRadius; y = cy + Math.sin(rot) * innerRadius; ctx.lineTo(x, y); rot += step;
             }
-            ctx.lineTo(cx, cy - outerRadius);
-            ctx.closePath();
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = strokeCol;
-            ctx.stroke();
-            if (fillCol !== 'transparent') {
-                ctx.fillStyle = fillCol;
-                ctx.fill();
-            }
+            ctx.lineTo(cx, cy - outerRadius); ctx.closePath(); ctx.lineWidth = 2; ctx.strokeStyle = strokeCol; ctx.stroke();
+            if (fillCol !== 'transparent') { ctx.fillStyle = fillCol; ctx.fill(); }
         }
 
         function dibujarEstrellasHUD(tCtx) {
-            let total = state.utilities.length;
-            let recogidas = state.potholesVisited.length;
+            let total = state.utilities.length; let recogidas = state.potholesVisited.length;
             if(total === 0) return;
-
-            let starSpacing = 35;
-            let startX = (canvas.width / 2) - ((total - 1) * starSpacing / 2);
-            let startY = canvas.height - 30;
-
-            // Fondo oscuro para dar contraste
-            tCtx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-            tCtx.fillRect(startX - 25, startY - 20, (total - 1) * starSpacing + 50, 40);
-
+            let starSpacing = 35; let startX = (canvas.width / 2) - ((total - 1) * starSpacing / 2); let startY = canvas.height - 35; 
+            tCtx.fillStyle = 'rgba(0, 0, 0, 0.6)'; let boxWidth = Math.max((total - 1) * starSpacing + 50, 160); let boxStartX = (canvas.width / 2) - (boxWidth / 2);
+            tCtx.fillRect(boxStartX, startY - 20, boxWidth, 55);
             for(let i=0; i<total; i++) {
-                let isCollected = i < recogidas;
-                let fillCol = isCollected ? '#facc15' : 'transparent';
-                let strokeCol = isCollected ? '#ca8a04' : '#6b7280'; // Borde dorado o gris oscuro
+                let isCollected = i < recogidas; let fillCol = isCollected ? '#facc15' : 'transparent'; let strokeCol = isCollected ? '#ca8a04' : '#6b7280';
                 drawStar(tCtx, startX + (i * starSpacing), startY, 5, 12, 6, fillCol, strokeCol);
             }
+            tCtx.font = '18px "VT323", "Courier New", monospace'; tCtx.textAlign = 'center'; tCtx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            tCtx.fillText("by Julio Sarracent", canvas.width / 2, startY + 28);
         }
 
         function dibujarCuerpoEscena(tCtx, viewType) {
@@ -769,7 +816,6 @@
                 state.utilities.forEach(u => { 
                     let pxX = getPxX(u.dist), pxY = getPxY_Side(u.absElevation), r = Math.max((u.diamFt/2)*15, 4);
                     tCtx.beginPath(); tCtx.arc(pxX, pxY, r, 0, Math.PI*2); tCtx.fillStyle = u.color; tCtx.fill(); tCtx.lineWidth = 1; tCtx.strokeStyle = '#000'; tCtx.stroke();
-                    let label = `${u.name}: ${formatPiesPulgadas(u.depthTarget)} ft`; tCtx.font = 'bold 11px Arial'; tCtx.lineWidth = 3 / camera.zoom; tCtx.strokeStyle = '#000000'; tCtx.strokeText(label, pxX + r + 5, pxY + 4); tCtx.fillStyle = u.color; tCtx.fillText(label, pxX + r + 5, pxY + 4);
                 });
                 
                 let tx = getPxX(state.targetDistance), s = getSurfaceHeight(state.targetDistance), ys = surfaceBaseY-(s*10), yt = getPxY_Side(state.targetDepth-s);
@@ -798,10 +844,25 @@
 
                 if (state.locator) {
                     let locPx = getPxX(state.locator.dist), locPy = getPxY_Top(state.locator.lat);
-                    tCtx.beginPath(); tCtx.arc(locPx, locPy, 6 / camera.zoom, 0, Math.PI*2); tCtx.fillStyle = '#FFFFFF'; tCtx.fill();
-                    tCtx.beginPath(); tCtx.strokeStyle = '#000000'; tCtx.lineWidth = 2 / camera.zoom; let crossSize = 6 / camera.zoom;
-                    tCtx.moveTo(locPx - crossSize, locPy); tCtx.lineTo(locPx + crossSize, locPy); tCtx.moveTo(locPx, locPy - crossSize); tCtx.lineTo(locPx, locPy + crossSize); tCtx.stroke();
-                    tCtx.font = `bold ${10 / camera.zoom}px Arial`; tCtx.lineWidth = 3 / camera.zoom; tCtx.strokeStyle = '#000000'; tCtx.strokeText("TRACKER", locPx + (10 / camera.zoom), locPy + (4 / camera.zoom)); tCtx.fillStyle = '#FFFFFF'; tCtx.fillText("TRACKER", locPx + (10 / camera.zoom), locPy + (4 / camera.zoom));
+                    let baseRadius = 10; // Tamaño más visible
+                    
+                    // Bolita blanca con borde negro
+                    tCtx.beginPath(); 
+                    tCtx.arc(locPx, locPy, baseRadius / camera.zoom, 0, Math.PI*2); 
+                    tCtx.fillStyle = '#FFFFFF'; 
+                    tCtx.fill();
+                    tCtx.lineWidth = 2 / camera.zoom; 
+                    tCtx.strokeStyle = '#000000'; 
+                    tCtx.stroke();
+                    
+                    // Cruz negra en el centro
+                    tCtx.beginPath(); 
+                    tCtx.strokeStyle = '#000000'; 
+                    tCtx.lineWidth = 2 / camera.zoom; 
+                    let crossSize = baseRadius / camera.zoom;
+                    tCtx.moveTo(locPx - crossSize, locPy); tCtx.lineTo(locPx + crossSize, locPy); 
+                    tCtx.moveTo(locPx, locPy - crossSize); tCtx.lineTo(locPx, locPy + crossSize); 
+                    tCtx.stroke();
                 }
             }
         }
@@ -812,8 +873,6 @@
             dibujarCuerpoEscena(ctx, state.view); 
             ctx.restore();
             if (state.view === 'side') { dibujarRadarRadar(ctx); dibujarIndicadoresHUD(ctx); }
-            
-            // Dibujar las estrellas fuera del escalado de cámara para que siempre se vean centradas
             dibujarEstrellasHUD(ctx);
         }
 
@@ -852,7 +911,6 @@
 
         function verificarEstrellas() {
             state.utilities.forEach(u => {
-                // Rango generoso para obtener la estrella si se pasó la utilidad de manera segura
                 if (Math.abs(state.distance - u.dist) < 1.5 && Math.abs(state.lat - u.lat) < 1.0) {
                     if (!state.potholesVisited.includes(u.id)) {
                         state.potholesVisited.push(u.id);
@@ -867,10 +925,7 @@
             if (animationData.progress >= 1) {
                 let to = animationData.current.type === 'push' ? animationData.current.end : animationData.current.start;
                 Object.assign(state, to); if (animationData.current.type === 'push') state.path.push(animationData.current.end); else state.path.pop();
-                
-                verificarEstrellas(); // Verificación real-time
-
-                window.actualizarPantallas(); dibujarEscena();
+                verificarEstrellas(); window.actualizarPantallas(); dibujarEscena();
                 if (chequearCondiciones(false)) { isAnimating = false; setEnginePitch(35); return; }
                 if (animationData.queue.length > 0) { animationData.current = animationData.queue.shift(); animationData.progress = 0; requestAnimationFrame(animTick); }
                 else { isAnimating = false; document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); setEnginePitch(35); chequearCondiciones(true); }
@@ -878,10 +933,7 @@
                 let t = animationData.progress; let f = animationData.current.type === 'push' ? animationData.current.start : animationData.current.end; let to = animationData.current.type === 'push' ? animationData.current.end : animationData.current.start;
                 state.distance = f.distance + (to.distance - f.distance) * t; state.absElevation = f.absElevation + (to.absElevation - f.absElevation) * t; state.lat = f.lat + (to.lat - f.lat) * t;
                 state.pitch = f.pitch + (to.pitch - f.pitch) * t; state.latAngle = f.latAngle + (to.latAngle - f.latAngle) * t; state.rods = f.rods + (to.rods - f.rods) * t;
-                
-                verificarEstrellas(); // Verificación real-time
-
-                window.actualizarPantallas(); dibujarEscena(); requestAnimationFrame(animTick);
+                verificarEstrellas(); window.actualizarPantallas(); dibujarEscena(); requestAnimationFrame(animTick);
             }
         }
 
@@ -899,7 +951,6 @@
                 let start = { ...s }; let rodsPerChunk = distPerChunk / state.maxRodLength;
                 if (!isDrill && af !== 0) { let mults = getClockMultipliers(s.clock); let pitchChange = af * rodsPerChunk; s.pitch += pitchChange * mults.p; s.latAngle += pitchChange * mults.l; }
                 s.distance += distPerChunk; s.rods += rodsPerChunk; s.absElevation += -(s.pitch / 100) * distPerChunk; s.lat += (s.latAngle / 100) * distPerChunk;
-                // LA LÍNEA DE COLECCIÓN FUE ELIMINADA DE AQUÍ, AHORA LO MANEJA animTick()
                 q.push({ type: 'push', start: start, end: { ...s } });
             }
             setEnginePitch(60, 0.08); iniciarAnim(q);
@@ -934,33 +985,23 @@
             hand.appendChild(ah); hw.appendChild(hand); container.appendChild(hw);
             let sel = document.getElementById('hour-selector'); if (!sel) return; sel.innerHTML = '';
             for(let i=1; i<=12; i++) {
-                let btn = document.createElement('button'); btn.className = `font-bold text-[10px] py-1 rounded shadow ` + (state.clock === i ? 'bg-red-600 text-white' : 'bg-yellow-400 text-black');
+                let btn = document.createElement('button'); btn.className = `font-bold text-[10px] py-1 rounded shadow-[1px_1px_3px_#000] border border-gray-600 ` + (state.clock === i ? 'bg-red-600 text-white border-red-400' : 'bg-yellow-500 text-black');
                 btn.innerText = i; btn.onclick = () => { if(!state.gameOver) { window.setClock(i); } };
                 sel.appendChild(btn);
             }
         };
         
         window.actualizarPantallas = function() {
-            let relDepth = state.absElevation + getSurfaceHeight(state.distance);
-            const dDepth = document.getElementById('display-depth'), dPitch = document.getElementById('display-pitch'), dLat = document.getElementById('display-lat'), dLatAngle = document.getElementById('display-lat-angle'), dDist = document.getElementById('display-distance'), dRem = document.getElementById('display-remaining'), dRod = document.getElementById('display-rod-left'), dPothole = document.getElementById('pothole-counter');
-            if (dDepth) dDepth.innerText = formatPiesPulgadas(relDepth) + " ft";
-            let pVal = parseFloat(state.pitch.toFixed(1)); let lVal = parseFloat(state.latAngle.toFixed(1));
-            if (dPitch) dPitch.innerText = (pVal > 0 ? "+" : "") + pVal.toFixed(1) + " %";
-            if (dLatAngle) dLatAngle.innerText = (lVal > 0 ? "+" : "") + lVal.toFixed(1) + " %";
-            if (dLat) dLat.innerText = formatPiesPulgadas(Math.abs(state.lat)) + " ft " + (state.lat > 0.1 ? "(R)" : state.lat < -0.1 ? "(L)" : "(C)");
-            if (dDist) dDist.innerText = state.distance.toFixed(0) + " ft (" + state.rods.toFixed(1) + "r)";
-            
             let pDisp = document.getElementById('display-programmed');
             if (pDisp) { 
                 pDisp.innerText = `Power: ${state.steeringForce}%`; let abs = Math.abs(state.steeringForce); 
-                pDisp.className = "mt-1 font-bold text-[10px] lg:text-xs text-center h-6 lg:h-8 flex items-center justify-center bg-gray-900 w-full max-w-[220px] rounded border text-center"; 
-                if (abs <= 10) pDisp.classList.add("text-blue-300", "border-blue-500"); else if (abs <= 16) pDisp.classList.add("text-yellow-300", "border-yellow-500"); else pDisp.classList.add("text-red-300", "border-red-500"); 
+                pDisp.className = "mt-1 font-bold text-[10px] lg:text-xs text-center h-6 lg:h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded text-center"; 
+                if (abs <= 10) pDisp.classList.add("text-blue-300"); else if (abs <= 16) pDisp.classList.add("text-yellow-300"); else pDisp.classList.add("text-red-400"); 
             }
-            if (dRem) dRem.innerText = Math.max(0, state.targetDistance - state.distance).toFixed(0) + " ft";
             
             let rl = state.maxRodLength - (state.distance % state.maxRodLength); if (Math.abs(rl - state.maxRodLength) < 0.01 || Math.abs(rl) < 0.01) rl = state.maxRodLength;
+            let dRod = document.getElementById('display-rod-left');
             if (dRod) dRod.innerText = `Left: ${rl.toFixed(1)} ft`;
-            if (dPothole) dPothole.innerText = `Potholes: ${state.potholesVisited.length}/${state.utilities.length}`;
             let ip = document.getElementById('initial-pitch-controls'); if (ip) state.rods > 0 ? ip.classList.add('hidden') : ip.classList.remove('hidden');
 
             const logList = document.getElementById('rod-log-list');
@@ -1017,7 +1058,7 @@
         window.cerrarInforme = function() { document.getElementById('report-modal').classList.add('hidden'); document.getElementById('report-modal').classList.remove('flex'); };
         window.saveRecord = function() {
             const nameInput = document.getElementById('player-name-input'); const name = nameInput.value.trim();
-            if(!name) { mostrarError("Please enter a name"); return; }
+            if(!name) { alert("Please enter a name"); return; }
             if(window.dbGuardarRecord) { window.dbGuardarRecord(name, state.level, state.timeElapsed, state.potholesVisited.length); }
             document.getElementById('new-record-form').classList.add('hidden'); nameInput.value = ''; window.nextLevel();
         };
@@ -1048,6 +1089,7 @@
         window.nextLevel = function() { if (state.level < 20) { state.level++; generateLevel(state.level); document.getElementById('game-over-modal').classList.add('hidden'); document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); } };
         window.reiniciarJuego = function() { generateLevel(state.level); document.getElementById('game-over-modal').classList.add('hidden'); document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); };
 
+        initFirebase();
     </script>
 </body>
 </html>
