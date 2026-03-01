@@ -1017,7 +1017,7 @@
         window.cerrarInforme = function() { document.getElementById('report-modal').classList.add('hidden'); document.getElementById('report-modal').classList.remove('flex'); };
         window.saveRecord = function() {
             const nameInput = document.getElementById('player-name-input'); const name = nameInput.value.trim();
-            if(!name) { alert("Please enter a name"); return; }
+            if(!name) { mostrarError("Please enter a name"); return; }
             if(window.dbGuardarRecord) { window.dbGuardarRecord(name, state.level, state.timeElapsed, state.potholesVisited.length); }
             document.getElementById('new-record-form').classList.add('hidden'); nameInput.value = ''; window.nextLevel();
         };
