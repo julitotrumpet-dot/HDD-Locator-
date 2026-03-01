@@ -1,8 +1,8 @@
-# HDD Professional Multi-Level Simulator v2.9
+# HDD Professional Multi-Level Simulator v4.2
 
 ![HDD Simulator](https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=400&auto=format&fit=crop)
 
-HDD Professional: Horizontal Directional Drilling Simulator v2.9.3
+HDD Professional: Horizontal Directional Drilling Simulator v4.2
 
 HDD Professional is a high-precision technical simulator developed for the web, designed for Horizontal Directional Drilling (HDD) operators and enthusiasts. The project combines gaming mechanics with real industrial safety protocols to offer a logical and challenging training experience.
 
