@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>HDD Professional Multi-Level Simulator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -1025,7 +1027,27 @@
 
         // --- MANEJO DE VISTAS Y FINALES ---
         window.toggleView = function() { state.view = state.view === 'side' ? 'top' : 'side'; const btnText = document.getElementById('btn-view-text'); const indicator = document.getElementById('view-indicator'); if (btnText) btnText.innerText = state.view === 'side' ? 'Main' : 'Aerial'; if (indicator) indicator.innerText = state.view === 'side' ? 'Main View (Absolute Horizon)' : 'Aerial View (Runway Corridor)'; dibujarEscena(); };
-        window.toggleFullScreen = function() { try { if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(e => mostrarError("Fullscreen blocked.")); } else { if (document.exitFullscreen) document.exitFullscreen(); } } catch(e) { mostrarError("Full screen not supported."); } };
+        window.toggleFullScreen = function() { 
+            try { 
+                let doc = document.documentElement;
+                let isFull = document.fullscreenElement || document.webkitFullscreenElement;
+                if (!isFull) { 
+                    if (doc.requestFullscreen) {
+                        doc.requestFullscreen().catch(e => mostrarError("Fullscreen blocked.")); 
+                    } else if (doc.webkitRequestFullscreen) {
+                        doc.webkitRequestFullscreen(); // Soporte para iPad/Safari antiguo
+                    } else {
+                        // Mensaje de fallback nativo para iPhones
+                        mostrarError("iOS: Add to Home Screen to play Fullscreen");
+                    }
+                } else { 
+                    if (document.exitFullscreen) document.exitFullscreen(); 
+                    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                } 
+            } catch(e) { 
+                mostrarError("Full screen not supported."); 
+            } 
+        };
         
         function mostrarGameOver(tit, msg, col, isWin = false) {
             state.gameOver = true; clearInterval(state.timerInterval); document.querySelectorAll('.btn-action').forEach(b => b.disabled = true);
