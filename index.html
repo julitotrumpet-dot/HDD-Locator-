@@ -118,7 +118,7 @@
                     <ul class="text-[10px] lg:text-xs text-gray-200 space-y-1">
                         <li>• Complete <span class="text-white font-bold">20 levels</span> with Dynamic Music.</li>
                         <li>• Master <span class="text-white font-bold">Absolute Horizon</span> and Depth Limits.</li>
-                        <li>• <span class="text-orange-400 font-bold">NEW:</span> Camera Zoom & Panning System.</li>
+                        <li>• <span class="text-orange-400 font-bold">NEW:</span> Exit Target Depth labeling on vaults.</li>
                         <li>• Compete for the fastest time and best accuracy!</li>
                     </ul>
                 </div>
@@ -304,6 +304,7 @@
                 <div class="flex flex-col justify-center pt-2 md:pt-0 text-center">
                     <div class="flex justify-between items-end mb-2 w-full text-center">
                         <h3 class="text-xs lg:text-sm text-gray-200 font-bold uppercase text-left pb-1" style="text-shadow: 1px 1px 2px #000;">Run Controls</h3>
+                        <!-- ENTRANCE PITCH CONTROLS -->
                         <div id="initial-pitch-controls" class="panel-inset rounded p-1 flex flex-col items-center">
                             <span class="text-[8px] lg:text-[9px] text-gray-400 uppercase font-bold mb-0.5 tracking-wider">Entrance Pitch</span>
                             <div class="flex space-x-1">
@@ -576,6 +577,7 @@
         function dibujarRuta(ctxTarget, getPy, viewType) { if (!state.path || state.path.length === 0) return; ctxTarget.beginPath(); ctxTarget.strokeStyle = '#C0C0C0'; ctxTarget.lineWidth = 3; ctxTarget.lineCap = 'round'; let rutaPath = [...state.path]; if (isAnimating) rutaPath.push({ distance: state.distance, absElevation: state.absElevation, lat: state.lat }); for (let i = 0; i < rutaPath.length; i++) { let px = getPxX(rutaPath[i].distance); let py = viewType === 'side' ? getPy(rutaPath[i].absElevation) : getPy(rutaPath[i].lat); if (i === 0) ctxTarget.moveTo(px, py); else ctxTarget.lineTo(px, py); } ctxTarget.stroke(); if (viewType === 'top') { state.path.forEach(n => { if (n.distance > 0 && Math.abs(n.distance % state.maxRodLength) < 0.1) { ctxTarget.beginPath(); ctxTarget.arc(getPxX(n.distance), getPy(n.lat), 3, 0, Math.PI*2); ctxTarget.fillStyle = '#000'; ctxTarget.fill(); } }); } }
         function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius, fillCol, strokeCol) { let rot = Math.PI / 2 * 3; let x = cx; let y = cy; let step = Math.PI / spikes; ctx.beginPath(); ctx.moveTo(cx, cy - outerRadius); for (let i = 0; i < spikes; i++) { x = cx + Math.cos(rot) * outerRadius; y = cy + Math.sin(rot) * outerRadius; ctx.lineTo(x, y); rot += step; x = cx + Math.cos(rot) * innerRadius; y = cy + Math.sin(rot) * innerRadius; ctx.lineTo(x, y); rot += step; } ctx.lineTo(cx, cy - outerRadius); ctx.closePath(); ctx.lineWidth = 2; ctx.strokeStyle = strokeCol; ctx.stroke(); if (fillCol !== 'transparent') { ctx.fillStyle = fillCol; ctx.fill(); } }
         function dibujarEstrellasHUD(tCtx) { let total = state.utilities.length; let recogidas = state.potholesVisited.length; if(total === 0) return; let starSpacing = 35; let startX = (canvas.width / 2) - ((total - 1) * starSpacing / 2); let startY = canvas.height - 35; tCtx.fillStyle = 'rgba(0, 0, 0, 0.6)'; let boxWidth = Math.max((total - 1) * starSpacing + 50, 160); let boxStartX = (canvas.width / 2) - (boxWidth / 2); tCtx.fillRect(boxStartX, startY - 20, boxWidth, 55); for(let i=0; i<total; i++) { let isCollected = i < recogidas; let fillCol = isCollected ? '#facc15' : 'transparent'; let strokeCol = isCollected ? '#ca8a04' : '#6b7280'; drawStar(tCtx, startX + (i * starSpacing), startY, 5, 12, 6, fillCol, strokeCol); } }
+        
         function dibujarCuerpoEscena(tCtx, viewType) {
             if (viewType === 'side') {
                 tCtx.fillStyle = '#87CEEB'; tCtx.fillRect(-5000, -5000, 10000, 5000 + surfaceBaseY); tCtx.beginPath(); tCtx.moveTo(-5000, 5000); for(let p of state.surfacePoints) tCtx.lineTo(getPxX(p.x), surfaceBaseY - (p.y*10)); tCtx.lineTo(5000, 5000); let g = tCtx.createLinearGradient(0,0,0,1000); g.addColorStop(0,'#5C4033'); g.addColorStop(1,'#3E2723'); tCtx.fillStyle = g; tCtx.fill();
@@ -585,7 +587,21 @@
                     let pxX = getPxX(u.dist), pxY = getPxY_Side(u.absElevation), r = Math.max((u.diamFt/2)*15, 4); tCtx.beginPath(); tCtx.arc(pxX, pxY, r, 0, Math.PI*2); tCtx.fillStyle = u.color; tCtx.fill(); tCtx.lineWidth = 1; tCtx.strokeStyle = '#000'; tCtx.stroke();
                     let depthLabel = formatPiesPulgadas(u.depthTarget) + " ft"; let surfY = surfaceBaseY - (getSurfaceHeight(u.dist) * 10); tCtx.font = `bold ${14 / camera.zoom}px Arial`; tCtx.textAlign = 'center'; tCtx.lineWidth = 3 / camera.zoom; tCtx.strokeStyle = '#000000'; tCtx.strokeText(depthLabel, pxX, surfY - (20 / camera.zoom)); tCtx.fillStyle = u.color; tCtx.fillText(depthLabel, pxX, surfY - (20 / camera.zoom));
                 });
-                let tx = getPxX(state.targetDistance), s = getSurfaceHeight(state.targetDistance), ys = surfaceBaseY-(s*10), yt = getPxY_Side(state.targetDepth-s); tCtx.fillStyle = '#1a202c'; tCtx.fillRect(tx, ys, 40, yt-ys); tCtx.fillStyle = 'rgba(0,255,0,0.5)'; tCtx.fillRect(tx, yt-5, 40, 10);
+                
+                // EXIT VAULT DRAWING
+                let tx = getPxX(state.targetDistance), s = getSurfaceHeight(state.targetDistance), ys = surfaceBaseY-(s*10), yt = getPxY_Side(state.targetDepth-s); 
+                tCtx.fillStyle = '#1a202c'; tCtx.fillRect(tx, ys, 40, yt-ys); tCtx.fillStyle = 'rgba(0,255,0,0.5)'; tCtx.fillRect(tx, yt-5, 40, 10);
+                
+                // NEW: Target Exit Depth Label on Vault
+                tCtx.font = `bold ${14 / camera.zoom}px Arial`;
+                tCtx.textAlign = 'left';
+                tCtx.fillStyle = '#4ade80';
+                tCtx.strokeStyle = '#000000';
+                tCtx.lineWidth = 3 / camera.zoom;
+                let targetLabel = "TARGET DEPTH: " + formatPiesPulgadas(state.targetDepth) + " ft";
+                tCtx.strokeText(targetLabel, tx + 45, yt);
+                tCtx.fillText(targetLabel, tx + 45, yt);
+                
                 tCtx.save(); let startS = getSurfaceHeight(0); tCtx.translate(getPxX(0), surfaceBaseY - (startS * 10)); tCtx.fillStyle = '#111'; tCtx.fillRect(-40, -10, 60, 10); tCtx.fillStyle = '#FF9900'; tCtx.fillRect(-35, -30, 50, 20); tCtx.translate(10, -5); tCtx.rotate(Math.atan2(-state.pitch, 100)); tCtx.fillStyle = '#555'; tCtx.fillRect(-50, -4, 60, 8); tCtx.restore(); dibujarRuta(tCtx, getPxY_Side, 'side');
             } else {
                 tCtx.fillStyle = '#2d4c1e'; tCtx.fillRect(-5000,-5000,10000,10000); tCtx.strokeStyle='#000'; tCtx.lineWidth = 1.2;
