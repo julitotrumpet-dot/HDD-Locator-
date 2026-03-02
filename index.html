@@ -8,337 +8,500 @@
     <title>HDD Professional Multi-Level Simulator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
         
+        :root {
+            --neon-orange: #ff6a00;
+            --neon-blue: #00e5ff;
+            --neon-green: #39ff14;
+            --neon-red: #ff2a2a;
+            --panel-bg: #13171f;
+            --panel-border: #2a3241;
+        }
+
         body { 
-            background-color: #1f2937;
+            background-color: #080a0f;
             background-image: 
-                radial-gradient(#000000 15%, transparent 16%),
-                radial-gradient(#000000 15%, transparent 16%);
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
+                linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
             color: white; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Rajdhani', sans-serif; 
             overflow: hidden; 
             overscroll-behavior: none; 
         }
 
-        /* Metallic Casing Panels */
+        .font-mono { font-family: 'Share Tech Mono', monospace; }
+
+        /* Modern Heavy Machinery Panels */
         .panel-metal {
-            background: linear-gradient(135deg, #6b7280 0%, #4b5563 40%, #374151 100%);
-            border-top: 2px solid #9ca3af;
-            border-left: 2px solid #9ca3af;
-            border-bottom: 3px solid #111827;
-            border-right: 3px solid #111827;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.6), inset 0 0 30px rgba(0,0,0,0.3);
-            color: #f3f4f6;
+            background: linear-gradient(135deg, #1e2430 0%, #13171f 100%);
+            border: 1px solid var(--panel-border);
+            border-top: 1px solid #3b4559;
+            box-shadow: 
+                8px 8px 20px rgba(0,0,0,0.8), 
+                -2px -2px 10px rgba(255,255,255,0.02),
+                inset 0 0 30px rgba(0,0,0,0.5);
+            border-radius: 12px;
+            color: #e2e8f0;
+            position: relative;
         }
 
-        /* Inset parts (Screens, Radars, Inner Canvas) */
+        /* Screens and Digital Readouts */
         .panel-inset {
-            background-color: #0f172a;
-            box-shadow: inset 4px 4px 10px rgba(0,0,0,0.9), inset -1px -1px 3px rgba(255,255,255,0.1);
-            border-bottom: 1px solid #4b5563;
-            border-right: 1px solid #4b5563;
+            background: #05070a;
+            background-image: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 229, 255, 0.02) 2px,
+                rgba(0, 229, 255, 0.02) 4px
+            );
+            box-shadow: 
+                inset 5px 5px 15px rgba(0,0,0,0.9), 
+                inset -1px -1px 2px rgba(255,255,255,0.1),
+                0 0 5px rgba(0,229,255,0.1);
+            border: 1px solid #1a2235;
+            border-radius: 6px;
         }
 
-        /* Screws */
+        /* Industrial Torx Screws */
         .screw {
             position: absolute;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #e5e7eb, #9ca3af);
-            border: 1px solid #1f2937;
-            box-shadow: inset 1px 1px 3px rgba(255,255,255,0.8), 2px 2px 4px rgba(0,0,0,0.6);
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, #4a5568 30%, #1a202c 90%);
+            border: 1px solid #0f172a;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            box-shadow: inset 0 0 4px rgba(0,0,0,0.8);
             z-index: 10;
         }
         .screw::after {
             content: '';
             position: absolute;
-            top: 50%; left: 15%; right: 15%;
-            height: 2px;
-            background: #374151;
-            transform: translateY(-50%);
-            box-shadow: 0 1px 0 rgba(255,255,255,0.6);
+            top: 50%; left: 50%;
+            width: 5px; height: 5px;
+            background: #0f172a;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.9);
         }
-        .screw-tl { top: 8px; left: 8px; transform: rotate(45deg); }
-        .screw-tr { top: 8px; right: 8px; transform: rotate(-15deg); }
-        .screw-bl { bottom: 8px; left: 8px; transform: rotate(70deg); }
-        .screw-br { bottom: 8px; right: 8px; transform: rotate(10deg); }
+        .screw-tl { top: 10px; left: 10px; transform: rotate(15deg); }
+        .screw-tr { top: 10px; right: 10px; transform: rotate(-15deg); }
+        .screw-bl { bottom: 10px; left: 10px; transform: rotate(45deg); }
+        .screw-br { bottom: 10px; right: 10px; transform: rotate(30deg); }
 
-        .screw-big { width: 22px; height: 22px; }
-        .screw-big::after { height: 3px; }
+        .screw-big { width: 16px; height: 16px; }
+        .screw-big::after { width: 7px; height: 7px; }
 
-        #game-canvas { background-color: #2d3748; cursor: crosshair; }
-        .btn-action:disabled { opacity: 0.5; cursor: not-allowed; }
-        .star-gold { color: #fbbf24; text-shadow: 0 0 10px #f59e0b; }
-        .emergency-alert { animation: blinker 1s linear infinite; color: #ff0000; font-weight: 900; text-shadow: 2px 2px 5px #000; }
-        @keyframes blinker { 50% { opacity: 0; } }
+        #game-canvas { 
+            background-color: transparent; 
+            cursor: crosshair; 
+            border-radius: 6px;
+        }
+
+        /* Membrane Buttons Simulation */
+        .btn-action {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.1s ease-in-out;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+        .btn-action:active {
+            transform: translateY(2px);
+            filter: brightness(0.8);
+        }
+        .btn-action::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 40%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.15), transparent);
+        }
+        .btn-action:disabled { opacity: 0.3; cursor: not-allowed; filter: grayscale(1); }
+        
+        .star-gold { color: var(--neon-orange); text-shadow: 0 0 15px var(--neon-orange); }
+        .emergency-alert { 
+            animation: pulse-alert 1s infinite alternate; 
+            color: var(--neon-red); 
+            font-weight: 900; 
+            text-shadow: 0 0 10px var(--neon-red); 
+        }
+        @keyframes pulse-alert { 0% { opacity: 0.5; text-shadow: 0 0 5px red; } 100% { opacity: 1; text-shadow: 0 0 20px red, 0 0 40px darkred; } }
         
         #splash-screen {
-            background-color: rgba(17, 24, 39, 0.9);
+            background: radial-gradient(circle at center, rgba(19, 23, 31, 0.95) 0%, rgba(5, 7, 10, 0.98) 100%);
+            backdrop-filter: blur(5px);
         }
 
-        .icon-btn { cursor: pointer; transition: color 0.2s; }
-        .icon-btn:hover { color: #f59e0b; }
+        .icon-btn { cursor: pointer; transition: all 0.2s; color: #64748b; }
+        .icon-btn:hover { color: var(--neon-blue); filter: drop-shadow(0 0 5px var(--neon-blue)); }
 
-        .leaderboard-table th { background-color: #1f2937; color: #facc15; padding: 8px; text-transform: uppercase; font-size: 12px; border-bottom: 1px solid #374151;}
-        .leaderboard-table td { padding: 8px; border-bottom: 1px solid #374151; font-size: 14px;}
-        .leaderboard-table tr:nth-child(even) { background-color: rgba(255,255,255,0.05); }
-        .top-1 { font-weight: bold; color: #fbbf24; }
-        .top-2 { font-weight: bold; color: #e2e8f0; }
-        .top-3 { font-weight: bold; color: #b45309; }
+        .leaderboard-table th { background-color: #1a2235; color: var(--neon-blue); padding: 10px; text-transform: uppercase; font-size: 13px; border-bottom: 2px solid #2a3241; letter-spacing: 1px;}
+        .leaderboard-table td { padding: 8px 10px; border-bottom: 1px solid #1a2235; font-size: 15px;}
+        .leaderboard-table tr:hover { background-color: rgba(0, 229, 255, 0.05); }
+        .top-1 { font-weight: 700; color: var(--neon-orange); text-shadow: 0 0 5px rgba(255,106,0,0.5); }
+        .top-2 { font-weight: 600; color: #cbd5e1; }
+        .top-3 { font-weight: 600; color: #b45309; }
 
         .watermark-digital {
-            font-family: 'VT323', monospace;
-            color: white;
-            text-shadow: 2px 2px 2px black;
-            letter-spacing: 1px;
+            font-family: 'Share Tech Mono', monospace;
+            color: rgba(255, 255, 255, 0.1);
+            text-shadow: none;
+            letter-spacing: 2px;
         }
+
+        :root {
+            --bg-body: #080a0f;
+            --grid-line: rgba(0, 229, 255, 0.03);
+            --modal-bg: radial-gradient(circle at center, rgba(19, 23, 31, 0.95) 0%, rgba(5, 7, 10, 0.98) 100%);
+            --glow-orange: 0 0 8px rgba(255, 106, 0, 0.6);
+            --glow-blue: 0 0 8px rgba(0, 229, 255, 0.6);
+            --text-main: #ffffff;
+        }
+
+        .light-mode {
+            --bg-body: #cbd5e1;
+            --grid-line: rgba(0, 0, 0, 0.05);
+            --modal-bg: radial-gradient(circle at center, rgba(226, 232, 240, 0.95) 0%, rgba(148, 163, 184, 0.98) 100%);
+            --glow-orange: 0 0 2px rgba(0, 0, 0, 0.2);
+            --glow-blue: 0 0 2px rgba(0, 0, 0, 0.2);
+            --text-main: #0f172a;
+        }
+
+        .light-mode .panel-metal {
+            background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+            box-shadow: 
+                8px 8px 20px rgba(0,0,0,0.2), 
+                -2px -2px 10px rgba(255,255,255,0.8),
+                inset 0 0 30px rgba(255,255,255,0.5);
+            border-color: #94a3b8;
+            border-top-color: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .light-mode .panel-inset {
+            background: #f1f5f9;
+            background-image: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.05) 2px,
+                rgba(0, 0, 0, 0.05) 4px
+            );
+            box-shadow: 
+                inset 5px 5px 15px rgba(0,0,0,0.1), 
+                inset -1px -1px 2px rgba(255,255,255,0.8);
+            border: 1px solid #cbd5e1;
+            color: #0f172a;
+        }
+
+        .light-mode #splash-screen, .light-mode #levels-modal, .light-mode #game-over-modal, .light-mode #report-modal {
+            background: var(--modal-bg);
+        }
+
+        .light-mode .text-white:not(.btn-action):not(button) { color: #0f172a; }
+        .light-mode button.text-white, .light-mode .btn-action.text-white { color: #ffffff; }
+        .light-mode .bg-\[\#0a0d14\] { background-color: #f8fafc; border-color: #cbd5e1; }
+        .light-mode .bg-\[\#05070a\] { background-color: #f1f5f9; border-color: #cbd5e1; }
+        .light-mode .bg-\[\#13171f\] { background-color: #e2e8f0; }
+        .light-mode .bg-\[\#1a2235\] { background-color: #cbd5e1; }
+        .light-mode .border-\[\#1a2235\] { border-color: #94a3b8; }
+        .light-mode .border-\[\#2a3241\] { border-color: #cbd5e1; }
+        .light-mode .border-\[\#3b4559\] { border-color: #94a3b8; }
+        .light-mode .text-\[\#00e5ff\] { color: #0284c7; }
+        .light-mode .text-\[\#64748b\] { color: #475569; }
+        .light-mode .text-\[\#39ff14\] { color: #16a34a; }
+        .light-mode .text-gray-300 { color: #334155; }
+        .light-mode .text-gray-400 { color: #475569; }
+        .light-mode .text-gray-500 { color: #64748b; }
+        .light-mode .glow-text-orange { text-shadow: var(--glow-orange); }
+        .light-mode .glow-text-blue { text-shadow: var(--glow-blue); }
+        .light-mode .screw { background: radial-gradient(circle, #cbd5e1 30%, #94a3b8 90%); border-color: #64748b; }
+        .light-mode .screw::after { background: #64748b; }
+        .light-mode .watermark-digital { color: rgba(0, 0, 0, 0.1); }
+
+        /* Glow utilities */
+        .glow-text-orange { text-shadow: var(--glow-orange); }
+        .glow-text-blue { text-shadow: var(--glow-blue); }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #05070a; }
+        ::-webkit-scrollbar-thumb { background: #3b4559; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-blue); }
     </style>
 </head>
-<body class="h-screen w-screen m-0 p-0 flex flex-col overflow-hidden text-center">
+<body class="h-screen w-screen m-0 p-0 flex flex-col overflow-hidden text-center select-none" style="background-color: var(--bg-body); background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px); background-size: 30px 30px; color: var(--text-main);">
 
     <!-- SPLASH SCREEN -->
     <div id="splash-screen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-2 lg:p-4 text-center text-white overflow-y-auto">
-        <div class="max-w-4xl w-full panel-metal p-5 lg:p-6 rounded-xl shadow-2xl my-auto relative border border-orange-700">
+        <div class="max-w-4xl w-full panel-metal p-5 lg:p-8 rounded-2xl shadow-2xl my-auto relative border border-[#ff6a0040]">
             <div class="screw screw-big screw-tl"></div><div class="screw screw-big screw-tr"></div><div class="screw screw-big screw-bl"></div><div class="screw screw-big screw-br"></div>
             
-            <h1 class="text-3xl lg:text-5xl font-black uppercase tracking-tighter" style="color: #f97316; text-shadow: 1px 1px 0px #fdba74, -1px -1px 0px #7c2d12, 3px 3px 5px rgba(0,0,0,0.8);">HDD LOCATOR SIMULATOR</h1>
-            <p class="text-xs lg:text-sm text-orange-300 font-bold mb-2 italic tracking-wide text-center">by Julio Sarracent</p>
-            <h2 class="text-xs lg:text-sm font-bold text-gray-300 mb-3 uppercase tracking-widest text-center" style="text-shadow: 1px 1px 2px #000;">Precision Drilling Simulator v5.0</h2>
+            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-1 bg-gradient-to-r from-transparent via-[#ff6a00] to-transparent"></div>
+
+            <h1 class="text-4xl lg:text-6xl font-black uppercase tracking-wider glow-text-orange" style="color: #ff6a00;">HDD SIMULATOR</h1>
+            <p class="text-xs lg:text-sm text-[#00e5ff] font-mono mt-1 mb-4 tracking-widest text-center uppercase glow-text-blue">Precision Drilling OS v5.0 // Auth: Julio Sarracent</p>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-3 border-t border-gray-600 pt-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mb-6 bg-[#0a0d14] p-4 rounded-lg border border-[#1a2235]">
                 <div>
-                    <h3 class="text-orange-500 font-bold uppercase mb-1 flex items-center text-xs lg:text-sm" style="text-shadow: 1px 1px 2px #000;">
-                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13zM7 13a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13z" clip-rule="evenodd"></path></svg>
+                    <h3 class="text-[#00e5ff] font-bold uppercase mb-2 flex items-center text-sm tracking-wider">
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13zM7 13a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13z" clip-rule="evenodd"></path></svg>
                         Training Objectives
                     </h3>
-                    <ul class="text-[10px] lg:text-xs text-gray-200 space-y-1">
-                        <li>• Complete <span class="text-white font-bold">20 levels</span> with Dynamic Music.</li>
-                        <li>• Master <span class="text-white font-bold">Absolute Horizon</span> and Depth Limits.</li>
-                        <li>• <span class="text-orange-400 font-bold">NEW:</span> Exit Target Depth labeling on vaults.</li>
-                        <li>• Compete for the fastest time and best accuracy!</li>
+                    <ul class="text-xs lg:text-sm text-gray-400 font-mono space-y-2">
+                        <li><span class="text-[#39ff14]">></span> Complete <span class="text-white">20 operational levels</span>.</li>
+                        <li><span class="text-[#39ff14]">></span> Master <span class="text-white">Absolute Horizon</span> controls.</li>
+                        <li><span class="text-[#ff6a00]">> NEW:</span> Target Depth automated labeling.</li>
+                        <li><span class="text-[#39ff14]">></span> Maximize speed & precision metrics.</li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-orange-500 font-bold uppercase mb-1 flex items-center text-xs lg:text-sm" style="text-shadow: 1px 1px 2px #000;">
-                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 4.946-3.076 9.168-7.391 10.82a.5.5 0 01-.218 0C6.076 16.168 3 11.946 3 7.001c0-.681.056-1.35.166-2.001zm6.39 5.847a.75.75 0 00-1.06 1.06L9.44 13.85a.75.75 0 001.06 0l3.5-3.5a.75.75 0 10-1.06-1.06L10 12.293 8.556 10.846z" clip-rule="evenodd"></path></svg>
+                    <h3 class="text-[#ff2a2a] font-bold uppercase mb-2 flex items-center text-sm tracking-wider">
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 4.946-3.076 9.168-7.391 10.82a.5.5 0 01-.218 0C6.076 16.168 3 11.946 3 7.001c0-.681.056-1.35.166-2.001zm6.39 5.847a.75.75 0 00-1.06 1.06L9.44 13.85a.75.75 0 001.06 0l3.5-3.5a.75.75 0 10-1.06-1.06L10 12.293 8.556 10.846z" clip-rule="evenodd"></path></svg>
                         Safety Protocols
                     </h3>
-                    <ul class="text-[10px] lg:text-xs text-gray-200 space-y-1 text-left">
-                        <li>• <span class="text-orange-400 font-bold">Potholing:</span> Standard utility verification.</li>
-                        <li>• <span class="text-red-400 font-bold">Emergency Strike:</span> Call 911 immediately.</li>
-                        <li>• <span class="text-blue-400 font-bold">Snap Alert:</span> Respect rod bend limits.</li>
-                        <li>• <span class="text-green-400 font-bold">Real-World Use:</span> These protocols save lives.</li>
+                    <ul class="text-xs lg:text-sm text-gray-400 font-mono space-y-2 text-left">
+                        <li><span class="text-[#ff6a00]">[!]</span> Potholing: Standard verification.</li>
+                        <li><span class="text-[#ff2a2a]">[!]</span> Strike: Terminate & Call 911.</li>
+                        <li><span class="text-[#00e5ff]">[i]</span> Alert: Respect rod bend radiuses.</li>
+                        <li><span class="text-white">[i]</span> Real-World: Protocols save lives.</li>
                     </ul>
                 </div>
             </div>
 
             <!-- Leaderboard -->
-            <div class="mb-4 border-t border-gray-600 pt-3">
-                <h3 class="text-orange-500 font-bold uppercase mb-2 flex justify-center items-center text-xs lg:text-sm" style="text-shadow: 1px 1px 2px #000;">
-                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L11 6.477V16h2a1 1 0 110 2H7a1 1 0 110-2h2V6.477L6.237 7.582l1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.617a1 1 0 01.894-1.788l1.599.799L9 4.323V3a1 1 0 011-1zm-5 8.274l-.818 2.552c.25.112.526.174.818.174.292 0 .569-.062.818-.174L5 10.274zm10 0l-.818 2.552c.25.112.526.174.818.174.292 0 .569-.062.818-.174L15 10.274z" clip-rule="evenodd"></path></svg>
-                    Top Operators (Fastest Times)
+            <div class="mb-6">
+                <h3 class="text-[#00e5ff] font-bold uppercase mb-3 flex justify-center items-center text-sm tracking-widest glow-text-blue">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L11 6.477V16h2a1 1 0 110 2H7a1 1 0 110-2h2V6.477L6.237 7.582l1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.617a1 1 0 01.894-1.788l1.599.799L9 4.323V3a1 1 0 011-1zm-5 8.274l-.818 2.552c.25.112.526.174.818.174.292 0 .569-.062.818-.174L5 10.274zm10 0l-.818 2.552c.25.112.526.174.818.174.292 0 .569-.062.818-.174L15 10.274z" clip-rule="evenodd"></path></svg>
+                    Top Operators (Global Network)
                 </h3>
-                <div class="panel-inset rounded-lg overflow-hidden max-h-28 overflow-y-auto">
+                <div class="panel-inset rounded-lg overflow-hidden max-h-32 overflow-y-auto font-mono">
                     <table class="w-full text-left leaderboard-table">
                         <thead>
                             <tr>
                                 <th class="text-center w-10">#</th>
-                                <th>Operator</th>
-                                <th class="text-center">Level</th>
-                                <th class="text-center">Time</th>
-                                <th class="text-center">Score</th>
+                                <th>Callsign</th>
+                                <th class="text-center">Sector</th>
+                                <th class="text-center">T-Minus</th>
+                                <th class="text-center">Rating</th>
                             </tr>
                         </thead>
                         <tbody id="home-leaderboard-body">
-                            <tr><td colspan="5" class="text-center text-gray-500 italic py-2">Loading records...</td></tr>
+                            <tr><td colspan="5" class="text-center text-[#64748b] italic py-3">Connecting to mainframe...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="flex flex-col items-center border-t border-gray-600 pt-4">
-                <div class="flex space-x-3 mb-2">
-                    <button onclick="startGame()" class="bg-orange-600 hover:bg-orange-500 text-white font-black text-lg py-2 px-6 rounded-full shadow-[0_0_15px_rgba(234,88,12,0.6)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-orange-400">
-                        Start
+            <div class="flex flex-col items-center">
+                <div class="flex space-x-4 mb-4">
+                    <button onclick="startGame()" class="bg-gradient-to-b from-[#ff8a00] to-[#e55d00] hover:from-[#ffa033] hover:to-[#ff6a00] text-white font-black text-xl py-3 px-10 rounded shadow-[0_0_20px_rgba(255,106,0,0.5)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-[#ffb380] tracking-widest">
+                        System Start
                     </button>
-                    <button onclick="window.openLevels()" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-lg py-2 px-6 rounded-full shadow-[0_0_15px_rgba(37,99,235,0.6)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-blue-400">
-                        Levels
+                    <button onclick="window.openLevels()" class="bg-gradient-to-b from-[#00bfff] to-[#0088cc] hover:from-[#33ccff] hover:to-[#00aaff] text-white font-black text-xl py-3 px-8 rounded shadow-[0_0_20px_rgba(0,191,255,0.4)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-[#80dfff] tracking-widest">
+                        Sectors
                     </button>
-                    <button id="btn-resume" onclick="resumeGame()" class="hidden bg-green-600 hover:bg-green-500 text-white font-black text-lg py-2 px-6 rounded-full shadow-[0_0_15px_rgba(22,163,74,0.6)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-green-400">
+                    <button id="btn-resume" onclick="resumeGame()" class="hidden bg-gradient-to-b from-[#39ff14] to-[#2eb80d] text-black font-black text-xl py-3 px-8 rounded shadow-[0_0_20px_rgba(57,255,20,0.4)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-[#a6ff99] tracking-widest">
                         Resume
                     </button>
                 </div>
-                <div class="max-w-2xl text-[9px] text-gray-400 font-medium tracking-tight italic text-center leading-tight">
-                    <p>DISCLAIMER: This application is a simulator for training purposes only. The safety protocols and operational steps shown should always be applied in real-life drilling projects. Always follow OSHA regulations, local utility laws, and manufacturer safety manuals on actual job sites.</p>
+                <div class="max-w-2xl text-[10px] text-gray-500 font-mono tracking-tight text-center leading-tight">
+                    <p>DISCLAIMER: Simulation for conceptual training only. Physical environment variables omitted. Strictly adhere to OSHA & manufacturer protocols in field operations.</p>
                 </div>
-                <p class="mt-2 text-[10px] text-gray-400 font-bold tracking-widest uppercase text-center">Know what's below. Call <span class="text-orange-500">811</span> before you dig.</p>
+                <p class="mt-2 text-xs text-[#64748b] font-bold tracking-widest uppercase text-center">Protocol 811 Verification <span class="text-[#ff6a00] animate-pulse">REQUIRED</span> prior to surface penetration.</p>
             </div>
         </div>
     </div>
 
     <!-- LEVELS MODAL -->
-    <div id="levels-modal" class="fixed inset-0 bg-black bg-opacity-90 hidden flex-col items-center justify-center z-[120] p-4 text-center backdrop-blur-md">
-        <div class="panel-metal p-6 rounded-xl shadow-[0_0_50px_rgba(234,88,12,0.4)] max-w-3xl w-full relative border border-orange-600">
+    <div id="levels-modal" class="fixed inset-0 bg-[#05070a] bg-opacity-95 hidden flex-col items-center justify-center z-[120] p-4 text-center backdrop-blur-md">
+        <div class="panel-metal p-8 rounded-xl shadow-[0_0_50px_rgba(0,229,255,0.15)] max-w-4xl w-full relative border border-[#00e5ff40]">
             <div class="screw screw-big screw-tl"></div><div class="screw screw-big screw-tr"></div><div class="screw screw-big screw-bl"></div><div class="screw screw-big screw-br"></div>
             
-            <h2 class="text-2xl lg:text-4xl font-black text-yellow-400 mb-6 uppercase tracking-widest" style="text-shadow: 2px 2px 4px #000;">Select Level</h2>
+            <h2 class="text-3xl lg:text-4xl font-black text-[#00e5ff] mb-8 uppercase tracking-widest glow-text-blue">Select Sector</h2>
             
-            <div id="levels-grid" class="grid grid-cols-4 md:grid-cols-5 gap-3 lg:gap-4 mb-6">
+            <div id="levels-grid" class="grid grid-cols-4 md:grid-cols-5 gap-4 lg:gap-5 mb-8">
             </div>
             
-            <button onclick="document.getElementById('levels-modal').classList.add('hidden')" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-10 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.5)] transition border border-gray-400 uppercase tracking-widest">
-                Back
+            <button onclick="document.getElementById('levels-modal').classList.add('hidden')" class="bg-transparent hover:bg-[#1a2235] text-[#00e5ff] font-bold py-3 px-12 rounded shadow-[0_0_15px_rgba(0,229,255,0.2)] transition border border-[#00e5ff] uppercase tracking-widest">
+                Abort
             </button>
         </div>
     </div>
 
     <!-- ORIENTATION WARNING -->
-    <div class="portrait:flex landscape:hidden fixed inset-0 bg-gray-900 z-[110] flex-col items-center justify-center text-center p-6 text-white">
-        <svg class="w-24 h-24 mb-6 text-yellow-500 animate-pulse text-center" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10V6a2 2-0 012-2h12a2 2-0 012 2v4m-16 4v4a2 2-0 002 2h12a2 2-0 002-2v-4m-16-4h16"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v4m-4-4l4 4 4-4"></path></svg>
-        <h2 class="text-3xl font-bold text-yellow-400 mb-4 text-center">Rotate Your Device</h2>
-        <p class="text-xl text-gray-300 text-center">Horizontal orientation required for simulation.</p>
+    <div class="portrait:flex landscape:hidden fixed inset-0 bg-[#05070a] z-[110] flex-col items-center justify-center text-center p-6 text-white">
+        <svg class="w-32 h-32 mb-6 text-[#ff6a00] animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 10V6a2 2-0 012-2h12a2 2-0 012 2v4m-16 4v4a2 2-0 002 2h12a2 2-0 002-2v-4m-16-4h16"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v4m-4-4l4 4 4-4"></path></svg>
+        <h2 class="text-4xl font-black text-[#ff6a00] mb-4 tracking-widest uppercase">System Error</h2>
+        <p class="text-xl text-[#64748b] font-mono">Horizontal orientation required for dashboard initialization.</p>
     </div>
 
     <!-- MAIN GAME UI -->
-    <div class="portrait:hidden landscape:flex flex-col h-full w-full p-2 lg:p-4 text-center gap-1">
+    <div class="portrait:hidden landscape:flex flex-col h-full w-full p-2 lg:p-3 text-center gap-2 bg-[#05070a]">
         
         <!-- HEADER PANEL -->
-        <div class="panel-metal rounded-lg p-2 shrink-0 relative flex justify-between items-center text-center z-10">
+        <div class="panel-metal rounded-lg p-2 shrink-0 relative flex justify-between items-center text-center z-10 border-t-2 border-t-[#3b4559]">
             <div class="screw screw-tl"></div><div class="screw screw-tr"></div><div class="screw screw-bl"></div><div class="screw screw-br"></div>
             
             <div class="flex flex-col items-start ml-8 lg:ml-10">
-                <h1 class="text-lg lg:text-2xl font-bold text-yellow-400 leading-tight uppercase tracking-tighter text-center" style="text-shadow: 1px 1px 2px #000;">HDD SIMULATOR <span class="text-white ml-2 text-sm lg:text-base">LEVEL <span id="lvl-number">1</span>/20</span></h1>
-                <div class="flex items-center space-x-2 text-white text-center mt-1">
-                    <p class="text-[9px] lg:text-xs text-gray-300 uppercase tracking-widest font-bold text-center">Precision Horizon v5.0</p>
-                    <span class="text-[9px] text-gray-400 italic text-center panel-inset px-2 py-0.5 rounded" id="time-display">Time: 00:00</span>
+                <h1 class="text-xl lg:text-2xl font-black text-white leading-tight uppercase tracking-widest text-center flex items-center">
+                    SYS-HDD <span class="text-[#00e5ff] ml-3 text-sm lg:text-lg border-l border-[#3b4559] pl-3 glow-text-blue">SEC <span id="lvl-number">1</span>/20</span>
+                </h1>
+                <div class="flex items-center space-x-3 text-white text-center mt-1">
+                    <p class="text-[10px] lg:text-xs text-[#ff6a00] uppercase tracking-widest font-bold">OS Active</p>
+                    <span class="text-[11px] font-mono text-[#39ff14] bg-[#0a0d14] border border-[#1a2235] px-3 py-0.5 rounded shadow-[inset_0_0_5px_#000]" id="time-display">T: 00:00</span>
                 </div>
             </div>
             
-            <div class="flex items-center space-x-2 lg:space-x-4 text-center mr-2">
-                <div id="home-toggle" onclick="volverAlMenu()" class="icon-btn text-gray-300 text-center" title="Main Menu">
-                    <svg class="w-6 h-6 text-center drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <div class="flex items-center space-x-3 lg:space-x-5 text-center mr-4">
+                <div id="home-toggle" onclick="volverAlMenu()" class="icon-btn" title="Main Menu">
+                    <svg class="w-6 h-6 drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
                 </div>
-                <div id="audio-toggle" onclick="toggleMute()" class="icon-btn text-gray-300 text-center" title="Mute/Unmute">
-                    <svg class="w-6 h-6 text-center drop-shadow-md" id="speaker-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9.383 3.076a1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"></path></svg>
+                <div id="audio-toggle" onclick="toggleMute()" class="icon-btn" title="Mute/Unmute">
+                    <svg class="w-6 h-6 drop-shadow-md" id="speaker-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9.383 3.076a1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd"></path></svg>
                 </div>
-                <div id="fullscreen-toggle" onclick="window.toggleFullScreen()" class="icon-btn text-gray-300 text-center" title="Fullscreen">
-                    <svg class="w-6 h-6 text-center drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                <div id="fullscreen-toggle" onclick="window.toggleFullScreen()" class="icon-btn" title="Fullscreen">
+                    <svg class="w-6 h-6 drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
                 </div>
-                <button onclick="volverAlMenu()" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 px-3 lg:px-4 rounded shadow-[2px_2px_4px_rgba(0,0,0,0.6)] transition text-[10px] lg:text-xs uppercase text-center border border-gray-500">
-                    Close
+                <div class="h-6 w-px bg-[#3b4559] mx-1"></div>
+                <button onclick="volverAlMenu()" class="bg-transparent hover:bg-[#1a2235] text-[#64748b] font-bold py-1 px-4 rounded transition text-xs uppercase border border-[#3b4559]">
+                    ESC
                 </button>
-                <button onclick="window.reiniciarJuego()" class="bg-red-800 hover:bg-red-700 text-white font-bold py-1 px-3 lg:px-4 rounded shadow-[2px_2px_4px_rgba(0,0,0,0.6)] transition text-[10px] lg:text-xs uppercase text-center border border-red-600">
-                    Reset
+                <button onclick="window.reiniciarJuego()" class="bg-[#ff2a2a]/10 hover:bg-[#ff2a2a]/20 text-[#ff2a2a] font-bold py-1 px-4 rounded transition text-xs uppercase border border-[#ff2a2a]/50">
+                    RST
                 </button>
-                <button onclick="window.toggleView()" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-1 px-3 lg:px-6 rounded shadow-[2px_2px_4px_rgba(0,0,0,0.6)] transition text-xs lg:text-sm uppercase text-center border border-indigo-500">
-                    View: <span id="btn-view-text">Main</span>
+                <button onclick="window.toggleView()" class="bg-[#00e5ff]/10 hover:bg-[#00e5ff]/20 text-[#00e5ff] font-bold py-1 px-6 rounded transition text-sm uppercase border border-[#00e5ff]/50 shadow-[0_0_10px_rgba(0,229,255,0.1)]">
+                    CAM: <span id="btn-view-text">MAIN</span>
                 </button>
             </div>
         </div>
 
         <!-- CANVAS AREA PANEL -->
-        <div class="panel-metal flex-grow min-h-0 w-full rounded-lg p-2 relative flex flex-col text-center z-10">
-            <div class="screw screw-tl z-20"></div><div class="screw screw-tr z-20"></div><div class="screw screw-bl z-20"></div><div class="screw screw-br z-20"></div>
-            
-            <div id="view-indicator" class="absolute top-4 left-4 panel-inset text-yellow-400 px-2 py-1 rounded font-bold text-[10px] lg:text-sm pointer-events-none z-20 uppercase tracking-widest text-center opacity-90">
-                Main View (Absolute Horizon)
-            </div>
+        <div class="panel-metal flex-grow min-h-0 w-full rounded-lg p-1.5 relative flex flex-col z-10">
 
             <!-- FLOATING ZOOM CONTROLS -->
             <div id="zoom-controls" class="absolute bottom-6 left-4 flex flex-col space-y-2 z-20">
-                <button onclick="window.zoomIn()" class="panel-metal text-white font-black text-xl w-10 h-10 rounded shadow-lg hover:brightness-125 active:scale-95 transition border border-gray-400">+</button>
-                <button onclick="window.resetZoom()" class="panel-metal text-white font-bold text-xs w-10 h-10 rounded shadow-lg hover:brightness-125 active:scale-95 transition border border-gray-400">RST</button>
-                <button onclick="window.zoomOut()" class="panel-metal text-white font-black text-xl w-10 h-10 rounded shadow-lg hover:brightness-125 active:scale-95 transition border border-gray-400">-</button>
+                <button onclick="window.zoomIn()" class="panel-metal text-white font-black text-xl w-10 h-10 rounded hover:brightness-125 active:scale-95 transition border-[#3b4559] flex items-center justify-center pb-1">+</button>
+                <button onclick="window.resetZoom()" class="panel-metal text-[#00e5ff] font-bold text-[10px] w-10 h-10 rounded hover:brightness-125 active:scale-95 transition border-[#3b4559]">FIT</button>
+                <button onclick="window.zoomOut()" class="panel-metal text-white font-black text-xl w-10 h-10 rounded hover:brightness-125 active:scale-95 transition border-[#3b4559] flex items-center justify-center pb-1">-</button>
             </div>
 
             <!-- ROD LOG BOX -->
-            <div id="rod-log-box" class="absolute top-4 right-4 w-[100px] lg:w-[130px] max-h-[80%] panel-inset rounded p-1 lg:p-2 overflow-y-auto text-left z-20 pointer-events-auto text-green-400 opacity-90">
-                <h4 class="font-black border-b border-gray-600 pb-1 mb-1 text-center text-[9px] lg:text-[11px] uppercase text-gray-300 tracking-widest">Rod Log</h4>
-                <ul id="rod-log-list" class="space-y-1 font-mono text-[9px] lg:text-[11px] font-bold">
+            <div id="rod-log-box" class="absolute top-4 right-4 w-[110px] lg:w-[140px] max-h-[80%] panel-inset rounded-sm p-2 overflow-y-auto text-left z-20 pointer-events-auto border-[#1a2235]">
+                <h4 class="font-bold border-b border-[#2a3241] pb-1.5 mb-2 text-center text-[10px] uppercase text-[#64748b] tracking-widest flex items-center justify-center">
+                    <div class="w-1.5 h-1.5 rounded-full bg-[#39ff14] mr-2 animate-pulse"></div> LOG
+                </h4>
+                <ul id="rod-log-list" class="space-y-1.5 font-mono text-[10px] lg:text-[11px] text-[#39ff14]">
                 </ul>
             </div>
 
             <!-- INSET CANVAS -->
-            <div class="relative w-full h-full panel-inset rounded overflow-hidden shadow-inner">
-                <canvas id="game-canvas" width="1200" height="400" class="w-full h-full object-contain text-center touch-none"></canvas>
+            <div class="relative w-full h-full panel-inset rounded overflow-hidden">
+                <canvas id="game-canvas" width="1200" height="400" class="w-full h-full object-contain touch-none"></canvas>
             </div>
         </div>
 
         <!-- CONTROLS PANEL -->
-        <div class="panel-metal p-2 lg:p-4 rounded-lg shrink-0 relative text-center z-10">
-            <div class="screw screw-tl"></div><div class="screw screw-tr"></div><div class="screw screw-bl"></div><div class="screw screw-br"></div>
-            <div id="error-msg" class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-red-600 text-white font-bold text-sm px-4 py-2 rounded shadow-[0_0_10px_#f00] hidden z-50 mb-1 border-2 border-red-300 max-w-sm text-center uppercase">Error</div>
+        <div class="panel-metal p-2 lg:p-3 rounded-lg shrink-0 relative z-10 border-t-2 border-t-[#3b4559]">
+            <div id="error-msg" class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-[#ff2a2a] text-white font-bold text-sm px-6 py-2 rounded shadow-[0_0_15px_#ff2a2a] hidden z-50 mb-2 border border-[#ffa0a0] uppercase tracking-widest font-mono">SYS ERR</div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-2 lg:gap-4 h-full text-center relative z-10">
-                <!-- Clock -->
-                <div class="flex flex-row md:flex-col items-center justify-around md:justify-center shrink-0 border-b md:border-b-0 md:border-r border-gray-600 pb-2 md:pb-0 text-center">
-                    <div class="flex flex-col items-center text-center">
-                        <h3 class="text-[10px] lg:text-sm mb-1 text-gray-200 font-bold uppercase tracking-widest text-center" style="text-shadow: 1px 1px 2px #000;">Clock</h3>
-                        <div id="clock-container" class="relative w-16 h-16 lg:w-20 lg:h-20 shrink-0 rounded-full panel-inset aspect-square mb-1 text-center"></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2 lg:gap-4 h-full relative z-10">
+                <!-- Clock / Orientation -->
+                <div class="flex flex-row md:flex-col items-center justify-around md:justify-center shrink-0 border-b md:border-b-0 md:border-r border-[#2a3241] pb-2 md:pb-0 relative">
+                    
+                    <!-- LOCAL DAY/NIGHT SWITCH -->
+                    <div class="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 z-[20] flex flex-col items-center panel-metal p-1 rounded-full shadow-lg border border-[#3b4559] scale-90 md:scale-100">
+                        <span class="text-[12px] font-bold text-[#f59e0b] mb-2 leading-none">☼</span>
+                        <button onclick="window.toggleTheme()" class="w-6 h-12 bg-black rounded-full relative shadow-[inset_0_2px_5px_rgba(0,0,0,0.5)] border border-[#1a2235]">
+                            <div id="theme-switch-knob" class="w-5 h-5 bg-[#64748b] rounded-full absolute bottom-0.5 left-[1px] transition-transform duration-300 shadow-[0_2px_4px_rgba(0,0,0,0.8)] flex items-center justify-center">
+                                <div class="w-3 h-0.5 bg-gray-400 rounded"></div>
+                            </div>
+                        </button>
+                        <span class="text-[12px] font-bold text-[#00e5ff] mt-2 leading-none">☽</span>
                     </div>
-                    <div id="hour-selector" class="grid grid-cols-4 gap-1 w-full max-w-[140px] px-2 text-center mt-1"></div>
+
+                    <div class="flex flex-col items-center w-full">
+                        <h3 class="text-[10px] lg:text-xs mb-2 text-[#64748b] font-bold uppercase tracking-widest">Tool Face</h3>
+                        <div id="clock-container" class="relative w-16 h-16 lg:w-20 lg:h-20 shrink-0 rounded-full panel-inset aspect-square mb-2 shadow-[inset_0_0_15px_#000,0_0_5px_rgba(0,229,255,0.1)] border-[#00e5ff]/20"></div>
+                        <div id="hour-selector" class="grid grid-cols-4 gap-1.5 w-full max-w-[150px] px-2 mt-1"></div>
+                    </div>
                 </div>
 
-                <!-- Power and Rods (Watermark Header) -->
-                <div class="flex flex-col items-center justify-center px-2 text-center border-b md:border-b-0 md:border-r border-gray-600 pb-2 md:pb-0 text-center">
-                    <!-- MARCA DE AGUA SOBRE EL POWER -->
-                    <div class="watermark-digital text-[14px] lg:text-[18px] mb-1 font-bold">BY JULIO SARRACENT</div>
-                    <div id="display-programmed" class="text-gray-300 font-bold text-[10px] lg:text-xs text-center h-6 lg:h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded text-center mb-1">Power: 12%</div>
-                    <button onclick="window.limpiarFuerza()" class="text-[9px] text-gray-400 hover:text-white underline uppercase text-center mt-0.5 mb-1.5 text-center">Reset Default Power</button>
-                    <div class="w-full max-w-[220px] text-center">
-                        <h3 class="text-[9px] text-gray-200 font-bold uppercase text-center text-[8px] lg:text-[10px]" style="text-shadow: 1px 1px 2px #000;">Rod Selection</h3>
-                        <select id="rod-length-select" onchange="window.cambiarLongitudVarilla(this.value)" class="panel-inset text-yellow-400 font-bold text-[10px] text-center h-6 w-full rounded mb-1 outline-none cursor-pointer">
-                            <option value="6">Rod 6' (Power: 8%)</option>
-                            <option value="10" selected>Rod 10' (Power: 12%)</option>
-                            <option value="20">Rod 20' (Power: 24%)</option>
+                <!-- Power and Rods -->
+                <div class="flex flex-col items-center justify-center px-4 border-b md:border-b-0 md:border-r border-[#2a3241] pb-2 md:pb-0 relative">
+                    
+                    <!-- Placa del Creador -->
+                    <div class="bg-[#05070a] border border-[#1a2235] px-3 py-0.5 rounded text-[8px] lg:text-[9px] font-mono text-[#00e5ff] tracking-widest uppercase mb-1.5 shadow-[inset_0_0_5px_rgba(0,0,0,0.5)]">
+                        Made by Julio Sarracent
+                    </div>
+                    
+                    <div id="display-programmed" class="font-mono font-bold text-[12px] lg:text-[14px] h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded mb-1 border-[#1a2235] tracking-wider text-[#00e5ff]">PWR: 12%</div>
+                    <button onclick="window.limpiarFuerza()" class="text-[9px] text-[#64748b] hover:text-white uppercase mt-0.5 mb-2 transition font-bold tracking-widest">Calibrate Default</button>
+                    
+                    <div class="w-full max-w-[220px] bg-[#0a0d14] p-2 rounded border border-[#1a2235]">
+                        <div class="flex justify-between items-center mb-1.5">
+                            <h3 class="text-[9px] text-[#64748b] font-bold uppercase tracking-widest">Pipe Spec</h3>
+                            <div id="display-rod-left" class="font-mono text-[10px] text-[#39ff14] bg-[#05070a] px-2 py-0.5 rounded border border-[#1a2235]">REM: 10.0'</div>
+                        </div>
+                        <select id="rod-length-select" onchange="window.cambiarLongitudVarilla(this.value)" class="bg-[#13171f] text-white border border-[#3b4559] text-[11px] font-mono font-bold w-full p-1 rounded outline-none cursor-pointer focus:border-[#00e5ff]">
+                            <option value="6">TYPE-6 [PWR: 8%]</option>
+                            <option value="10" selected>TYPE-10 [PWR: 12%]</option>
+                            <option value="20">TYPE-20 [PWR: 24%]</option>
                         </select>
-                        <div id="display-rod-left" class="text-white font-bold text-[10px] text-center h-6 flex items-center justify-center panel-inset w-full rounded">Left: 10.0 ft</div>
+
+                        <!-- Indicador Made in USA -->
+                        <div class="flex items-center justify-center mt-2 pt-1.5 border-t border-[#1a2235]">
+                            <span class="text-[9px] font-black tracking-widest font-mono uppercase text-gray-400">
+                                <span class="text-blue-500">MADE</span> 
+                                <span>IN</span> 
+                                <span class="text-red-500">USA</span>
+                            </span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Steering & Movement -->
-                <div class="flex flex-col justify-center pt-2 md:pt-0 text-center">
-                    <div class="flex justify-between items-end mb-2 w-full text-center">
-                        <h3 class="text-xs lg:text-sm text-gray-200 font-bold uppercase text-left pb-1" style="text-shadow: 1px 1px 2px #000;">Run Controls</h3>
+                <div class="flex flex-col justify-center pt-2 md:pt-0 pl-2">
+                    <div class="flex justify-between items-end mb-2.5 w-full pr-2">
+                        <h3 class="text-xs lg:text-sm text-[#00e5ff] font-bold uppercase tracking-widest">Thrust Controls</h3>
                         <!-- ENTRANCE PITCH CONTROLS -->
-                        <div id="initial-pitch-controls" class="panel-inset rounded p-1 flex flex-col items-center">
-                            <span class="text-[8px] lg:text-[9px] text-gray-400 uppercase font-bold mb-0.5 tracking-wider">Entrance Pitch</span>
+                        <div id="initial-pitch-controls" class="bg-[#0a0d14] border border-[#1a2235] rounded p-1.5 flex items-center space-x-2">
+                            <span class="text-[9px] text-[#64748b] uppercase font-bold tracking-widest">Pitch</span>
                             <div class="flex space-x-1">
-                                <button onclick="window.ajustarPitchInicial(-1)" class="bg-red-700 hover:bg-red-600 text-white font-bold text-[10px] px-3 py-0.5 rounded shadow text-center border border-red-500">-</button>
-                                <button onclick="window.ajustarPitchInicial(1)" class="bg-blue-700 hover:bg-blue-600 text-white font-bold text-[10px] px-3 py-0.5 rounded shadow text-center border border-blue-500">+</button>
+                                <button onclick="window.ajustarPitchInicial(-1)" class="bg-[#1a2235] hover:bg-[#3b4559] text-white font-mono text-[11px] w-6 h-6 rounded flex items-center justify-center border border-[#2a3241]">-</button>
+                                <button onclick="window.ajustarPitchInicial(1)" class="bg-[#1a2235] hover:bg-[#3b4559] text-white font-mono text-[11px] w-6 h-6 rounded flex items-center justify-center border border-[#2a3241]">+</button>
                             </div>
                         </div>
                     </div>
-                    <div class="grid grid-cols-3 gap-1 w-full mb-1 text-center">
-                        <button onclick="window.iniciarMoverFraccion(0.25, true, 'd14')" class="btn-action bg-green-600 hover:bg-green-500 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-green-400 uppercase text-center flex items-center justify-center">
-                            <svg class="w-3 h-3 lg:w-3.5 lg:h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg> 1/4
+                    
+                    <div class="grid grid-cols-3 gap-2 w-full mb-2">
+                        <button onclick="window.iniciarMoverFraccion(0.25, true, 'd14')" class="btn-action bg-gradient-to-b from-[#10b981] to-[#047857] hover:from-[#34d399] hover:to-[#059669] text-white py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#34d399]/50 flex items-center justify-center">
+                            <svg class="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg> 1/4 ROT
                         </button>
-                        <button onclick="window.iniciarMoverFraccion(0.5, true, 'd12')" class="btn-action bg-green-700 hover:bg-green-600 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-green-500 uppercase text-center flex items-center justify-center">
-                            <svg class="w-3 h-3 lg:w-3.5 lg:h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg> 1/2
+                        <button onclick="window.iniciarMoverFraccion(0.5, true, 'd12')" class="btn-action bg-gradient-to-b from-[#10b981] to-[#047857] hover:from-[#34d399] hover:to-[#059669] text-white py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#34d399]/50 flex items-center justify-center">
+                            <svg class="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg> 1/2 ROT
                         </button>
-                        <button onclick="window.iniciarMoverFraccion(1.0, true, 'df')" class="btn-action bg-green-800 hover:bg-green-700 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-green-600 uppercase text-center flex items-center justify-center">
-                            <svg class="w-3 h-3 lg:w-3.5 lg:h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg> Full
-                        </button>
-                    </div>
-                    <div class="grid grid-cols-3 gap-1 w-full mb-1 text-center">
-                        <button onclick="window.iniciarMoverFraccion(0.25, false, 'p14')" class="btn-action bg-yellow-500 hover:bg-yellow-400 text-black font-black py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-yellow-300 uppercase text-center flex items-center justify-center">
-                            <svg class="w-3 h-3 lg:w-4 lg:h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l10 10m-3 0h3v-3"/><path d="M12 4l6 6m-4 0h4v-4"/></svg> 1/4
-                        </button>
-                        <button onclick="window.iniciarMoverFraccion(0.5, false, 'p12')" class="btn-action bg-yellow-600 hover:bg-yellow-500 text-black font-black py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-yellow-400 uppercase text-center flex items-center justify-center">
-                            <svg class="w-3 h-3 lg:w-4 lg:h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l10 10m-3 0h3v-3"/><path d="M12 4l6 6m-4 0h4v-4"/></svg> 1/2
-                        </button>
-                        <button onclick="window.iniciarMoverFraccion(1.0, false, 'pf')" class="btn-action bg-yellow-700 hover:bg-yellow-600 text-black font-black py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-yellow-500 uppercase text-center flex items-center justify-center">
-                            <svg class="w-3 h-3 lg:w-4 lg:h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l10 10m-3 0h3v-3"/><path d="M12 4l6 6m-4 0h4v-4"/></svg> Full
+                        <button onclick="window.iniciarMoverFraccion(1.0, true, 'df')" class="btn-action bg-gradient-to-b from-[#10b981] to-[#047857] hover:from-[#34d399] hover:to-[#059669] text-white py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#34d399]/50 flex items-center justify-center">
+                            <svg class="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg> FULL ROT
                         </button>
                     </div>
-                    <div class="grid grid-cols-3 gap-1 w-full text-center">
-                        <button onclick="window.iniciarRetrocederFraccion(0.25)" class="btn-action bg-gray-600 hover:bg-gray-500 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-gray-400 uppercase text-center">B. 1/4</button>
-                        <button onclick="window.iniciarRetrocederFraccion(0.5)" class="btn-action bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-gray-500 uppercase text-center">B. 1/2</button>
-                        <button onclick="window.iniciarRetrocederFraccion(1.0)" class="btn-action bg-gray-800 hover:bg-gray-700 text-white font-bold py-1 lg:py-2 rounded text-[9px] lg:text-[10px] shadow-[1px_1px_3px_#000] border border-gray-600 uppercase text-center">B. Full</button>
+                    <div class="grid grid-cols-3 gap-2 w-full mb-2">
+                        <button onclick="window.iniciarMoverFraccion(0.25, false, 'p14')" class="btn-action bg-gradient-to-b from-[#f59e0b] to-[#b45309] hover:from-[#fbbf24] hover:to-[#d97706] text-black py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#fbbf24]/50 flex items-center justify-center">
+                            <svg class="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l10 10m-3 0h3v-3"/><path d="M12 4l6 6m-4 0h4v-4"/></svg> 1/4 PSH
+                        </button>
+                        <button onclick="window.iniciarMoverFraccion(0.5, false, 'p12')" class="btn-action bg-gradient-to-b from-[#f59e0b] to-[#b45309] hover:from-[#fbbf24] hover:to-[#d97706] text-black py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#fbbf24]/50 flex items-center justify-center">
+                            <svg class="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l10 10m-3 0h3v-3"/><path d="M12 4l6 6m-4 0h4v-4"/></svg> 1/2 PSH
+                        </button>
+                        <button onclick="window.iniciarMoverFraccion(1.0, false, 'pf')" class="btn-action bg-gradient-to-b from-[#f59e0b] to-[#b45309] hover:from-[#fbbf24] hover:to-[#d97706] text-black py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#fbbf24]/50 flex items-center justify-center">
+                            <svg class="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l10 10m-3 0h3v-3"/><path d="M12 4l6 6m-4 0h4v-4"/></svg> FULL PSH
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 w-full">
+                        <button onclick="window.iniciarRetrocederFraccion(0.25)" class="btn-action bg-gradient-to-b from-[#475569] to-[#1e293b] hover:from-[#64748b] hover:to-[#334155] text-white py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#64748b]/50">PULL 1/4</button>
+                        <button onclick="window.iniciarRetrocederFraccion(0.5)" class="btn-action bg-gradient-to-b from-[#475569] to-[#1e293b] hover:from-[#64748b] hover:to-[#334155] text-white py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#64748b]/50">PULL 1/2</button>
+                        <button onclick="window.iniciarRetrocederFraccion(1.0)" class="btn-action bg-gradient-to-b from-[#475569] to-[#1e293b] hover:from-[#64748b] hover:to-[#334155] text-white py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#64748b]/50">PULL FULL</button>
                     </div>
                 </div>
             </div>
@@ -346,83 +509,95 @@
     </div>
 
     <!-- GAME OVER MODAL -->
-    <div id="game-over-modal" class="absolute inset-0 bg-black bg-opacity-80 hidden flex-col items-center justify-center z-30 backdrop-blur-sm text-center">
-        <div class="panel-metal border-none p-6 rounded-lg shadow-[0_0_50px_rgba(0,0,0,1)] max-w-xl w-full flex flex-col items-center mx-4 text-white text-center relative">
-            <div class="screw screw-tl"></div><div class="screw screw-tr"></div><div class="screw screw-bl"></div><div class="screw screw-br"></div>
-            <h2 id="game-over-title" class="text-xl lg:text-4xl font-black mb-2 text-center uppercase" style="text-shadow: 2px 2px 5px #000;"></h2>
-            <div id="star-rating" class="flex space-x-2 mb-2 text-4xl text-center drop-shadow-lg"></div>
-            <p id="game-over-msg" class="text-sm lg:text-lg mb-4 text-center px-4 max-w-2xl font-bold text-gray-200" style="text-shadow: 1px 1px 2px #000;"></p>
+    <div id="game-over-modal" class="absolute inset-0 bg-[#05070a] bg-opacity-95 hidden flex-col items-center justify-center z-[150] backdrop-blur-md text-center">
+        <div class="panel-metal border border-[#00e5ff40] p-8 rounded-xl shadow-[0_0_50px_rgba(0,229,255,0.1)] max-w-xl w-full flex flex-col items-center mx-4 text-white relative">
+            <div class="screw screw-big screw-tl"></div><div class="screw screw-big screw-tr"></div><div class="screw screw-big screw-bl"></div><div class="screw screw-big screw-br"></div>
             
-            <div id="new-record-form" class="hidden flex-col items-center w-full mb-4 panel-inset p-4 rounded border border-yellow-500">
-                <h4 class="text-yellow-400 font-bold mb-2 uppercase animate-pulse">🎉 NEW RECORD! 🎉</h4>
-                <p class="text-sm text-gray-300 mb-2">Enter your name for the leaderboard:</p>
-                <div class="flex space-x-2">
-                    <input type="text" id="player-name-input" class="px-3 py-1 rounded text-black font-bold uppercase" placeholder="YOUR NAME" maxlength="15">
-                    <button onclick="window.saveRecord()" class="bg-green-600 hover:bg-green-500 text-white font-bold py-1 px-4 rounded shadow border border-green-400">SAVE</button>
+            <h2 id="game-over-title" class="text-2xl lg:text-4xl font-black mb-3 text-center uppercase tracking-widest"></h2>
+            <div id="star-rating" class="flex space-x-3 mb-4 text-4xl text-center drop-shadow-lg"></div>
+            <p id="game-over-msg" class="text-sm lg:text-lg mb-6 text-center px-4 max-w-2xl font-mono text-gray-300"></p>
+            
+            <div id="new-record-form" class="hidden flex-col items-center w-full mb-6 bg-[#0a0d14] p-5 rounded-lg border border-[#ff6a00]/50 shadow-[0_0_15px_rgba(255,106,0,0.2)]">
+                <h4 class="text-[#ff6a00] font-bold mb-3 uppercase tracking-widest animate-pulse">>>> NEW RECORD LOGGED <<<</h4>
+                <p class="text-xs text-[#64748b] font-mono mb-3">Input Operator Callsign:</p>
+                <div class="flex space-x-3 w-full max-w-sm">
+                    <input type="text" id="player-name-input" class="flex-grow px-4 py-2 rounded bg-[#05070a] border border-[#3b4559] text-white font-mono uppercase focus:border-[#ff6a00] focus:outline-none" placeholder="CALLSIGN" maxlength="15">
+                    <button onclick="window.saveRecord()" class="bg-[#00e5ff]/20 hover:bg-[#00e5ff]/40 text-[#00e5ff] font-bold py-2 px-6 rounded shadow border border-[#00e5ff] transition tracking-widest">SAVE</button>
                 </div>
             </div>
 
-            <div id="game-over-errors" class="w-full mb-6 text-left hidden panel-inset p-4 rounded border border-red-900 text-center">
-                <h4 class="text-red-500 font-bold mb-2 text-sm uppercase underline text-center">Incident Log:</h4>
-                <ul id="game-over-errors-list" class="list-disc pl-5 text-xs lg:text-sm text-red-400 text-center font-mono"></ul>
+            <div id="game-over-errors" class="w-full mb-6 text-left hidden bg-[#1a0a0a] p-4 rounded border border-[#ff2a2a]/30">
+                <h4 class="text-[#ff2a2a] font-bold mb-2 text-sm uppercase tracking-widest">Incident Details:</h4>
+                <ul id="game-over-errors-list" class="list-disc pl-5 text-xs lg:text-sm text-[#ff8080] font-mono"></ul>
             </div>
-            <div class="flex flex-wrap justify-center gap-3 text-center relative z-10">
-                <button id="btn-report" onclick="window.generarInformeFinal()" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded shadow-[1px_1px_3px_#000] transition uppercase text-sm lg:text-base text-center border border-indigo-400">
-                    View Final Record
+            
+            <div class="flex flex-wrap justify-center gap-4 relative z-10 w-full">
+                <button id="btn-report" onclick="window.generarInformeFinal()" class="flex-1 bg-[#1a2235] hover:bg-[#2a3241] text-[#00e5ff] font-bold py-3 px-6 rounded transition uppercase text-sm border border-[#00e5ff]/30 tracking-widest">
+                    Data Log
                 </button>
-                <button id="btn-retry" onclick="window.reiniciarJuego()" class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-8 rounded shadow-[1px_1px_3px_#000] transition uppercase text-sm lg:text-base text-center border border-green-500">Retry</button>
-                <button id="btn-next" onclick="window.nextLevel()" class="hidden bg-yellow-500 hover:bg-yellow-400 text-black font-black py-2 px-8 rounded shadow-[1px_1px_3px_#000] transition uppercase text-sm lg:text-base text-center border border-yellow-700">Next Level</button>
-                <button onclick="window.volverAlMenu()" class="bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-6 rounded shadow-[1px_1px_3px_#000] transition uppercase text-sm lg:text-base text-center border border-red-500">Close</button>
+                <button id="btn-retry" onclick="window.reiniciarJuego()" class="flex-1 bg-gradient-to-b from-[#f59e0b] to-[#b45309] hover:from-[#fbbf24] hover:to-[#d97706] text-black font-black py-3 px-6 rounded transition uppercase text-sm shadow-[0_0_15px_rgba(245,158,11,0.3)] tracking-widest">
+                    Restart
+                </button>
+                <button id="btn-next" onclick="window.nextLevel()" class="flex-1 hidden bg-gradient-to-b from-[#10b981] to-[#047857] hover:from-[#34d399] hover:to-[#059669] text-white font-black py-3 px-6 rounded transition uppercase text-sm shadow-[0_0_15px_rgba(16,185,129,0.3)] tracking-widest border border-[#34d399]/50">
+                    Next Sector
+                </button>
+                <button onclick="window.volverAlMenu()" class="bg-transparent hover:bg-[#1a2235] text-[#64748b] font-bold py-3 px-6 rounded transition uppercase text-sm border border-[#3b4559] tracking-widest">
+                    Exit
+                </button>
             </div>
         </div>
     </div>
 
     <!-- REPORT MODAL -->
-    <div id="report-modal" class="absolute inset-0 bg-black bg-opacity-90 hidden flex-col items-center justify-center z-50 p-4 text-center">
-        <div class="panel-metal p-2 rounded-lg w-full max-w-5xl overflow-auto flex flex-col text-center h-full relative shadow-[0_0_50px_rgba(0,0,0,1)]">
+    <div id="report-modal" class="absolute inset-0 bg-[#05070a] bg-opacity-95 hidden flex-col items-center justify-center z-[160] p-4 text-center backdrop-blur-md">
+        <div class="panel-metal p-2 rounded-lg w-full max-w-6xl overflow-auto flex flex-col text-center h-full relative border border-[#00e5ff40]">
             <div class="screw screw-tl"></div><div class="screw screw-tr"></div><div class="screw screw-bl"></div><div class="screw screw-br"></div>
             
-            <div class="flex justify-between items-center panel-inset p-2 mb-2 rounded text-center relative z-10">
-                <h2 class="text-yellow-500 font-black text-xl uppercase tracking-tighter text-center">HDD FINAL SHOT RECORD</h2>
-                <div class="flex space-x-2">
-                    <button id="btn-report-view" onclick="window.toggleReportView()" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold px-4 py-1 rounded text-sm uppercase text-center border border-indigo-500">View: MAIN</button>
-                    <button onclick="window.cerrarInforme()" class="bg-red-700 hover:bg-red-600 text-white font-bold px-4 py-1 rounded text-sm text-center border border-red-500">CLOSE</button>
+            <div class="flex justify-between items-center bg-[#0a0d14] p-3 mb-2 rounded border border-[#1a2235] z-10">
+                <h2 class="text-[#00e5ff] font-black text-xl uppercase tracking-widest glow-text-blue">Post-Op Telemetry</h2>
+                <div class="flex space-x-3">
+                    <button id="btn-report-view" onclick="window.toggleReportView()" class="bg-[#1a2235] hover:bg-[#2a3241] text-white font-bold px-5 py-1.5 rounded text-xs uppercase border border-[#3b4559] tracking-widest transition">VIEW: MAIN</button>
+                    <button onclick="window.cerrarInforme()" class="bg-[#ff2a2a]/10 hover:bg-[#ff2a2a]/20 text-[#ff2a2a] font-bold px-5 py-1.5 rounded text-xs border border-[#ff2a2a]/50 tracking-widest transition">CLOSE</button>
                 </div>
             </div>
-            <div id="report-container" class="flex-grow flex flex-col lg:flex-row items-center justify-center p-2 text-center gap-4 relative z-10">
-                <div class="w-full lg:w-3/4 flex justify-center h-full max-h-[60vh] lg:max-h-full relative overflow-hidden panel-inset rounded border border-gray-500">
-                    <canvas id="report-canvas" width="1200" height="400" class="w-full h-full object-contain bg-white rounded text-center"></canvas>
+            
+            <div id="report-container" class="flex-grow flex flex-col lg:flex-row items-stretch justify-center p-2 gap-4 relative z-10">
+                <div class="w-full lg:w-3/4 flex justify-center h-full relative overflow-hidden panel-inset rounded border border-[#1a2235]">
+                    <canvas id="report-canvas" width="1200" height="400" class="w-full h-full object-contain"></canvas>
                 </div>
                 
-                <div class="w-full lg:w-1/4 panel-inset p-4 rounded flex flex-col text-left h-full overflow-y-auto">
-                    <h3 class="text-yellow-400 font-bold uppercase tracking-wider mb-4 border-b border-gray-600 pb-2 text-center">Operation Metrics</h3>
+                <div class="w-full lg:w-1/4 bg-[#0a0d14] p-5 rounded-lg flex flex-col text-left h-full overflow-y-auto border border-[#1a2235]">
+                    <h3 class="text-[#64748b] font-bold uppercase tracking-widest mb-4 border-b border-[#2a3241] pb-2 text-center text-sm">Operation Metrics</h3>
                     
-                    <div class="space-y-4 text-sm">
-                        <div>
-                            <p class="text-gray-400 uppercase text-xs">Total Operation Time</p>
-                            <p class="text-2xl font-mono font-bold text-white" id="report-time">00:00</p>
+                    <div class="space-y-5 text-sm">
+                        <div class="text-center bg-[#05070a] p-3 rounded border border-[#1a2235]">
+                            <p class="text-[#64748b] uppercase text-[10px] tracking-widest mb-1">Total Duration</p>
+                            <p class="text-3xl font-mono font-bold text-[#00e5ff] glow-text-blue" id="report-time">00:00</p>
                         </div>
+                        
                         <div>
-                            <p class="text-gray-400 uppercase text-xs mb-1 border-b border-gray-700 pb-1">Rotation Actions</p>
-                            <div class="grid grid-cols-2 gap-2 text-green-400 font-mono">
-                                <div><span class="text-gray-500">1/4:</span> <span id="metric-d14">0</span></div>
-                                <div><span class="text-gray-500">1/2:</span> <span id="metric-d12">0</span></div>
-                                <div><span class="text-gray-500">Full:</span> <span id="metric-df">0</span></div>
+                            <p class="text-[#64748b] uppercase text-[10px] tracking-widest mb-2 border-b border-[#1a2235] pb-1">Rotation Actions</p>
+                            <div class="grid grid-cols-3 gap-2 text-[#39ff14] font-mono text-center text-xs">
+                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">1/4</span> <span id="metric-d14">0</span></div>
+                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">1/2</span> <span id="metric-d12">0</span></div>
+                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">FULL</span> <span id="metric-df">0</span></div>
                             </div>
                         </div>
+                        
                         <div>
-                            <p class="text-gray-400 uppercase text-xs mb-1 border-b border-gray-700 pb-1">Steering Actions (Push)</p>
-                            <div class="grid grid-cols-2 gap-2 text-yellow-400 font-mono">
-                                <div><span class="text-gray-500">1/4:</span> <span id="metric-p14">0</span></div>
-                                <div><span class="text-gray-500">1/2:</span> <span id="metric-p12">0</span></div>
-                                <div><span class="text-gray-500">Full:</span> <span id="metric-pf">0</span></div>
+                            <p class="text-[#64748b] uppercase text-[10px] tracking-widest mb-2 border-b border-[#1a2235] pb-1">Thrust Actions</p>
+                            <div class="grid grid-cols-3 gap-2 text-[#ff6a00] font-mono text-center text-xs">
+                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">1/4</span> <span id="metric-p14">0</span></div>
+                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">1/2</span> <span id="metric-p12">0</span></div>
+                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">FULL</span> <span id="metric-pf">0</span></div>
                             </div>
                         </div>
+                        
                         <div>
-                            <p class="text-gray-400 uppercase text-xs mb-1 border-b border-gray-700 pb-1">Retraction Actions</p>
-                            <div class="grid grid-cols-2 gap-2 text-red-400 font-mono">
-                                <div><span class="text-gray-500">Back:</span> <span id="metric-b">0</span></div>
-                                <div><span class="text-gray-500">Rods:</span> <span id="metric-rods">0</span></div>
+                            <p class="text-[#64748b] uppercase text-[10px] tracking-widest mb-2 border-b border-[#1a2235] pb-1">Retraction / Pipe</p>
+                            <div class="grid grid-cols-2 gap-2 font-mono text-center text-xs">
+                                <div class="bg-[#05070a] p-1.5 rounded text-[#e2e8f0]"><span class="text-[#475569] block text-[9px]">PULLS</span> <span id="metric-b">0</span></div>
+                                <div class="bg-[#05070a] p-1.5 rounded text-[#e2e8f0]"><span class="text-[#475569] block text-[9px]">RODS</span> <span id="metric-rods">0</span></div>
                             </div>
                         </div>
                     </div>
@@ -431,7 +606,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT -->
+    <!-- SCRIPT (Lógica Idéntica, Dibujo en Canvas Actualizado) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -453,6 +628,23 @@
         };
 
         let audioCtx = null, engineOsc = null, engineGain = null, musicGain = null, isMuted = false, isAnimating = false, animationData = null;
+
+        window.toggleTheme = function() {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            const knob = document.getElementById('theme-switch-knob');
+            if (isLight) {
+                knob.style.transform = 'translateY(-26px)';
+                knob.style.backgroundColor = '#f59e0b'; // Sun active
+            } else {
+                knob.style.transform = 'translateY(0px)';
+                knob.style.backgroundColor = '#64748b'; // Moon active
+            }
+            dibujarEscena();
+            if (document.getElementById('report-modal') && document.getElementById('report-modal').classList.contains('flex')) {
+                dibujarReporte();
+            }
+        };
 
         window.obtenerProgreso = function() {
             let saved = localStorage.getItem('hdd_progress');
@@ -476,13 +668,13 @@
                 let targetD = 100 + (i - 1) * 15; let mStars = targetD < 150 ? 3 : 5;
                 if (isUnlocked) {
                     let earned = p.stars || 0; let starHTML = '';
-                    for(let s=0; s<mStars; s++) { starHTML += s < earned ? '<span class="text-yellow-400 drop-shadow-[0_0_2px_#000]">★</span>' : '<span class="text-gray-600">★</span>'; }
-                    btn.className = "panel-inset rounded flex flex-col items-center justify-center p-2 lg:p-3 hover:bg-gray-800 transition transform hover:scale-105 border border-orange-500 cursor-pointer bg-gradient-to-b from-gray-700 to-gray-900";
-                    btn.innerHTML = `<span class="text-lg lg:text-xl font-black text-white mb-1" style="text-shadow: 1px 1px 2px #000;">LVL ${i}</span><div class="flex text-[10px] lg:text-xs">${starHTML}</div>`;
+                    for(let s=0; s<mStars; s++) { starHTML += s < earned ? '<span class="text-[#ff6a00] drop-shadow-[0_0_5px_rgba(255,106,0,0.8)]">★</span>' : '<span class="text-[#3b4559]">★</span>'; }
+                    btn.className = "bg-[#0a0d14] rounded-lg flex flex-col items-center justify-center p-3 lg:p-4 hover:bg-[#1a2235] transition transform hover:scale-105 border border-[#1a2235] hover:border-[#00e5ff] cursor-pointer shadow-[0_4px_10px_rgba(0,0,0,0.5)] group";
+                    btn.innerHTML = `<span class="text-xl lg:text-2xl font-black text-white mb-2 font-mono group-hover:text-[#00e5ff] transition">SEC_${i < 10 ? '0'+i : i}</span><div class="flex text-xs">${starHTML}</div>`;
                     btn.onclick = () => { state.level = i; document.getElementById('levels-modal').classList.add('hidden'); window.startGame(); };
                 } else {
-                    btn.className = "panel-inset rounded flex flex-col items-center justify-center p-2 lg:p-3 opacity-50 cursor-not-allowed border border-gray-700 bg-gray-900";
-                    btn.innerHTML = `<span class="text-2xl mb-1">🔒</span><span class="text-[10px] lg:text-xs text-gray-500 font-bold">LVL ${i}</span>`;
+                    btn.className = "bg-[#05070a] rounded-lg flex flex-col items-center justify-center p-3 lg:p-4 opacity-40 cursor-not-allowed border border-[#13171f]";
+                    btn.innerHTML = `<span class="text-2xl mb-2 text-[#ff2a2a]">🔒</span><span class="text-xs text-[#64748b] font-mono">SEC_${i < 10 ? '0'+i : i}</span>`;
                 }
                 grid.appendChild(btn);
             }
@@ -512,8 +704,8 @@
             else if (db && user) { try { const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard')); const querySnapshot = await getDocs(q); querySnapshot.forEach((doc) => { records.push(doc.data()); }); } catch(e) { console.error(e); } }
             records.sort((a, b) => { if(b.level !== a.level) return b.level - a.level; if(a.time !== b.time) return a.time - b.time; return b.score - a.score; });
             records = records.slice(0, 10); tbody.innerHTML = '';
-            if(records.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="text-center text-gray-500 italic py-2">No records.</td></tr>'; return; }
-            records.forEach((r, idx) => { let rankClass = idx === 0 ? "top-1" : idx === 1 ? "top-2" : idx === 2 ? "top-3" : ""; let timeStr = formatTime(r.time); let tr = document.createElement('tr'); tr.innerHTML = `<td class="text-center font-bold ${rankClass}">${idx + 1}</td><td class="${rankClass} uppercase">${r.name.substring(0,15)}</td><td class="text-center">Lvl ${r.level}</td><td class="text-center font-mono">${timeStr}</td><td class="text-center text-yellow-500 tracking-widest">${'★'.repeat(r.score)}</td>`; tbody.appendChild(tr); });
+            if(records.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="text-center text-[#64748b] italic py-3">No records found.</td></tr>'; return; }
+            records.forEach((r, idx) => { let rankClass = idx === 0 ? "top-1" : idx === 1 ? "top-2" : idx === 2 ? "top-3" : "text-[#94a3b8]"; let timeStr = formatTime(r.time); let tr = document.createElement('tr'); tr.innerHTML = `<td class="text-center font-bold ${rankClass}">${idx + 1}</td><td class="${rankClass} uppercase">${r.name.substring(0,15)}</td><td class="text-center text-[#64748b]">SEC_${r.level < 10 ? '0'+r.level : r.level}</td><td class="text-center text-[#00e5ff]">${timeStr}</td><td class="text-center text-[#ff6a00] tracking-widest">${'★'.repeat(r.score)}</td>`; tbody.appendChild(tr); });
         };
         function formatTime(secs) { let m = Math.floor(secs / 60); let s = secs % 60; return (m < 10 ? "0"+m : m) + ":" + (s < 10 ? "0"+s : s); }
 
@@ -560,74 +752,326 @@
         window.cambiarLongitudVarilla = function(val) { let num = parseInt(val); let remaining = state.distance % state.maxRodLength; if (state.distance > 0 && remaining > 0.01 && remaining < state.maxRodLength - 0.01) { mostrarError("Finish the rod first!"); document.getElementById('rod-length-select').value = state.maxRodLength; return; } state.maxRodLength = num; window.limpiarFuerza(); };
         window.volverAlMenu = function() { document.getElementById('splash-screen').style.display = 'flex'; document.getElementById('btn-resume').classList.remove('hidden'); document.getElementById('game-over-modal').classList.add('hidden'); if (audioCtx && audioCtx.state === 'running') audioCtx.suspend(); if (window.cargarLeaderboard) window.cargarLeaderboard(); };
         window.resumeGame = function() { document.getElementById('splash-screen').style.display = 'none'; if (audioCtx && audioCtx.state === 'suspended' && !isMuted) audioCtx.resume(); };
-        function updateTimerDisplay() { if(state.gameOver) return; state.timeElapsed = Math.floor((Date.now() - state.startTime) / 1000); let m = Math.floor(state.timeElapsed / 60); let s = state.timeElapsed % 60; document.getElementById('time-display').innerText = `Time: ${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`; }
+        function updateTimerDisplay() { if(state.gameOver) return; state.timeElapsed = Math.floor((Date.now() - state.startTime) / 1000); let m = Math.floor(state.timeElapsed / 60); let s = state.timeElapsed % 60; document.getElementById('time-display').innerText = `T-MINUS ${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`; }
 
         function dibujarIndicadoresHUD(tCtx) {
             let relDepth = state.absElevation + getSurfaceHeight(state.distance); let pVal = parseFloat(state.pitch.toFixed(1)); let rem = Math.max(0, state.targetDistance - state.distance);
             let lines = [ "DEPTH:    " + formatPiesPulgadas(relDepth) + " ft", "PITCH:    " + (pVal > 0 ? "+" : "") + pVal.toFixed(1) + " %", "DIST:     " + state.distance.toFixed(0) + " ft", "TARGET:   " + rem.toFixed(0) + " ft" ];
-            let startX = canvas.width - 330; let startY = canvas.height - 120; tCtx.font = 'bold 18px "Courier New", Courier, monospace'; tCtx.textAlign = 'left';
-            for (let i = 0; i < lines.length; i++) { let y = startY + (i * 26); tCtx.lineWidth = 4; tCtx.strokeStyle = 'black'; tCtx.strokeText(lines[i], startX, y); tCtx.fillStyle = 'white'; tCtx.fillText(lines[i], startX, y); }
+            let startX = canvas.width - 250; let startY = canvas.height - 110; tCtx.font = 'bold 16px "Share Tech Mono", monospace'; tCtx.textAlign = 'left';
+            
+            let isLight = document.body.classList.contains('light-mode');
+
+            // HUD Background
+            tCtx.fillStyle = isLight ? 'rgba(241, 245, 249, 0.9)' : 'rgba(10, 13, 20, 0.8)';
+            tCtx.fillRect(startX - 15, startY - 25, 260, 110);
+            tCtx.strokeStyle = isLight ? '#cbd5e1' : 'rgba(0, 229, 255, 0.3)';
+            tCtx.lineWidth = 1;
+            tCtx.strokeRect(startX - 15, startY - 25, 260, 110);
+            
+            // Neon accent line
+            tCtx.beginPath(); tCtx.moveTo(startX - 15, startY - 25); tCtx.lineTo(startX - 15, startY + 85); tCtx.strokeStyle = isLight ? '#0284c7' : '#00e5ff'; tCtx.lineWidth = 3; tCtx.stroke();
+
+            for (let i = 0; i < lines.length; i++) { 
+                let y = startY + (i * 24); 
+                tCtx.fillStyle = isLight ? '#0284c7' : '#00e5ff';
+                if(i === 0) tCtx.fillStyle = isLight ? '#0f172a' : '#fff'; // Depth white
+                if(i === 1) tCtx.fillStyle = isLight ? '#d97706' : '#f5a623'; // Pitch orange
+                if(i === 3) tCtx.fillStyle = isLight ? '#16a34a' : '#39ff14'; // Target green
+                tCtx.shadowColor = isLight ? 'transparent' : tCtx.fillStyle;
+                tCtx.shadowBlur = 5;
+                tCtx.fillText(lines[i], startX, y); 
+                tCtx.shadowBlur = 0;
+            }
         }
         function dibujarRadarRadar(tCtx) {
-            let rW = 120, rH = 120, rX = canvas.width - rW - 20, rY = canvas.height - rH - 20; tCtx.fillStyle = 'rgba(0, 0, 0, 0.7)'; tCtx.fillRect(rX, rY, rW, rH); tCtx.strokeStyle = '#6b7280'; tCtx.lineWidth = 2; tCtx.strokeRect(rX, rY, rW, rH); tCtx.beginPath(); tCtx.strokeStyle = 'rgba(255, 255, 255, 0.4)'; tCtx.lineWidth = 1; tCtx.moveTo(rX + rW/2, rY); tCtx.lineTo(rX + rW/2, rY + rH); tCtx.moveTo(rX, rY + rH - 25); tCtx.lineTo(rX + rW, rY + rH - 25); tCtx.stroke(); tCtx.fillStyle = 'rgba(255, 255, 255, 0.5)'; tCtx.font = '10px Arial'; tCtx.fillText("L", rX + 5, rY + rH - 30); tCtx.fillText("R", rX + rW - 15, rY + rH - 30); tCtx.fillStyle = '#facc15'; tCtx.fillText("TRACKER RADAR", rX + 20, rY + rH + 15);
-            let radarRangeLat = 15, radarRangeDist = 50; function getRadarX(lat) { let clampedLat = Math.max(-radarRangeLat, Math.min(radarRangeLat, lat)); return rX + rW/2 + (clampedLat / radarRangeLat) * (rW/2 - 10); } function getRadarY(dist) { let relDist = dist - state.distance; if (relDist < -10) relDist = -10; if (relDist > radarRangeDist) relDist = radarRangeDist; return (rY + rH - 25) - (relDist / radarRangeDist) * (rH - 45); }
-            let hX = getRadarX(state.lat), hY = getRadarY(state.distance); tCtx.beginPath(); tCtx.arc(hX, hY, 5, 0, Math.PI*2); tCtx.fillStyle = '#FF4500'; tCtx.fill(); tCtx.strokeStyle = '#FFF'; tCtx.lineWidth = 1.5; tCtx.stroke();
-            if (state.locator) { let locX = getRadarX(state.locator.lat), locY = getRadarY(state.locator.dist); tCtx.beginPath(); tCtx.arc(locX, locY, 4, 0, Math.PI*2); tCtx.fillStyle = '#FFFFFF'; tCtx.fill(); tCtx.beginPath(); tCtx.strokeStyle = '#FFFFFF'; tCtx.lineWidth = 1.5; tCtx.moveTo(locX - 6, locY); tCtx.lineTo(locX + 6, locY); tCtx.moveTo(locX, locY - 6); tCtx.lineTo(locX, locY + 6); tCtx.stroke(); }
+            let isLight = document.body.classList.contains('light-mode');
+            let rW = 120, rH = 120, rX = canvas.width - rW - 30, rY = 30; 
+            tCtx.fillStyle = isLight ? 'rgba(241, 245, 249, 0.9)' : 'rgba(5, 7, 10, 0.85)'; tCtx.fillRect(rX, rY, rW, rH); 
+            tCtx.strokeStyle = isLight ? '#94a3b8' : '#1a2235'; tCtx.lineWidth = 2; tCtx.strokeRect(rX, rY, rW, rH); 
+            
+            // Crosshairs
+            tCtx.beginPath(); tCtx.strokeStyle = isLight ? 'rgba(0,0,0,0.1)' : 'rgba(0, 229, 255, 0.2)'; tCtx.lineWidth = 1; 
+            tCtx.moveTo(rX + rW/2, rY); tCtx.lineTo(rX + rW/2, rY + rH); 
+            tCtx.moveTo(rX, rY + rH/2); tCtx.lineTo(rX + rW, rY + rH/2); 
+            tCtx.stroke(); 
+            
+            // Tracking Line
+            tCtx.beginPath(); tCtx.strokeStyle = isLight ? 'rgba(22, 163, 74, 0.5)' : 'rgba(57, 255, 20, 0.4)'; tCtx.lineWidth = 1; 
+            tCtx.moveTo(rX, rY + rH - 25); tCtx.lineTo(rX + rW, rY + rH - 25); tCtx.stroke(); 
+
+            tCtx.fillStyle = isLight ? '#0284c7' : 'rgba(0, 229, 255, 0.5)'; tCtx.font = '10px "Share Tech Mono"'; tCtx.fillText("PORT", rX + 5, rY + rH - 30); tCtx.fillText("STBD", rX + rW - 25, rY + rH - 30); 
+            
+            // Header
+            tCtx.fillStyle = isLight ? '#0284c7' : '#00e5ff'; tCtx.shadowColor = isLight ? 'transparent' : '#00e5ff'; tCtx.shadowBlur = 5;
+            tCtx.fillText("SONAR/L", rX + 5, rY - 5); tCtx.shadowBlur = 0;
+
+            let radarRangeLat = 15, radarRangeDist = 50; 
+            function getRadarX(lat) { let clampedLat = Math.max(-radarRangeLat, Math.min(radarRangeLat, lat)); return rX + rW/2 + (clampedLat / radarRangeLat) * (rW/2 - 10); } 
+            function getRadarY(dist) { let relDist = dist - state.distance; if (relDist < -10) relDist = -10; if (relDist > radarRangeDist) relDist = radarRangeDist; return (rY + rH - 25) - (relDist / radarRangeDist) * (rH - 45); }
+            
+            // Current Head Position
+            let hX = getRadarX(state.lat), hY = getRadarY(state.distance); 
+            tCtx.beginPath(); tCtx.arc(hX, hY, 4, 0, Math.PI*2); tCtx.fillStyle = isLight ? '#ea580c' : '#ff6a00'; 
+            tCtx.shadowColor = isLight ? 'transparent' : '#ff6a00'; tCtx.shadowBlur = 8; tCtx.fill(); tCtx.shadowBlur = 0;
+            
+            // Locator position
+            if (state.locator) { 
+                let locX = getRadarX(state.locator.lat), locY = getRadarY(state.locator.dist); 
+                tCtx.beginPath(); tCtx.arc(locX, locY, 3, 0, Math.PI*2); tCtx.fillStyle = isLight ? '#0284c7' : '#00e5ff'; tCtx.fill(); 
+                tCtx.beginPath(); tCtx.strokeStyle = isLight ? '#0284c7' : '#00e5ff'; tCtx.lineWidth = 1; 
+                tCtx.moveTo(locX - 8, locY); tCtx.lineTo(locX + 8, locY); tCtx.moveTo(locX, locY - 8); tCtx.lineTo(locX, locY + 8); tCtx.stroke(); 
+            }
         }
-        function dibujarRuta(ctxTarget, getPy, viewType) { if (!state.path || state.path.length === 0) return; ctxTarget.beginPath(); ctxTarget.strokeStyle = '#C0C0C0'; ctxTarget.lineWidth = 3; ctxTarget.lineCap = 'round'; let rutaPath = [...state.path]; if (isAnimating) rutaPath.push({ distance: state.distance, absElevation: state.absElevation, lat: state.lat }); for (let i = 0; i < rutaPath.length; i++) { let px = getPxX(rutaPath[i].distance); let py = viewType === 'side' ? getPy(rutaPath[i].absElevation) : getPy(rutaPath[i].lat); if (i === 0) ctxTarget.moveTo(px, py); else ctxTarget.lineTo(px, py); } ctxTarget.stroke(); if (viewType === 'top') { state.path.forEach(n => { if (n.distance > 0 && Math.abs(n.distance % state.maxRodLength) < 0.1) { ctxTarget.beginPath(); ctxTarget.arc(getPxX(n.distance), getPy(n.lat), 3, 0, Math.PI*2); ctxTarget.fillStyle = '#000'; ctxTarget.fill(); } }); } }
-        function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius, fillCol, strokeCol) { let rot = Math.PI / 2 * 3; let x = cx; let y = cy; let step = Math.PI / spikes; ctx.beginPath(); ctx.moveTo(cx, cy - outerRadius); for (let i = 0; i < spikes; i++) { x = cx + Math.cos(rot) * outerRadius; y = cy + Math.sin(rot) * outerRadius; ctx.lineTo(x, y); rot += step; x = cx + Math.cos(rot) * innerRadius; y = cy + Math.sin(rot) * innerRadius; ctx.lineTo(x, y); rot += step; } ctx.lineTo(cx, cy - outerRadius); ctx.closePath(); ctx.lineWidth = 2; ctx.strokeStyle = strokeCol; ctx.stroke(); if (fillCol !== 'transparent') { ctx.fillStyle = fillCol; ctx.fill(); } }
-        function dibujarEstrellasHUD(tCtx) { let total = state.utilities.length; let recogidas = state.potholesVisited.length; if(total === 0) return; let starSpacing = 35; let startX = (canvas.width / 2) - ((total - 1) * starSpacing / 2); let startY = canvas.height - 35; tCtx.fillStyle = 'rgba(0, 0, 0, 0.6)'; let boxWidth = Math.max((total - 1) * starSpacing + 50, 160); let boxStartX = (canvas.width / 2) - (boxWidth / 2); tCtx.fillRect(boxStartX, startY - 20, boxWidth, 55); for(let i=0; i<total; i++) { let isCollected = i < recogidas; let fillCol = isCollected ? '#facc15' : 'transparent'; let strokeCol = isCollected ? '#ca8a04' : '#6b7280'; drawStar(tCtx, startX + (i * starSpacing), startY, 5, 12, 6, fillCol, strokeCol); } }
+        function dibujarRuta(ctxTarget, getPy, viewType) { 
+            let isLight = document.body.classList.contains('light-mode');
+            if (!state.path || state.path.length === 0) return; 
+            ctxTarget.beginPath(); 
+            ctxTarget.strokeStyle = isLight ? '#0f172a' : '#cbd5e1'; 
+            ctxTarget.shadowColor = isLight ? 'transparent' : '#00e5ff'; 
+            ctxTarget.shadowBlur = 8;
+            ctxTarget.lineWidth = 4 / camera.zoom; 
+            ctxTarget.lineCap = 'round'; 
+            ctxTarget.lineJoin = 'round';
+            let rutaPath = [...state.path]; 
+            if (isAnimating) rutaPath.push({ distance: state.distance, absElevation: state.absElevation, lat: state.lat }); 
+            for (let i = 0; i < rutaPath.length; i++) { 
+                let px = getPxX(rutaPath[i].distance); let py = viewType === 'side' ? getPy(rutaPath[i].absElevation) : getPy(rutaPath[i].lat); 
+                if (i === 0) ctxTarget.moveTo(px, py); else ctxTarget.lineTo(px, py); 
+            } 
+            ctxTarget.stroke(); 
+            ctxTarget.shadowBlur = 0;
+
+            if (viewType === 'top') { 
+                state.path.forEach(n => { 
+                    if (n.distance > 0 && Math.abs(n.distance % state.maxRodLength) < 0.1) { 
+                        ctxTarget.beginPath(); ctxTarget.arc(getPxX(n.distance), getPy(n.lat), 3/camera.zoom, 0, Math.PI*2); 
+                        ctxTarget.fillStyle = isLight ? '#cbd5e1' : '#1e293b'; ctxTarget.fill(); 
+                        ctxTarget.strokeStyle = isLight ? '#0f172a' : '#00e5ff'; ctxTarget.lineWidth = 1/camera.zoom; ctxTarget.stroke();
+                    } 
+                }); 
+            } 
+        }
+        function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius, fillCol, strokeCol) { let rot = Math.PI / 2 * 3; let x = cx; let y = cy; let step = Math.PI / spikes; ctx.beginPath(); ctx.moveTo(cx, cy - outerRadius); for (let i = 0; i < spikes; i++) { x = cx + Math.cos(rot) * outerRadius; y = cy + Math.sin(rot) * outerRadius; ctx.lineTo(x, y); rot += step; x = cx + Math.cos(rot) * innerRadius; y = cy + Math.sin(rot) * innerRadius; ctx.lineTo(x, y); rot += step; } ctx.lineTo(cx, cy - outerRadius); ctx.closePath(); ctx.lineWidth = 2; ctx.strokeStyle = strokeCol; ctx.stroke(); if (fillCol !== 'transparent') { ctx.shadowColor = fillCol; ctx.shadowBlur = 10; ctx.fillStyle = fillCol; ctx.fill(); ctx.shadowBlur = 0; } }
+        function dibujarEstrellasHUD(tCtx) { 
+            let isLight = document.body.classList.contains('light-mode');
+            let total = state.utilities.length; let recogidas = state.potholesVisited.length; if(total === 0) return; 
+            let starSpacing = 40; let startX = (canvas.width / 2) - ((total - 1) * starSpacing / 2); let startY = canvas.height - 35; 
+            
+            tCtx.fillStyle = isLight ? 'rgba(241, 245, 249, 0.9)' : 'rgba(10, 13, 20, 0.8)'; 
+            tCtx.strokeStyle = isLight ? '#94a3b8' : 'rgba(0, 229, 255, 0.2)';
+            tCtx.lineWidth = 1;
+            let boxWidth = Math.max((total - 1) * starSpacing + 60, 180); let boxStartX = (canvas.width / 2) - (boxWidth / 2); 
+            tCtx.fillRect(boxStartX, startY - 25, boxWidth, 55); 
+            tCtx.strokeRect(boxStartX, startY - 25, boxWidth, 55); 
+            
+            tCtx.fillStyle = isLight ? '#0284c7' : 'rgba(0, 229, 255, 0.5)'; tCtx.font = '10px "Share Tech Mono"'; tCtx.textAlign = 'center'; tCtx.fillText("VERIFICATION PROTOCOL", canvas.width/2, startY - 10);
+
+            for(let i=0; i<total; i++) { 
+                let isCollected = i < recogidas; 
+                let fillCol = isCollected ? (isLight ? '#f59e0b' : '#ff6a00') : 'transparent'; 
+                let strokeCol = isCollected ? (isLight ? '#d97706' : '#ffa033') : (isLight ? '#94a3b8' : '#3b4559'); 
+                drawStar(tCtx, startX + (i * starSpacing), startY + 12, 5, 12, 5, fillCol, strokeCol); 
+            } 
+        }
         
         function dibujarCuerpoEscena(tCtx, viewType) {
+            let isLight = document.body.classList.contains('light-mode');
             if (viewType === 'side') {
-                tCtx.fillStyle = '#87CEEB'; tCtx.fillRect(-5000, -5000, 10000, 5000 + surfaceBaseY); tCtx.beginPath(); tCtx.moveTo(-5000, 5000); for(let p of state.surfacePoints) tCtx.lineTo(getPxX(p.x), surfaceBaseY - (p.y*10)); tCtx.lineTo(5000, 5000); let g = tCtx.createLinearGradient(0,0,0,1000); g.addColorStop(0,'#5C4033'); g.addColorStop(1,'#3E2723'); tCtx.fillStyle = g; tCtx.fill();
-                tCtx.beginPath(); tCtx.strokeStyle = '#228B22'; tCtx.lineWidth = 4; tCtx.moveTo(-5000, surfaceBaseY - (state.surfacePoints[0]?.y*10)-2); for(let p of state.surfacePoints) tCtx.lineTo(getPxX(p.x), surfaceBaseY - (p.y*10)-2); tCtx.lineTo(5000, surfaceBaseY - (state.surfacePoints[state.surfacePoints.length-1]?.y*10)-2); tCtx.stroke();
-                tCtx.beginPath(); tCtx.strokeStyle='#000'; tCtx.lineWidth = 1.5; tCtx.setLineDash([8,8]); for(let x=-100; x<=state.targetDistance+100; x+=5) tCtx.lineTo(getPxX(x), getPxY_Side(-getSurfaceHeight(x)+state.maxAllowedDepthRel)); tCtx.stroke(); tCtx.setLineDash([]);
+                // Background Sky (Dark Simulator Theme)
+                let skyGrad = tCtx.createLinearGradient(0, 0, 0, surfaceBaseY);
+                skyGrad.addColorStop(0, isLight ? '#60a5fa' : '#04070a');
+                skyGrad.addColorStop(1, isLight ? '#bae6fd' : '#0c1524');
+                tCtx.fillStyle = skyGrad; 
+                tCtx.fillRect(-5000, -5000, 10000, 5000 + surfaceBaseY); 
+                
+                // Sky Grid
+                tCtx.strokeStyle = isLight ? 'rgba(0,0,0,0.05)' : 'rgba(0, 229, 255, 0.05)';
+                tCtx.lineWidth = 1;
+                for(let x = -500; x < canvas.width * 2; x += 50) {
+                    tCtx.beginPath(); tCtx.moveTo(x, -5000); tCtx.lineTo(x, surfaceBaseY); tCtx.stroke();
+                }
+
+                // Subsurface Soil Layers
+                tCtx.beginPath(); tCtx.moveTo(-5000, 5000); 
+                for(let p of state.surfacePoints) tCtx.lineTo(getPxX(p.x), surfaceBaseY - (p.y*10)); 
+                tCtx.lineTo(5000, 5000); 
+                let g = tCtx.createLinearGradient(0, surfaceBaseY, 0, surfaceBaseY + 500); 
+                g.addColorStop(0, isLight ? '#ca8a04' : '#1c1510'); 
+                g.addColorStop(0.3, isLight ? '#854d0e' : '#0f0a07'); 
+                g.addColorStop(1, isLight ? '#422006' : '#050302'); 
+                tCtx.fillStyle = g; tCtx.fill();
+                
+                // Glowing Surface Scanline
+                tCtx.beginPath(); tCtx.strokeStyle = isLight ? '#0284c7' : '#00e5ff'; tCtx.lineWidth = 2; 
+                tCtx.shadowColor = isLight ? 'transparent' : '#00e5ff'; tCtx.shadowBlur = 10;
+                tCtx.moveTo(-5000, surfaceBaseY - (state.surfacePoints[0]?.y*10)); 
+                for(let p of state.surfacePoints) tCtx.lineTo(getPxX(p.x), surfaceBaseY - (p.y*10)); 
+                tCtx.lineTo(5000, surfaceBaseY - (state.surfacePoints[state.surfacePoints.length-1]?.y*10)); 
+                tCtx.stroke();
+                tCtx.shadowBlur = 0; // reset
+
+                // Max Depth Line
+                tCtx.beginPath(); tCtx.strokeStyle= isLight ? 'rgba(220, 38, 38, 0.4)' : 'rgba(255, 42, 42, 0.4)'; tCtx.lineWidth = 1.5; tCtx.setLineDash([10,10]); 
+                for(let x=-100; x<=state.targetDistance+100; x+=5) tCtx.lineTo(getPxX(x), getPxY_Side(-getSurfaceHeight(x)+state.maxAllowedDepthRel)); 
+                tCtx.stroke(); tCtx.setLineDash([]);
+                
+                // Utilities (Pipes)
                 state.utilities.forEach(u => { 
-                    let pxX = getPxX(u.dist), pxY = getPxY_Side(u.absElevation), r = Math.max((u.diamFt/2)*15, 4); tCtx.beginPath(); tCtx.arc(pxX, pxY, r, 0, Math.PI*2); tCtx.fillStyle = u.color; tCtx.fill(); tCtx.lineWidth = 1; tCtx.strokeStyle = '#000'; tCtx.stroke();
-                    let depthLabel = formatPiesPulgadas(u.depthTarget) + " ft"; let surfY = surfaceBaseY - (getSurfaceHeight(u.dist) * 10); tCtx.font = `bold ${14 / camera.zoom}px Arial`; tCtx.textAlign = 'center'; tCtx.lineWidth = 3 / camera.zoom; tCtx.strokeStyle = '#000000'; tCtx.strokeText(depthLabel, pxX, surfY - (20 / camera.zoom)); tCtx.fillStyle = u.color; tCtx.fillText(depthLabel, pxX, surfY - (20 / camera.zoom));
+                    let pxX = getPxX(u.dist), pxY = getPxY_Side(u.absElevation), r = Math.max((u.diamFt/2)*15, 4); 
+                    
+                    // 3D Pipe effect
+                    let rGrad = tCtx.createRadialGradient(pxX - r/3, pxY - r/3, r/5, pxX, pxY, r);
+                    rGrad.addColorStop(0, '#ffffff'); 
+                    rGrad.addColorStop(0.3, u.color); 
+                    rGrad.addColorStop(1, '#000000');
+                    
+                    tCtx.beginPath(); tCtx.arc(pxX, pxY, r, 0, Math.PI*2); 
+                    tCtx.fillStyle = rGrad; tCtx.fill(); 
+                    tCtx.lineWidth = 1; tCtx.strokeStyle = '#000'; tCtx.stroke();
+                    
+                    // Depth Label
+                    let depthLabel = formatPiesPulgadas(u.depthTarget) + " ft"; let surfY = surfaceBaseY - (getSurfaceHeight(u.dist) * 10); 
+                    tCtx.font = `bold ${14 / camera.zoom}px "Share Tech Mono"`; tCtx.textAlign = 'center'; 
+                    tCtx.fillStyle = u.color; 
+                    tCtx.shadowColor = isLight ? '#ffffff' : '#000'; tCtx.shadowBlur = 4;
+                    tCtx.fillText(depthLabel, pxX, surfY - (25 / camera.zoom));
+                    tCtx.shadowBlur = 0;
+                    
+                    // Target line connecting surface label to pipe
+                    tCtx.beginPath(); tCtx.strokeStyle = isLight ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)'; tCtx.setLineDash([4, 4]); tCtx.lineWidth = 1/camera.zoom;
+                    tCtx.moveTo(pxX, surfY - (15 / camera.zoom)); tCtx.lineTo(pxX, pxY - r); tCtx.stroke(); tCtx.setLineDash([]);
                 });
                 
                 // EXIT VAULT DRAWING
                 let tx = getPxX(state.targetDistance), s = getSurfaceHeight(state.targetDistance), ys = surfaceBaseY-(s*10), yt = getPxY_Side(state.targetDepth-s); 
-                tCtx.fillStyle = '#1a202c'; tCtx.fillRect(tx, ys, 40, yt-ys); tCtx.fillStyle = 'rgba(0,255,0,0.5)'; tCtx.fillRect(tx, yt-5, 40, 10);
                 
-                // NEW: Target Exit Depth Label on Vault
-                tCtx.font = `bold ${14 / camera.zoom}px Arial`;
-                tCtx.textAlign = 'left';
-                tCtx.fillStyle = '#4ade80';
-                tCtx.strokeStyle = '#000000';
-                tCtx.lineWidth = 3 / camera.zoom;
-                let targetLabel = "TARGET DEPTH: " + formatPiesPulgadas(state.targetDepth) + " ft";
-                tCtx.strokeText(targetLabel, tx + 45, yt);
-                tCtx.fillText(targetLabel, tx + 45, yt);
+                // Vault Box
+                let vaultGrad = tCtx.createLinearGradient(tx, ys, tx+45, ys);
+                vaultGrad.addColorStop(0, isLight ? '#cbd5e1' : '#1a2235'); vaultGrad.addColorStop(1, isLight ? '#94a3b8' : '#0f172a');
+                tCtx.fillStyle = vaultGrad; tCtx.fillRect(tx, ys, 45, yt-ys + 20); 
+                tCtx.strokeStyle = isLight ? '#64748b' : '#3b4559'; tCtx.lineWidth = 2; tCtx.strokeRect(tx, ys, 45, yt-ys + 20);
                 
-                tCtx.save(); let startS = getSurfaceHeight(0); tCtx.translate(getPxX(0), surfaceBaseY - (startS * 10)); tCtx.fillStyle = '#111'; tCtx.fillRect(-40, -10, 60, 10); tCtx.fillStyle = '#FF9900'; tCtx.fillRect(-35, -30, 50, 20); tCtx.translate(10, -5); tCtx.rotate(Math.atan2(-state.pitch, 100)); tCtx.fillStyle = '#555'; tCtx.fillRect(-50, -4, 60, 8); tCtx.restore(); dibujarRuta(tCtx, getPxY_Side, 'side');
+                // Target Zone Glow
+                tCtx.fillStyle = isLight ? 'rgba(22, 163, 74, 0.4)' : 'rgba(57, 255, 20, 0.2)'; tCtx.fillRect(tx, yt-10, 45, 20);
+                tCtx.beginPath(); tCtx.strokeStyle = isLight ? '#16a34a' : '#39ff14'; tCtx.lineWidth = 2;
+                tCtx.moveTo(tx, yt); tCtx.lineTo(tx + 45, yt); tCtx.stroke();
+                
+                // Target Exit Depth Label on Vault
+                tCtx.font = `bold ${12 / camera.zoom}px "Share Tech Mono"`;
+                tCtx.textAlign = 'left'; tCtx.fillStyle = isLight ? '#16a34a' : '#39ff14';
+                tCtx.shadowColor = isLight ? 'transparent' : '#000'; tCtx.shadowBlur = 4;
+                let targetLabel = "TARGET: " + formatPiesPulgadas(state.targetDepth) + "'";
+                tCtx.fillText(targetLabel, tx + 50, yt + 4); tCtx.shadowBlur = 0;
+                
+                // Drill Rig (Modern)
+                tCtx.save(); let startS = getSurfaceHeight(0); tCtx.translate(getPxX(0), surfaceBaseY - (startS * 10)); 
+                
+                // Tracks
+                tCtx.fillStyle = isLight ? '#475569' : '#1e293b'; tCtx.beginPath(); tCtx.roundRect(-50, -12, 80, 14, 4); tCtx.fill();
+                tCtx.fillStyle = isLight ? '#94a3b8' : '#0f172a'; 
+                for(let wx = -45; wx <= 20; wx += 12) { tCtx.beginPath(); tCtx.arc(wx, -5, 4, 0, Math.PI*2); tCtx.fill(); }
+                
+                // Body
+                let bodyGrad = tCtx.createLinearGradient(-40, -40, 20, -10);
+                bodyGrad.addColorStop(0, isLight ? '#fbbf24' : '#ff6a00'); bodyGrad.addColorStop(1, isLight ? '#d97706' : '#b45309');
+                tCtx.fillStyle = bodyGrad;
+                tCtx.beginPath(); tCtx.moveTo(-45, -12); tCtx.lineTo(-35, -40); tCtx.lineTo(15, -40); tCtx.lineTo(25, -12); tCtx.closePath(); tCtx.fill();
+                
+                // Details
+                tCtx.fillStyle = isLight ? '#334155' : '#0f172a'; tCtx.fillRect(-25, -35, 20, 12); // Window
+                tCtx.fillStyle = isLight ? '#0284c7' : '#00e5ff'; tCtx.shadowColor = isLight ? 'transparent' : '#00e5ff'; tCtx.shadowBlur = 10;
+                tCtx.fillRect(10, -30, 4, 4); // Indicator light
+                tCtx.shadowBlur = 0;
+
+                // Arm/Rack
+                tCtx.translate(15, -5); tCtx.rotate(Math.atan2(-state.pitch, 100)); 
+                let armGrad = tCtx.createLinearGradient(-50, -4, -50, 4);
+                armGrad.addColorStop(0, isLight ? '#cbd5e1' : '#94a3b8'); armGrad.addColorStop(1, isLight ? '#94a3b8' : '#475569');
+                tCtx.fillStyle = armGrad; tCtx.fillRect(-60, -4, 70, 8); 
+                tCtx.fillStyle = isLight ? '#475569' : '#1e293b'; tCtx.fillRect(-60, -6, 10, 12); // drive motor
+                tCtx.restore(); 
+
+                dibujarRuta(tCtx, getPxY_Side, 'side');
             } else {
-                tCtx.fillStyle = '#2d4c1e'; tCtx.fillRect(-5000,-5000,10000,10000); tCtx.strokeStyle='#000'; tCtx.lineWidth = 1.2;
-                tCtx.beginPath(); tCtx.moveTo(-5000, getPxY_Top(getIdealLat(0)-state.runawayWidth)); for(let x=0; x<=state.targetDistance; x+=5) tCtx.lineTo(getPxX(x), getPxY_Top(getIdealLat(x)-state.runawayWidth)); tCtx.lineTo(5000, getPxY_Top(getIdealLat(state.targetDistance)-state.runawayWidth)); tCtx.stroke();
-                tCtx.beginPath(); tCtx.moveTo(-5000, getPxY_Top(getIdealLat(0)+state.runawayWidth)); for(let x=0; x<=state.targetDistance; x+=5) tCtx.lineTo(getPxX(x), getPxY_Top(getIdealLat(x)+state.runawayWidth)); tCtx.lineTo(5000, getPxY_Top(getIdealLat(state.targetDistance)+state.runawayWidth)); tCtx.stroke();
+                // Top View (Aerial Grass Style)
+                tCtx.fillStyle = isLight ? '#84cc16' : '#1e3f20'; // Verde pasto (claro para día, oscuro para noche)
+                tCtx.fillRect(-5000,-5000,10000,10000); 
+                
+                // Radar grid
+                tCtx.strokeStyle = isLight ? 'rgba(0,0,0,0.1)' : 'rgba(0, 229, 255, 0.05)'; tCtx.lineWidth = 1;
+                for(let y = 0; y < canvas.height; y += 40) { tCtx.beginPath(); tCtx.moveTo(-5000, y); tCtx.lineTo(5000, y); tCtx.stroke(); }
+                for(let x = 0; x < canvas.width; x += 40) { tCtx.beginPath(); tCtx.moveTo(x, -5000); tCtx.lineTo(x, 10000); tCtx.stroke(); }
+
+                tCtx.strokeStyle= isLight ? 'rgba(2, 132, 199, 0.4)' : 'rgba(0, 229, 255, 0.4)'; tCtx.lineWidth = 1.5; tCtx.setLineDash([5,5]);
+                
+                // Corridor Limits
+                tCtx.beginPath(); tCtx.moveTo(-5000, getPxY_Top(getIdealLat(0)-state.runawayWidth)); 
+                for(let x=0; x<=state.targetDistance; x+=5) tCtx.lineTo(getPxX(x), getPxY_Top(getIdealLat(x)-state.runawayWidth)); 
+                tCtx.lineTo(5000, getPxY_Top(getIdealLat(state.targetDistance)-state.runawayWidth)); tCtx.stroke();
+                
+                tCtx.beginPath(); tCtx.moveTo(-5000, getPxY_Top(getIdealLat(0)+state.runawayWidth)); 
+                for(let x=0; x<=state.targetDistance; x+=5) tCtx.lineTo(getPxX(x), getPxY_Top(getIdealLat(x)+state.runawayWidth)); 
+                tCtx.lineTo(5000, getPxY_Top(getIdealLat(state.targetDistance)+state.runawayWidth)); tCtx.stroke();
+                tCtx.setLineDash([]);
+                
+                // Corridor Area Fill
+                tCtx.beginPath(); tCtx.moveTo(-5000, getPxY_Top(getIdealLat(0)-state.runawayWidth)); 
+                for(let x=0; x<=state.targetDistance; x+=5) tCtx.lineTo(getPxX(x), getPxY_Top(getIdealLat(x)-state.runawayWidth)); 
+                tCtx.lineTo(getPxX(state.targetDistance), getPxY_Top(getIdealLat(state.targetDistance)+state.runawayWidth));
+                for(let x=state.targetDistance; x>=0; x-=5) tCtx.lineTo(getPxX(x), getPxY_Top(getIdealLat(x)+state.runawayWidth)); 
+                tCtx.lineTo(-5000, getPxY_Top(getIdealLat(0)+state.runawayWidth)); 
+                tCtx.fillStyle = isLight ? 'rgba(2, 132, 199, 0.05)' : 'rgba(0, 229, 255, 0.03)'; tCtx.fill();
+
                 state.utilities.forEach(u => { 
-                    let pxX = getPxX(u.dist); tCtx.fillStyle = u.color; tCtx.globalAlpha=0.3; tCtx.fillRect(pxX-5,-5000,10,10000); tCtx.globalAlpha=1; 
-                    let isHit = state.potholesVisited.includes(u.id); tCtx.fillStyle = isHit ? '#fbbf24':'#1a202c'; 
-                    let pxY = getPxY_Top(u.lat); tCtx.fillRect(pxX-12, pxY-12, 24, 24); 
-                    if (isHit) { tCtx.fillStyle = "#000"; tCtx.font = "bold 14px Arial"; tCtx.fillText("★", pxX - 6, pxY + 5); } 
+                    let pxX = getPxX(u.dist); tCtx.fillStyle = u.color; tCtx.globalAlpha=0.2; tCtx.fillRect(pxX-10,-5000,20,10000); tCtx.globalAlpha=1; 
+                    
+                    let isHit = state.potholesVisited.includes(u.id); tCtx.fillStyle = isHit ? (isLight ? '#ea580c' : '#ff6a00') : (isLight ? '#cbd5e1' : '#1a2235'); 
+                    let pxY = getPxY_Top(u.lat); 
+                    tCtx.strokeStyle = u.color; tCtx.lineWidth = 2;
+                    tCtx.strokeRect(pxX-15, pxY-15, 30, 30);
+                    tCtx.fillRect(pxX-15, pxY-15, 30, 30); 
+                    
+                    if (isHit) { tCtx.fillStyle = isLight ? "#0f172a" : "#fff"; tCtx.font = "bold 16px Arial"; tCtx.textAlign = "center"; tCtx.fillText("★", pxX, pxY + 6); } 
                 });
-                tCtx.fillStyle = '#1a202c'; let tx = getPxX(state.targetDistance), ty = getPxY_Top(state.targetLat); tCtx.fillRect(tx, ty-25, 40, 50);
-                tCtx.save(); tCtx.translate(getPxX(0), getPxY_Top(0)); tCtx.fillStyle = '#111'; tCtx.fillRect(-45, -20, 65, 10); tCtx.fillRect(-45, 10, 65, 10); tCtx.fillStyle = '#FF9900'; tCtx.fillRect(-40, -10, 55, 20); tCtx.fillStyle = '#222'; tCtx.fillRect(-25, -6, 20, 12); tCtx.fillStyle = '#555'; tCtx.fillRect(15, -3, 25, 6); tCtx.restore(); dibujarRuta(tCtx, getPxY_Top, 'top');
+                
+                // Target Vault Top
+                tCtx.fillStyle = isLight ? '#cbd5e1' : '#1a2235'; tCtx.strokeStyle = isLight ? '#16a34a' : '#39ff14'; tCtx.lineWidth = 2;
+                let tx = getPxX(state.targetDistance), ty = getPxY_Top(state.targetLat); 
+                tCtx.fillRect(tx, ty-30, 50, 60); tCtx.strokeRect(tx, ty-30, 50, 60);
+                
+                // Drill Machine Top
+                tCtx.save(); tCtx.translate(getPxX(0), getPxY_Top(0)); 
+                tCtx.fillStyle = isLight ? '#475569' : '#0f172a'; tCtx.fillRect(-50, -25, 75, 12); tCtx.fillRect(-50, 13, 75, 12); // tracks
+                tCtx.fillStyle = isLight ? '#f59e0b' : '#ff6a00'; tCtx.fillRect(-45, -13, 65, 26); // body
+                tCtx.fillStyle = isLight ? '#334155' : '#1e293b'; tCtx.fillRect(-25, -8, 20, 16); // cab
+                tCtx.fillStyle = isLight ? '#cbd5e1' : '#94a3b8'; tCtx.fillRect(20, -4, 30, 8); // arm
+                tCtx.restore(); 
+                
+                dibujarRuta(tCtx, getPxY_Top, 'top');
+                
                 if (state.locator) {
-                    let locPx = getPxX(state.locator.dist), locPy = getPxY_Top(state.locator.lat); let baseRadius = 10; tCtx.beginPath(); tCtx.arc(locPx, locPy, baseRadius / camera.zoom, 0, Math.PI*2); tCtx.fillStyle = '#FFFFFF'; tCtx.fill(); tCtx.lineWidth = 2 / camera.zoom; tCtx.strokeStyle = '#000000'; tCtx.stroke();
-                    tCtx.beginPath(); tCtx.strokeStyle = '#000000'; tCtx.lineWidth = 2 / camera.zoom; let crossSize = baseRadius / camera.zoom; tCtx.moveTo(locPx - crossSize, locPy); tCtx.lineTo(locPx + crossSize, locPy); tCtx.moveTo(locPx, locPy - crossSize); tCtx.lineTo(locPx, locPy + crossSize); tCtx.stroke();
-                    let diff = Math.abs(state.locator.dist - state.distance); let distLabel = diff.toFixed(1) + " ft"; tCtx.font = `bold ${12 / camera.zoom}px Arial`; tCtx.textAlign = 'center'; tCtx.lineWidth = 3 / camera.zoom; tCtx.strokeStyle = '#000000'; tCtx.strokeText(distLabel, locPx, locPy - (baseRadius / camera.zoom + 5)); tCtx.fillStyle = '#FFFFFF'; tCtx.fillText(distLabel, locPx, locPy - (baseRadius / camera.zoom + 5));
+                    let locPx = getPxX(state.locator.dist), locPy = getPxY_Top(state.locator.lat); let baseRadius = 12; 
+                    tCtx.beginPath(); tCtx.arc(locPx, locPy, baseRadius / camera.zoom, 0, Math.PI*2); 
+                    tCtx.fillStyle = isLight ? 'rgba(2, 132, 199, 0.2)' : 'rgba(0, 229, 255, 0.2)'; tCtx.fill(); 
+                    tCtx.lineWidth = 2 / camera.zoom; tCtx.strokeStyle = isLight ? '#0284c7' : '#00e5ff'; tCtx.stroke();
+                    
+                    tCtx.beginPath(); tCtx.strokeStyle = isLight ? '#0284c7' : '#00e5ff'; tCtx.lineWidth = 2 / camera.zoom; let crossSize = (baseRadius+5) / camera.zoom; 
+                    tCtx.moveTo(locPx - crossSize, locPy); tCtx.lineTo(locPx + crossSize, locPy); 
+                    tCtx.moveTo(locPx, locPy - crossSize); tCtx.lineTo(locPx, locPy + crossSize); tCtx.stroke();
+                    
+                    let diff = Math.abs(state.locator.dist - state.distance); let distLabel = diff.toFixed(1) + " ft"; 
+                    tCtx.font = `bold ${12 / camera.zoom}px "Share Tech Mono"`; tCtx.textAlign = 'center'; 
+                    tCtx.fillStyle = isLight ? '#0284c7' : '#00e5ff'; tCtx.shadowColor = isLight ? 'transparent' : '#000'; tCtx.shadowBlur = 4;
+                    tCtx.fillText(distLabel, locPx, locPy - (baseRadius / camera.zoom + 8)); tCtx.shadowBlur = 0;
                 }
             }
         }
         function dibujarEscena() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.save(); ctx.translate(camera.offsetX, camera.offsetY); ctx.scale(camera.zoom, camera.zoom); dibujarCuerpoEscena(ctx, state.view); ctx.restore(); if (state.view === 'side') { dibujarRadarRadar(ctx); dibujarIndicadoresHUD(ctx); } dibujarEstrellasHUD(ctx); }
 
         function chequearCondiciones(finalCheck) {
-            let iL = getIdealLat(state.distance); if (Math.abs(state.lat - iL) > state.runawayWidth) { mostrarGameOver("OUT OF AREA", "Safety corridor breach.", "red"); return true; }
-            let relD = state.absElevation + getSurfaceHeight(state.distance); if (relD > state.maxAllowedDepthRel) { mostrarGameOver("FAIL: TOO DEEP", "Permit depth violation.", "red"); return true; }
-            if (relD <= 1.0 && state.distance >= state.maxRodLength) { mostrarGameOver("FAIL: TOO SHALLOW", "Insufficient minimum cover.", "orange"); return true; }
+            let iL = getIdealLat(state.distance); if (Math.abs(state.lat - iL) > state.runawayWidth) { mostrarGameOver("OUT OF BOUNDS", "Safety corridor perimeter breach.", "red"); return true; }
+            let relD = state.absElevation + getSurfaceHeight(state.distance); if (relD > state.maxAllowedDepthRel) { mostrarGameOver("MAX DEPTH VIOLATION", "Permitted depth envelope exceeded.", "red"); return true; }
+            if (relD <= 1.0 && state.distance >= state.maxRodLength) { mostrarGameOver("MIN COVERAGE ERROR", "Insufficient top cover. Risk of surfacing.", "orange"); return true; }
             let rP = [...state.path]; if (!isAnimating) rP.push({ distance: state.distance, absElevation: state.absElevation });
             for (let i = 1; i < rP.length; i++) {
                 for (let u of state.utilities) {
@@ -636,17 +1080,16 @@
                         if (t >= 0 && t <= 1) {
                             let e = rP[i-1].absElevation + (rP[i].absElevation - rP[i-1].absElevation) * t;
                             let rodRadiusFt = 1.5 / 12; let utilityRadiusFt = u.diamFt / 2; let gapFt = Math.abs(e - u.absElevation) - utilityRadiusFt - rodRadiusFt; let clearanceInches = gapFt * 12;
-                            if (clearanceInches <= 1.0) { playSound(50, 'square', 0.8, 0.3); mostrarGameOver("UTILITY STRUCK!", `Impact! Clearance: ${clearanceInches.toFixed(1)}".`, "red"); return true; }
+                            if (clearanceInches <= 1.0) { playSound(50, 'square', 0.8, 0.3); mostrarGameOver("CRITICAL STRIKE!", `Asset impact detected. Clearance: ${clearanceInches.toFixed(1)}".`, "red"); return true; }
                         }
                     }
                 }
             }
-            if (relD < -0.15 && state.distance > 5) { mostrarGameOver("FRACOUT!", "Pressure relief to the surface.", "red"); return true; }
-            if (finalCheck && state.distance >= state.targetDistance) { if (Math.abs(relD - state.targetDepth) <= 0.7 && Math.abs(state.lat - state.targetLat) <= 1.5) { playSound(600, 'sine', 0.5, 0.2); setTimeout(()=>playSound(800, 'sine', 0.5, 0.15), 200); mostrarGameOver("EXCELLENT!", `Level ${state.level} Complete!`, "green", true); } else { mostrarGameOver("FAILED", "Target precision not met.", "orange"); } return true; }
+            if (relD < -0.15 && state.distance > 5) { mostrarGameOver("FRAC-OUT", "Unintended surface return. Pressure relief.", "red"); return true; }
+            if (finalCheck && state.distance >= state.targetDistance) { if (Math.abs(relD - state.targetDepth) <= 0.7 && Math.abs(state.lat - state.targetLat) <= 1.5) { playSound(600, 'sine', 0.5, 0.2); setTimeout(()=>playSound(800, 'sine', 0.5, 0.15), 200); mostrarGameOver("SECTOR COMPLETE", `Target precision verified.`, "green", true); } else { mostrarGameOver("TARGET MISSED", "Precision parameters not met.", "orange"); } return true; }
             return false;
         }
 
-        // Strict collision logic with Pothole visual box
         function verificarEstrellas() { 
             const hScale = (canvas.width - startXOffset - 40) / (state.targetDistance + 40);
             const vScale = (canvas.height / 2 - 20) / 10;
@@ -676,7 +1119,7 @@
                 verificarEstrellas(); window.actualizarPantallas(); dibujarEscena(); requestAnimationFrame(animTick);
             }
         }
-        function iniciarAnim(q) { isAnimating = true; document.querySelectorAll('.btn-action').forEach(b => b.disabled = true); animationData = { queue: q, current: q.shift(), progress: 0, speed: 0.032 }; requestAnimationFrame(animTick); }
+        function iniciarAnim(q) { isAnimating = true; document.querySelectorAll('.btn-action').forEach(b => b.disabled = true); animationData = { queue: q, current: q.shift(), progress: 0, speed: 0.0256 }; requestAnimationFrame(animTick); }
         window.iniciarMoverFraccion = function(frac, isDrill, metricKey) {
             if (isAnimating || state.gameOver) return; if(metricKey) state.metrics[metricKey]++;
             let pies = state.maxRodLength * frac; let remainingRod = state.maxRodLength - (state.distance % state.maxRodLength); if (Math.abs(remainingRod - state.maxRodLength) < 0.01) remainingRod = state.maxRodLength; if (pies > remainingRod + 0.01) pies = remainingRod;
@@ -700,22 +1143,22 @@
         window.setClock = function(h) { if(state.gameOver) return; state.clock = h; playSound(200,'sine',0.05); window.renderClock(); window.actualizarPantallas(); };
         window.renderClock = function() {
             const container = document.getElementById('clock-container'); if (!container) return; container.innerHTML = '';
-            for(let i=1; i<=12; i++) { let a = (i * 30 - 90) * (Math.PI / 180); let cx = 50 + 40 * Math.cos(a); let cy = 50 + 40 * Math.sin(a); let tick = document.createElement('div'); tick.className = `absolute rounded-full bg-gray-500 transform -translate-x-1/2 -translate-y-1/2 ` + (i % 3 === 0 ? 'w-2 h-2' : 'w-1 h-1'); tick.style.left = `${cx}%`; tick.style.top = `${cy}%`; container.appendChild(tick); }
+            for(let i=1; i<=12; i++) { let a = (i * 30 - 90) * (Math.PI / 180); let cx = 50 + 38 * Math.cos(a); let cy = 50 + 38 * Math.sin(a); let tick = document.createElement('div'); tick.className = `absolute rounded-full transform -translate-x-1/2 -translate-y-1/2 ` + (i % 3 === 0 ? 'w-1.5 h-1.5 bg-[#00e5ff]' : 'w-1 h-1 bg-[#3b4559]'); tick.style.left = `${cx}%`; tick.style.top = `${cy}%`; container.appendChild(tick); }
             let hw = document.createElement('div'); hw.className = "absolute top-1/2 left-1/2 w-full h-full text-center"; hw.style.transform = `translate(-50%, -50%) rotate(${state.clock * 30}deg)`;
-            let hand = document.createElement('div'); hand.className = "absolute bottom-1/2 left-1/2 transform -translate-x-1/2 w-1.5 h-[35%] rounded-t-sm z-10 bg-[#39ff14] shadow-[0_0_10px_#39ff14] text-center";
-            let ah = document.createElement('div'); ah.className = "absolute -top-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-bottom-[10px] border-bottom-[#39ff14] text-center";
+            let hand = document.createElement('div'); hand.className = "absolute bottom-1/2 left-1/2 transform -translate-x-1/2 w-1.5 h-[35%] rounded-t-sm z-10 bg-[#00e5ff] shadow-[0_0_8px_#00e5ff] text-center";
+            let ah = document.createElement('div'); ah.className = "absolute -top-1.5 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-bottom-[8px] border-bottom-[#00e5ff] text-center";
             hand.appendChild(ah); hw.appendChild(hand); container.appendChild(hw);
             let sel = document.getElementById('hour-selector'); if (!sel) return; sel.innerHTML = '';
-            for(let i=1; i<=12; i++) { let btn = document.createElement('button'); btn.className = `font-bold text-[10px] py-1 rounded shadow-[1px_1px_3px_#000] border border-gray-600 ` + (state.clock === i ? 'bg-red-600 text-white border-red-400' : 'bg-yellow-500 text-black'); btn.innerText = i; btn.onclick = () => { if(!state.gameOver) { window.setClock(i); } }; sel.appendChild(btn); }
+            for(let i=1; i<=12; i++) { let btn = document.createElement('button'); btn.className = `font-mono font-bold text-[10px] py-1 rounded border ` + (state.clock === i ? 'bg-[#00e5ff]/20 text-[#00e5ff] border-[#00e5ff] shadow-[0_0_5px_rgba(0,229,255,0.3)]' : 'bg-[#05070a] text-[#64748b] border-[#1a2235] hover:border-[#3b4559]'); btn.innerText = i; btn.onclick = () => { if(!state.gameOver) { window.setClock(i); } }; sel.appendChild(btn); }
         };
         window.actualizarPantallas = function() {
-            let pDisp = document.getElementById('display-programmed'); if (pDisp) { pDisp.innerText = `Power: ${state.steeringForce}%`; let abs = Math.abs(state.steeringForce); pDisp.className = "mt-1 font-bold text-[10px] lg:text-xs text-center h-6 lg:h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded text-center"; if (abs <= 10) pDisp.classList.add("text-blue-300"); else if (abs <= 16) pDisp.classList.add("text-yellow-300"); else pDisp.classList.add("text-red-400"); }
+            let pDisp = document.getElementById('display-programmed'); if (pDisp) { pDisp.innerText = `PWR: ${state.steeringForce}%`; let abs = Math.abs(state.steeringForce); if (abs <= 10) pDisp.className = "font-mono font-bold text-[12px] lg:text-[14px] h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded mb-1 border-[#1a2235] tracking-wider text-[#00e5ff] glow-text-blue"; else if (abs <= 16) pDisp.className = "font-mono font-bold text-[12px] lg:text-[14px] h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded mb-1 border-[#1a2235] tracking-wider text-[#ff6a00] glow-text-orange"; else pDisp.className = "font-mono font-bold text-[12px] lg:text-[14px] h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded mb-1 border border-[#ff2a2a] tracking-wider text-[#ff2a2a] shadow-[inset_0_0_10px_rgba(255,42,42,0.3)]"; }
             let rl = state.maxRodLength - (state.distance % state.maxRodLength); if (Math.abs(rl - state.maxRodLength) < 0.01 || Math.abs(rl) < 0.01) rl = state.maxRodLength;
-            let dRod = document.getElementById('display-rod-left'); if (dRod) dRod.innerText = `Left: ${rl.toFixed(1)} ft`;
+            let dRod = document.getElementById('display-rod-left'); if (dRod) dRod.innerText = `REM: ${rl.toFixed(1)}'`;
             let ip = document.getElementById('initial-pitch-controls'); if (ip) state.rods > 0 ? ip.classList.add('hidden') : ip.classList.remove('hidden');
-            const logList = document.getElementById('rod-log-list'); if (logList) { logList.innerHTML = ''; let maxRod = Math.floor((state.distance + 0.01) / state.maxRodLength); let currentPath = [...state.path, {distance: state.distance, absElevation: state.absElevation}]; for (let i = 1; i <= maxRod; i++) { let targetDist = i * state.maxRodLength; let node = currentPath.find(n => Math.abs(n.distance - targetDist) < 0.1); if (node) { let nodeRelDepth = node.absElevation + getSurfaceHeight(node.distance); let li = document.createElement('li'); li.innerText = `Rod ${i}=${formatRodLog(nodeRelDepth)}`; logList.appendChild(li); } } const logBox = document.getElementById('rod-log-box'); if (logBox) logBox.scrollTop = logBox.scrollHeight; }
+            const logList = document.getElementById('rod-log-list'); if (logList) { logList.innerHTML = ''; let maxRod = Math.floor((state.distance + 0.01) / state.maxRodLength); let currentPath = [...state.path, {distance: state.distance, absElevation: state.absElevation}]; for (let i = 1; i <= maxRod; i++) { let targetDist = i * state.maxRodLength; let node = currentPath.find(n => Math.abs(n.distance - targetDist) < 0.1); if (node) { let nodeRelDepth = node.absElevation + getSurfaceHeight(node.distance); let li = document.createElement('li'); li.innerText = `R${i < 10 ? '0'+i : i}: ${formatRodLog(nodeRelDepth)}`; logList.appendChild(li); } } const logBox = document.getElementById('rod-log-box'); if (logBox) logBox.scrollTop = logBox.scrollHeight; }
         };
-        window.toggleView = function() { state.view = state.view === 'side' ? 'top' : 'side'; const btnText = document.getElementById('btn-view-text'); const indicator = document.getElementById('view-indicator'); if (btnText) btnText.innerText = state.view === 'side' ? 'Main' : 'Aerial'; if (indicator) indicator.innerText = state.view === 'side' ? 'Main View (Absolute Horizon)' : 'Aerial View (Runway Corridor)'; dibujarEscena(); };
+        window.toggleView = function() { state.view = state.view === 'side' ? 'top' : 'side'; const btnText = document.getElementById('btn-view-text'); if (btnText) btnText.innerText = state.view === 'side' ? 'MAIN' : 'AERIAL'; dibujarEscena(); };
         
         window.toggleFullScreen = function() { 
             try { 
@@ -736,19 +1179,19 @@
             } catch(e) { console.warn("Full screen error:", e); } 
         };
 
-        function mostrarGameOver(tit, msg, col, isWin = false) { state.gameOver = true; clearInterval(state.timerInterval); document.querySelectorAll('.btn-action').forEach(b => b.disabled = true); const m = document.getElementById('game-over-modal'), t = document.getElementById('game-over-title'); t.className = `text-xl lg:text-4xl font-black mb-2 text-center emergency-alert ${col==='red'?'text-red-500':col==='green'?'text-green-500':'text-orange-400'}`; t.innerText = tit; document.getElementById('game-over-msg').innerText = msg; const s = document.getElementById('star-rating'); s.innerHTML = ''; const newRecordForm = document.getElementById('new-record-form'); if (isWin) { window.guardarProgresoLocal(state.level, state.potholesVisited.length); for(let i=0; i<state.utilities.length; i++) { let span = document.createElement('span'); span.innerText = '★'; span.className = state.potholesVisited.length > i ? 'star-gold' : 'text-gray-600'; s.appendChild(span); } document.getElementById('btn-next').classList.remove('hidden'); document.getElementById('btn-retry').classList.add('hidden'); if (state.potholesVisited.length === state.utilities.length) { newRecordForm.classList.remove('hidden'); newRecordForm.classList.add('flex'); document.getElementById('btn-next').classList.add('hidden'); } else { newRecordForm.classList.add('hidden'); newRecordForm.classList.remove('flex'); } } else { document.getElementById('btn-next').classList.add('hidden'); document.getElementById('btn-retry').classList.remove('hidden'); newRecordForm.classList.add('hidden'); newRecordForm.classList.remove('flex'); } m.classList.remove('hidden'); m.classList.add('flex'); }
-        window.generarInformeFinal = function() { reportViewType = 'side'; const btn = document.getElementById('btn-report-view'); if (btn) btn.innerText = 'View: MAIN'; let m = Math.floor(state.timeElapsed / 60); let s = state.timeElapsed % 60; document.getElementById('report-time').innerText = `${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`; document.getElementById('metric-d14').innerText = state.metrics.d14; document.getElementById('metric-d12').innerText = state.metrics.d12; document.getElementById('metric-df').innerText = state.metrics.df; document.getElementById('metric-p14').innerText = state.metrics.p14; document.getElementById('metric-p12').innerText = state.metrics.p12; document.getElementById('metric-pf').innerText = state.metrics.pf; document.getElementById('metric-b').innerText = state.metrics.back; document.getElementById('metric-rods').innerText = state.rods.toFixed(1); dibujarReporte(); document.getElementById('report-modal').classList.remove('hidden'); document.getElementById('report-modal').classList.add('flex'); };
-        window.toggleReportView = function() { reportViewType = reportViewType === 'side' ? 'top' : 'side'; const btn = document.getElementById('btn-report-view'); if (btn) btn.innerText = reportViewType === 'side' ? 'View: MAIN' : 'View: AERIAL'; dibujarReporte(); };
-        function dibujarReporte() { const rc = document.getElementById('report-canvas'); const rCtx = rc.getContext('2d'); rCtx.clearRect(0,0,1200,400); rCtx.save(); rCtx.beginPath(); rCtx.rect(0,0,1200,400); rCtx.clip(); let tempCamera = {...camera}; camera = {zoom: 1, offsetX: 0, offsetY: 0}; dibujarCuerpoEscena(rCtx, reportViewType); camera = tempCamera; rCtx.fillStyle = reportViewType === 'side' ? "black" : "white"; rCtx.font = "bold 24px Arial"; rCtx.fillText(reportViewType === 'side' ? "SIDE VIEW REPORT" : "AERIAL VIEW REPORT", 20, 40); rCtx.restore(); }
+        function mostrarGameOver(tit, msg, col, isWin = false) { state.gameOver = true; clearInterval(state.timerInterval); document.querySelectorAll('.btn-action').forEach(b => b.disabled = true); const m = document.getElementById('game-over-modal'), t = document.getElementById('game-over-title'); t.className = `text-2xl lg:text-4xl font-black mb-3 text-center uppercase tracking-widest ${col==='red'?'emergency-alert':col==='green'?'text-[#39ff14] glow-text-green':'text-[#ff6a00] glow-text-orange'}`; t.innerText = tit; document.getElementById('game-over-msg').innerText = msg; const s = document.getElementById('star-rating'); s.innerHTML = ''; const newRecordForm = document.getElementById('new-record-form'); if (isWin) { window.guardarProgresoLocal(state.level, state.potholesVisited.length); for(let i=0; i<state.utilities.length; i++) { let span = document.createElement('span'); span.innerText = '★'; span.className = state.potholesVisited.length > i ? 'text-[#ff6a00] drop-shadow-[0_0_10px_rgba(255,106,0,0.8)]' : 'text-[#3b4559]'; s.appendChild(span); } document.getElementById('btn-next').classList.remove('hidden'); document.getElementById('btn-retry').classList.add('hidden'); if (state.potholesVisited.length === state.utilities.length) { newRecordForm.classList.remove('hidden'); newRecordForm.classList.add('flex'); document.getElementById('btn-next').classList.add('hidden'); } else { newRecordForm.classList.add('hidden'); newRecordForm.classList.remove('flex'); } } else { document.getElementById('btn-next').classList.add('hidden'); document.getElementById('btn-retry').classList.remove('hidden'); newRecordForm.classList.add('hidden'); newRecordForm.classList.remove('flex'); } m.classList.remove('hidden'); m.classList.add('flex'); }
+        window.generarInformeFinal = function() { reportViewType = 'side'; const btn = document.getElementById('btn-report-view'); if (btn) btn.innerText = 'VIEW: MAIN'; let m = Math.floor(state.timeElapsed / 60); let s = state.timeElapsed % 60; document.getElementById('report-time').innerText = `${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`; document.getElementById('metric-d14').innerText = state.metrics.d14; document.getElementById('metric-d12').innerText = state.metrics.d12; document.getElementById('metric-df').innerText = state.metrics.df; document.getElementById('metric-p14').innerText = state.metrics.p14; document.getElementById('metric-p12').innerText = state.metrics.p12; document.getElementById('metric-pf').innerText = state.metrics.pf; document.getElementById('metric-b').innerText = state.metrics.back; document.getElementById('metric-rods').innerText = state.rods.toFixed(1); dibujarReporte(); document.getElementById('report-modal').classList.remove('hidden'); document.getElementById('report-modal').classList.add('flex'); };
+        window.toggleReportView = function() { reportViewType = reportViewType === 'side' ? 'top' : 'side'; const btn = document.getElementById('btn-report-view'); if (btn) btn.innerText = reportViewType === 'side' ? 'VIEW: MAIN' : 'VIEW: AERIAL'; dibujarReporte(); };
+        function dibujarReporte() { const rc = document.getElementById('report-canvas'); const rCtx = rc.getContext('2d'); rCtx.clearRect(0,0,1200,400); rCtx.save(); rCtx.beginPath(); rCtx.rect(0,0,1200,400); rCtx.clip(); let tempCamera = {...camera}; camera = {zoom: 1, offsetX: 0, offsetY: 0}; dibujarCuerpoEscena(rCtx, reportViewType); camera = tempCamera; rCtx.fillStyle = "rgba(0,0,0,0.5)"; rCtx.fillRect(10, 10, 240, 50); rCtx.fillStyle = "#00e5ff"; rCtx.font = "bold 24px 'Share Tech Mono'"; rCtx.fillText(reportViewType === 'side' ? "> MAIN FEED LOG" : "> AERIAL FEED LOG", 20, 42); rCtx.restore(); }
         window.cerrarInforme = function() { document.getElementById('report-modal').classList.add('hidden'); document.getElementById('report-modal').classList.remove('flex'); };
-        window.saveRecord = function() { const nameInput = document.getElementById('player-name-input'); const name = nameInput.value.trim(); if(!name) { mostrarError("Please enter a name"); return; } if(window.dbGuardarRecord) { window.dbGuardarRecord(name, state.level, state.timeElapsed, state.potholesVisited.length); } document.getElementById('new-record-form').classList.add('hidden'); nameInput.value = ''; window.nextLevel(); };
+        window.saveRecord = function() { const nameInput = document.getElementById('player-name-input'); const name = nameInput.value.trim(); if(!name) { mostrarError("CALLSIGN REQUIRED"); return; } if(window.dbGuardarRecord) { window.dbGuardarRecord(name, state.level, state.timeElapsed, state.potholesVisited.length); } document.getElementById('new-record-form').classList.add('hidden'); nameInput.value = ''; window.nextLevel(); };
 
-        const apwaTypes = [ { name: "SEWER", color: '#32CD32', diam: 12/12 }, { name: "POWER", color: '#FF0000', diam: 4/12 }, { name: "WATER", color: '#00BFFF', diam: 6/12 }, { name: "TELECOM", color: '#FFA500', diam: 4/12 } ];
+        const apwaTypes = [ { name: "SEWER", color: '#32CD32', diam: 12/12 }, { name: "POWER", color: '#ff2a2a', diam: 4/12 }, { name: "WATER", color: '#00e5ff', diam: 6/12 }, { name: "TELECOM", color: '#ff6a00', diam: 4/12 } ];
         function generateLevel(lvl) {
             clearInterval(state.timerInterval); let currentRodSize = parseInt(document.getElementById('rod-length-select').value) || 10;
             state.level = lvl; state.distance = 0; state.lat = 0; state.rods = 0; state.pitch = -18 - Math.random() * 8; state.latAngle = 0; state.gameOver = false; state.errors = []; state.potholesVisited = []; state.surfacePoints = [];
             state.maxRodLength = currentRodSize; state.locator = null; window.resetZoom(); window.limpiarFuerza();
-            state.metrics = { d14: 0, d12: 0, df: 0, p14: 0, p12: 0, pf: 0, back: 0 }; state.startTime = Date.now(); state.timeElapsed = 0; state.timerInterval = setInterval(updateTimerDisplay, 1000); document.getElementById('time-display').innerText = "Time: 00:00";
+            state.metrics = { d14: 0, d12: 0, df: 0, p14: 0, p12: 0, pf: 0, back: 0 }; state.startTime = Date.now(); state.timeElapsed = 0; state.timerInterval = setInterval(updateTimerDisplay, 1000); document.getElementById('time-display').innerText = "T: 00:00";
             for (let i = -100; i <= (100 + (lvl - 1) * 15) + 100; i += 5) state.surfacePoints.push({ x: i, y: Math.sin(i * 0.04) * 2.5 + Math.cos(i * 0.015) * 2.0 });
             state.absElevation = -getSurfaceHeight(0); state.path = [{ distance: 0, absElevation: state.absElevation, lat: 0, pitch: state.pitch, latAngle: 0, rods: 0 }]; state.targetDistance = 100 + (lvl - 1) * 15; state.targetLat = (Math.random() - 0.5) * 8; state.targetDepth = 2.0 + Math.random() * 2.0;
             state.utilities = []; let deep = 0; let numUtils = state.targetDistance < 150 ? 3 : 5; let step = state.targetDistance / (numUtils + 1);
@@ -757,7 +1200,7 @@
                 let offsetLateral = (Math.random() - 0.5) * 1.5; let targetL = (i === numUtils) ? getIdealLat(d) : getIdealLat(d) + offsetLateral;
                 state.utilities.push({ id: i, name: type.name, dist: d, lat: targetL, absElevation: -getSurfaceHeight(d) + dp, depthTarget: dp, diamFt: type.diam, color: type.color }); 
             }
-            state.maxAllowedDepthRel = deep + 2.0; const ln = document.getElementById('lvl-number'); if(ln) ln.innerText = lvl; setEnginePitch(35); window.actualizarPantallas(); dibujarEscena();
+            state.maxAllowedDepthRel = deep + 2.0; const ln = document.getElementById('lvl-number'); if(ln) ln.innerText = lvl < 10 ? '0'+lvl : lvl; setEnginePitch(35); window.actualizarPantallas(); dibujarEscena();
         }
         
         window.startGame = function() { 
