@@ -196,7 +196,7 @@
             color: #0f172a;
         }
 
-        .light-mode #splash-screen, .light-mode #levels-modal, .light-mode #game-over-modal, .light-mode #report-modal {
+        .light-mode #splash-screen, .light-mode #levels-modal, .light-mode #game-over-modal, .light-mode #report-modal, .light-mode #log-modal {
             background: var(--modal-bg);
         }
 
@@ -226,7 +226,7 @@
         .glow-text-blue { text-shadow: var(--glow-blue); }
         
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #05070a; }
         ::-webkit-scrollbar-thumb { background: #3b4559; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--neon-blue); }
@@ -381,6 +381,10 @@
         <!-- CANVAS AREA PANEL -->
         <div class="panel-metal flex-grow min-h-0 w-full rounded-lg p-1.5 relative flex flex-col z-10">
 
+            <div id="view-indicator" class="absolute top-4 left-4 panel-inset text-[#00e5ff] px-3 py-1.5 rounded font-mono font-bold text-[10px] lg:text-xs pointer-events-none z-20 uppercase tracking-widest border-[#00e5ff]/30 shadow-[0_0_10px_rgba(0,229,255,0.1)]">
+                MAIN FEED [HORIZON]
+            </div>
+
             <!-- FLOATING ZOOM CONTROLS -->
             <div id="zoom-controls" class="absolute bottom-6 left-4 flex flex-col space-y-2 z-20">
                 <button onclick="window.zoomIn()" class="panel-metal text-white font-black text-xl w-10 h-10 rounded hover:brightness-125 active:scale-95 transition border-[#3b4559] flex items-center justify-center pb-1">+</button>
@@ -388,14 +392,11 @@
                 <button onclick="window.zoomOut()" class="panel-metal text-white font-black text-xl w-10 h-10 rounded hover:brightness-125 active:scale-95 transition border-[#3b4559] flex items-center justify-center pb-1">-</button>
             </div>
 
-            <!-- ROD LOG BOX -->
-            <div id="rod-log-box" class="absolute top-4 right-4 w-[110px] lg:w-[140px] max-h-[80%] panel-inset rounded-sm p-2 overflow-y-auto text-left z-20 pointer-events-auto border-[#1a2235]">
-                <h4 class="font-bold border-b border-[#2a3241] pb-1.5 mb-2 text-center text-[10px] uppercase text-[#64748b] tracking-widest flex items-center justify-center">
-                    <div class="w-1.5 h-1.5 rounded-full bg-[#39ff14] mr-2 animate-pulse"></div> LOG
-                </h4>
-                <ul id="rod-log-list" class="space-y-1.5 font-mono text-[10px] lg:text-[11px] text-[#39ff14]">
-                </ul>
-            </div>
+            <!-- LOG BUTTON (OPENS MODAL) -->
+            <button onclick="window.openLogModal()" class="absolute bottom-6 left-[64px] panel-metal text-[#00e5ff] font-bold text-[9px] w-12 h-10 rounded hover:brightness-125 active:scale-95 transition border-[#3b4559] flex flex-col items-center justify-center z-20 shadow-lg">
+                <svg class="w-4 h-4 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                LOG
+            </button>
 
             <!-- INSET CANVAS -->
             <div class="relative w-full h-full panel-inset rounded overflow-hidden">
@@ -426,6 +427,11 @@
                         <h3 class="text-[10px] lg:text-xs mb-2 text-[#64748b] font-bold uppercase tracking-widest">Tool Face</h3>
                         <div id="clock-container" class="relative w-16 h-16 lg:w-20 lg:h-20 shrink-0 rounded-full panel-inset aspect-square mb-2 shadow-[inset_0_0_15px_#000,0_0_5px_rgba(0,229,255,0.1)] border-[#00e5ff]/20"></div>
                         <div id="hour-selector" class="grid grid-cols-4 gap-1.5 w-full max-w-[150px] px-2 mt-1"></div>
+                    </div>
+
+                    <!-- VERTICAL STAR BOX -->
+                    <div id="star-box-container" class="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 z-[20] flex-col items-center panel-metal py-2 px-1 rounded-full shadow-lg border border-[#3b4559] scale-90 md:scale-100 gap-1.5 hidden">
+                        <!-- Stars injected via JS -->
                     </div>
                 </div>
 
@@ -606,6 +612,27 @@
         </div>
     </div>
 
+    <!-- LOG MODAL -->
+    <div id="log-modal" class="fixed inset-0 bg-[#05070a] bg-opacity-95 hidden flex-col items-center justify-center z-[160] p-4 text-center backdrop-blur-md">
+        <div class="panel-metal p-6 lg:p-8 rounded-xl shadow-[0_0_50px_rgba(0,229,255,0.15)] max-w-5xl w-full max-h-[85vh] flex flex-col relative border border-[#00e5ff40]">
+            <div class="screw screw-big screw-tl"></div><div class="screw screw-big screw-tr"></div><div class="screw screw-big screw-bl"></div><div class="screw screw-big screw-br"></div>
+
+            <div class="flex justify-between items-center bg-[#0a0d14] p-3 mb-4 rounded border border-[#1a2235] z-10 shrink-0">
+                <h2 class="text-[#00e5ff] font-black text-xl uppercase tracking-widest glow-text-blue flex items-center">
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                    FULL PIPE LOG
+                </h2>
+                <button onclick="window.closeLogModal()" class="bg-[#ff2a2a]/10 hover:bg-[#ff2a2a]/20 text-[#ff2a2a] font-bold px-6 py-2 rounded text-xs border border-[#ff2a2a]/50 tracking-widest transition">CLOSE</button>
+            </div>
+
+            <div class="flex-grow overflow-y-auto bg-[#05070a] rounded-lg border border-[#1a2235] p-4">
+                <ul id="full-log-list" class="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8 gap-3 font-mono text-[11px] lg:text-xs text-[#39ff14] text-center w-full">
+                    <!-- Logs injected dynamically here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <!-- SCRIPT (Lógica Idéntica, Dibujo en Canvas Actualizado) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -644,6 +671,7 @@
             if (document.getElementById('report-modal') && document.getElementById('report-modal').classList.contains('flex')) {
                 dibujarReporte();
             }
+            window.actualizarEstrellas();
         };
 
         window.obtenerProgreso = function() {
@@ -851,28 +879,50 @@
                 }); 
             } 
         }
-        function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius, fillCol, strokeCol) { let rot = Math.PI / 2 * 3; let x = cx; let y = cy; let step = Math.PI / spikes; ctx.beginPath(); ctx.moveTo(cx, cy - outerRadius); for (let i = 0; i < spikes; i++) { x = cx + Math.cos(rot) * outerRadius; y = cy + Math.sin(rot) * outerRadius; ctx.lineTo(x, y); rot += step; x = cx + Math.cos(rot) * innerRadius; y = cy + Math.sin(rot) * innerRadius; ctx.lineTo(x, y); rot += step; } ctx.lineTo(cx, cy - outerRadius); ctx.closePath(); ctx.lineWidth = 2; ctx.strokeStyle = strokeCol; ctx.stroke(); if (fillCol !== 'transparent') { ctx.shadowColor = fillCol; ctx.shadowBlur = 10; ctx.fillStyle = fillCol; ctx.fill(); ctx.shadowBlur = 0; } }
-        function dibujarEstrellasHUD(tCtx) { 
-            let isLight = document.body.classList.contains('light-mode');
-            let total = state.utilities.length; let recogidas = state.potholesVisited.length; if(total === 0) return; 
-            let starSpacing = 40; let startX = (canvas.width / 2) - ((total - 1) * starSpacing / 2); let startY = canvas.height - 35; 
+        
+        window.actualizarEstrellas = function() {
+            const container = document.getElementById('star-box-container');
+            if (!container) return;
             
-            tCtx.fillStyle = isLight ? 'rgba(241, 245, 249, 0.9)' : 'rgba(10, 13, 20, 0.8)'; 
-            tCtx.strokeStyle = isLight ? '#94a3b8' : 'rgba(0, 229, 255, 0.2)';
-            tCtx.lineWidth = 1;
-            let boxWidth = Math.max((total - 1) * starSpacing + 60, 180); let boxStartX = (canvas.width / 2) - (boxWidth / 2); 
-            tCtx.fillRect(boxStartX, startY - 25, boxWidth, 55); 
-            tCtx.strokeRect(boxStartX, startY - 25, boxWidth, 55); 
+            let total = state.utilities.length;
+            let recogidas = state.potholesVisited.length;
             
-            tCtx.fillStyle = isLight ? '#0284c7' : 'rgba(0, 229, 255, 0.5)'; tCtx.font = '10px "Share Tech Mono"'; tCtx.textAlign = 'center'; tCtx.fillText("VERIFICATION PROTOCOL", canvas.width/2, startY - 10);
+            if (total === 0) {
+                container.classList.add('hidden');
+                container.classList.remove('flex');
+                return;
+            } else {
+                container.classList.remove('hidden');
+                container.classList.add('flex');
+            }
 
-            for(let i=0; i<total; i++) { 
-                let isCollected = i < recogidas; 
-                let fillCol = isCollected ? (isLight ? '#f59e0b' : '#ff6a00') : 'transparent'; 
-                let strokeCol = isCollected ? (isLight ? '#d97706' : '#ffa033') : (isLight ? '#94a3b8' : '#3b4559'); 
-                drawStar(tCtx, startX + (i * starSpacing), startY + 12, 5, 12, 5, fillCol, strokeCol); 
-            } 
-        }
+            container.innerHTML = '';
+            let isLight = document.body.classList.contains('light-mode');
+
+            for (let i = 0; i < total; i++) {
+                let isCollected = i < recogidas;
+                let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('viewBox', '0 0 24 24');
+                svg.setAttribute('class', 'w-4 h-4 transition-all duration-300');
+                
+                let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z');
+                path.setAttribute('stroke-width', '2');
+                path.setAttribute('stroke-linejoin', 'round');
+                
+                if (isCollected) {
+                    path.setAttribute('fill', isLight ? '#f59e0b' : '#ff6a00');
+                    path.setAttribute('stroke', isLight ? '#d97706' : '#ffa033');
+                    svg.style.filter = isLight ? 'drop-shadow(0 0 2px rgba(245,158,11,0.5))' : 'drop-shadow(0 0 5px rgba(255,106,0,0.8))';
+                } else {
+                    path.setAttribute('fill', 'transparent');
+                    path.setAttribute('stroke', isLight ? '#94a3b8' : '#3b4559');
+                }
+                
+                svg.appendChild(path);
+                container.appendChild(svg);
+            }
+        };
         
         function dibujarCuerpoEscena(tCtx, viewType) {
             let isLight = document.body.classList.contains('light-mode');
@@ -1066,7 +1116,7 @@
                 }
             }
         }
-        function dibujarEscena() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.save(); ctx.translate(camera.offsetX, camera.offsetY); ctx.scale(camera.zoom, camera.zoom); dibujarCuerpoEscena(ctx, state.view); ctx.restore(); if (state.view === 'side') { dibujarRadarRadar(ctx); dibujarIndicadoresHUD(ctx); } dibujarEstrellasHUD(ctx); }
+        function dibujarEscena() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.save(); ctx.translate(camera.offsetX, camera.offsetY); ctx.scale(camera.zoom, camera.zoom); dibujarCuerpoEscena(ctx, state.view); ctx.restore(); if (state.view === 'side') { dibujarRadarRadar(ctx); dibujarIndicadoresHUD(ctx); } }
 
         function chequearCondiciones(finalCheck) {
             let iL = getIdealLat(state.distance); if (Math.abs(state.lat - iL) > state.runawayWidth) { mostrarGameOver("OUT OF BOUNDS", "Safety corridor perimeter breach.", "red"); return true; }
@@ -1102,6 +1152,7 @@
                     if (!state.potholesVisited.includes(u.id)) { 
                         state.potholesVisited.push(u.id); 
                         if (window.playSuccessChime) window.playSuccessChime(); 
+                        window.actualizarEstrellas();
                     } 
                 } 
             }); 
@@ -1151,12 +1202,39 @@
             let sel = document.getElementById('hour-selector'); if (!sel) return; sel.innerHTML = '';
             for(let i=1; i<=12; i++) { let btn = document.createElement('button'); btn.className = `font-mono font-bold text-[10px] py-1 rounded border ` + (state.clock === i ? 'bg-[#00e5ff]/20 text-[#00e5ff] border-[#00e5ff] shadow-[0_0_5px_rgba(0,229,255,0.3)]' : 'bg-[#05070a] text-[#64748b] border-[#1a2235] hover:border-[#3b4559]'); btn.innerText = i; btn.onclick = () => { if(!state.gameOver) { window.setClock(i); } }; sel.appendChild(btn); }
         };
+
+        window.openLogModal = function() {
+            document.getElementById('log-modal').classList.remove('hidden');
+            document.getElementById('log-modal').classList.add('flex');
+        };
+        
+        window.closeLogModal = function() {
+            document.getElementById('log-modal').classList.add('hidden');
+            document.getElementById('log-modal').classList.remove('flex');
+        };
+
         window.actualizarPantallas = function() {
             let pDisp = document.getElementById('display-programmed'); if (pDisp) { pDisp.innerText = `PWR: ${state.steeringForce}%`; let abs = Math.abs(state.steeringForce); if (abs <= 10) pDisp.className = "font-mono font-bold text-[12px] lg:text-[14px] h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded mb-1 border-[#1a2235] tracking-wider text-[#00e5ff] glow-text-blue"; else if (abs <= 16) pDisp.className = "font-mono font-bold text-[12px] lg:text-[14px] h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded mb-1 border-[#1a2235] tracking-wider text-[#ff6a00] glow-text-orange"; else pDisp.className = "font-mono font-bold text-[12px] lg:text-[14px] h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded mb-1 border border-[#ff2a2a] tracking-wider text-[#ff2a2a] shadow-[inset_0_0_10px_rgba(255,42,42,0.3)]"; }
             let rl = state.maxRodLength - (state.distance % state.maxRodLength); if (Math.abs(rl - state.maxRodLength) < 0.01 || Math.abs(rl) < 0.01) rl = state.maxRodLength;
             let dRod = document.getElementById('display-rod-left'); if (dRod) dRod.innerText = `REM: ${rl.toFixed(1)}'`;
             let ip = document.getElementById('initial-pitch-controls'); if (ip) state.rods > 0 ? ip.classList.add('hidden') : ip.classList.remove('hidden');
-            const logList = document.getElementById('rod-log-list'); if (logList) { logList.innerHTML = ''; let maxRod = Math.floor((state.distance + 0.01) / state.maxRodLength); let currentPath = [...state.path, {distance: state.distance, absElevation: state.absElevation}]; for (let i = 1; i <= maxRod; i++) { let targetDist = i * state.maxRodLength; let node = currentPath.find(n => Math.abs(n.distance - targetDist) < 0.1); if (node) { let nodeRelDepth = node.absElevation + getSurfaceHeight(node.distance); let li = document.createElement('li'); li.innerText = `R${i < 10 ? '0'+i : i}: ${formatRodLog(nodeRelDepth)}`; logList.appendChild(li); } } const logBox = document.getElementById('rod-log-box'); if (logBox) logBox.scrollTop = logBox.scrollHeight; }
+            const logList = document.getElementById('full-log-list'); 
+            if (logList) { 
+                logList.innerHTML = ''; 
+                let maxRod = Math.floor((state.distance + 0.01) / state.maxRodLength); 
+                let currentPath = [...state.path, {distance: state.distance, absElevation: state.absElevation}]; 
+                for (let i = 1; i <= maxRod; i++) { 
+                    let targetDist = i * state.maxRodLength; 
+                    let node = currentPath.find(n => Math.abs(n.distance - targetDist) < 0.1); 
+                    if (node) { 
+                        let nodeRelDepth = node.absElevation + getSurfaceHeight(node.distance); 
+                        let li = document.createElement('li'); 
+                        li.className = "bg-[#0a0d14] px-2 py-2.5 rounded border border-[#1a2235] text-[#39ff14] shadow-[0_2px_4px_rgba(0,0,0,0.5)] flex flex-col items-center justify-center transition hover:border-[#00e5ff] cursor-default"; 
+                        li.innerHTML = `<span class="text-[#64748b] text-[9px] mb-1 tracking-widest uppercase">ROD ${i < 10 ? '0'+i : i}</span><span class="font-bold text-[12px]">${formatRodLog(nodeRelDepth)}</span>`; 
+                        logList.appendChild(li); 
+                    } 
+                } 
+            }
         };
         window.toggleView = function() { state.view = state.view === 'side' ? 'top' : 'side'; const btnText = document.getElementById('btn-view-text'); if (btnText) btnText.innerText = state.view === 'side' ? 'MAIN' : 'AERIAL'; dibujarEscena(); };
         
@@ -1200,7 +1278,7 @@
                 let offsetLateral = (Math.random() - 0.5) * 1.5; let targetL = (i === numUtils) ? getIdealLat(d) : getIdealLat(d) + offsetLateral;
                 state.utilities.push({ id: i, name: type.name, dist: d, lat: targetL, absElevation: -getSurfaceHeight(d) + dp, depthTarget: dp, diamFt: type.diam, color: type.color }); 
             }
-            state.maxAllowedDepthRel = deep + 2.0; const ln = document.getElementById('lvl-number'); if(ln) ln.innerText = lvl < 10 ? '0'+lvl : lvl; setEnginePitch(35); window.actualizarPantallas(); dibujarEscena();
+            state.maxAllowedDepthRel = deep + 2.0; const ln = document.getElementById('lvl-number'); if(ln) ln.innerText = lvl < 10 ? '0'+lvl : lvl; setEnginePitch(35); window.actualizarPantallas(); dibujarEscena(); window.actualizarEstrellas();
         }
         
         window.startGame = function() { 
