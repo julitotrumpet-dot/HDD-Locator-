@@ -1141,10 +1141,10 @@
         }
 
         function verificarEstrellas() { 
-            const hScale = (canvas.width - startXOffset - 40) / (state.targetDistance + 40);
-            const vScale = (canvas.height / 2 - 20) / 10;
-            const thresholdDist = 12 / hScale; 
-            const thresholdLat = 12 / vScale;
+            // Ampliamos significativamente los umbrales (tolerancia) 
+            // para garantizar que siempre registre cuando pasas por la zona de cruce del servicio.
+            const thresholdDist = 4.0; // +/- 4 pies de tolerancia a lo largo
+            const thresholdLat = 3.5;  // +/- 3.5 pies de tolerancia lateral
 
             state.utilities.forEach(u => { 
                 if (Math.abs(state.distance - u.dist) <= thresholdDist && 
