@@ -639,7 +639,7 @@
             startTime: 0, endTime: 0, timerInterval: null, timeElapsed: 0
         };
 
-        let audioCtx = null, engineOsc = null, engineGain = null, musicGain = null, introAudioCtx = null, isMuted = false, isAnimating = false, animationData = null;
+        let audioCtx = null, engineOsc = null, engineGain = null, introAudioCtx = null, isMuted = false, isAnimating = false, animationData = null;
 
         window.initializeSystem = function() {
             const overlay = document.getElementById('init-overlay');
@@ -848,13 +848,23 @@
         window.initAudio = function() {
             if (audioCtx) return;
             try {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)(); engineGain = audioCtx.createGain(); engineGain.gain.setValueAtTime(isMuted ? 0 : 0.15, audioCtx.currentTime); engineGain.connect(audioCtx.destination);
-                musicGain = audioCtx.createGain(); musicGain.gain.setValueAtTime(isMuted ? 0 : 0.50, audioCtx.currentTime); musicGain.connect(audioCtx.destination);
-                engineOsc = audioCtx.createOscillator(); engineOsc.type = 'sawtooth'; engineOsc.frequency.setValueAtTime(35, audioCtx.currentTime);
-                let f = audioCtx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.setValueAtTime(150, audioCtx.currentTime); engineOsc.connect(f); f.connect(engineGain); engineOsc.start(); startDynamicActionMusic();
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)(); 
+                engineGain = audioCtx.createGain(); 
+                engineGain.gain.setValueAtTime(isMuted ? 0 : 0.15, audioCtx.currentTime); 
+                engineGain.connect(audioCtx.destination);
+                
+                engineOsc = audioCtx.createOscillator(); 
+                engineOsc.type = 'sawtooth'; 
+                engineOsc.frequency.setValueAtTime(35, audioCtx.currentTime);
+                let f = audioCtx.createBiquadFilter(); 
+                f.type = 'lowpass'; 
+                f.frequency.setValueAtTime(150, audioCtx.currentTime); 
+                engineOsc.connect(f); 
+                f.connect(engineGain); 
+                engineOsc.start(); 
             } catch(e) { console.warn("Audio could not be initialized", e); }
         };
-        function startDynamicActionMusic() { const heroicNotes = [110, 130.81, 146.83, 164.81, 196, 220, 196, 164.81]; let step = 0; function loop() { if (!audioCtx) return; if (isMuted || audioCtx.state === 'suspended') { setTimeout(loop, 250); return; } let dur = 60 / (110 + state.level * 2); let b = audioCtx.createOscillator(); let g1 = audioCtx.createGain(); b.type = 'triangle'; b.frequency.setValueAtTime(heroicNotes[step % 4] / 2, audioCtx.currentTime); g1.gain.setValueAtTime(0.40, audioCtx.currentTime); g1.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur); b.connect(g1); g1.connect(musicGain); b.start(); b.stop(audioCtx.currentTime + dur); let l = audioCtx.createOscillator(); let g2 = audioCtx.createGain(); l.type = 'sawtooth'; l.frequency.setValueAtTime(heroicNotes[step % heroicNotes.length], audioCtx.currentTime); g2.gain.setValueAtTime(0.25, audioCtx.currentTime); g2.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur); l.connect(g2); g2.connect(musicGain); l.start(); l.stop(audioCtx.currentTime + dur); step++; setTimeout(loop, dur * 1000); } loop(); }
+        
         function setEnginePitch(f, v = 0.15) { if (!audioCtx || isMuted) return; engineOsc.frequency.exponentialRampToValueAtTime(f, audioCtx.currentTime + 0.5); engineGain.gain.linearRampToValueAtTime(Math.min(v, 0.40), audioCtx.currentTime + 0.2); }
         function playSound(f, t, d, v = 0.40) { if (!audioCtx || isMuted) return; let o = audioCtx.createOscillator(); let g = audioCtx.createGain(); o.type = t; o.frequency.setValueAtTime(f, audioCtx.currentTime); g.gain.setValueAtTime(v, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + d); o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime + d); }
         window.playSuccessChime = function() { if (!audioCtx || isMuted) return; let o1 = audioCtx.createOscillator(); let g1 = audioCtx.createGain(); o1.type = 'sine'; o1.frequency.setValueAtTime(523.25, audioCtx.currentTime); g1.gain.setValueAtTime(0, audioCtx.currentTime); g1.gain.linearRampToValueAtTime(0.40, audioCtx.currentTime + 0.05); g1.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2); o1.connect(g1); g1.connect(audioCtx.destination); o1.start(); o1.stop(audioCtx.currentTime + 0.2); let o2 = audioCtx.createOscillator(); let g2 = audioCtx.createGain(); o2.type = 'sine'; o2.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); g2.gain.setValueAtTime(0, audioCtx.currentTime + 0.1); g2.gain.linearRampToValueAtTime(0.40, audioCtx.currentTime + 0.15); g2.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.6); o2.connect(g2); g2.connect(audioCtx.destination); o2.start(audioCtx.currentTime + 0.1); o2.stop(audioCtx.currentTime + 0.6); };
@@ -902,14 +912,12 @@
                 toggleDiv.classList.remove('text-[#64748b]', 'hover:text-[#00e5ff]');
                 
                 if (engineGain) engineGain.gain.setValueAtTime(0, audioCtx.currentTime); 
-                if (musicGain) musicGain.gain.setValueAtTime(0, audioCtx.currentTime); 
             } else { 
                 icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5L6 9H2v6h4l5 4V5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>'; 
                 toggleDiv.classList.remove('text-[#ff2a2a]');
                 toggleDiv.classList.add('text-[#64748b]', 'hover:text-[#00e5ff]');
                 
                 if (engineGain) engineGain.gain.setValueAtTime(0.15, audioCtx.currentTime); 
-                if (musicGain) musicGain.gain.setValueAtTime(0.50, audioCtx.currentTime); 
             } 
         };
 
