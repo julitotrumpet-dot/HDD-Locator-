@@ -170,8 +170,8 @@
         <svg class="w-16 h-16 mb-4 text-[#00e5ff] animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v2m0 8v2m-6-6H4m16 0h-2m-9.172 6.172l1.414-1.414M6.343 6.343l1.414 1.414m10.828 10.828l-1.414-1.414M17.657 6.343l-1.414 1.414"></path>
         </svg>
-        <h2 class="text-2xl lg:text-4xl font-black text-[#00e5ff] tracking-widest uppercase animate-pulse glow-text-blue">System Initialization</h2>
-        <p class="text-[#64748b] font-mono mt-3 text-sm tracking-widest">(Click anywhere to start)</p>
+        <h2 class="text-2xl lg:text-4xl font-black text-[#00e5ff] tracking-widest uppercase animate-pulse glow-text-blue" data-i18n="init-title">System Initialization</h2>
+        <p class="text-[#64748b] font-mono mt-3 text-sm tracking-widest" data-i18n="init-sub">(Click anywhere to start)</p>
     </div>
 
     <!-- SPLASH SCREEN -->
@@ -182,31 +182,31 @@
             <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-1 bg-gradient-to-r from-transparent via-[#ff6a00] to-transparent"></div>
 
             <h1 class="text-4xl lg:text-6xl font-black uppercase tracking-wider glow-text-orange" style="color: #ff6a00;">HDD SIMULATOR</h1>
-            <p class="text-xs lg:text-sm text-[#00e5ff] font-mono mt-1 mb-4 tracking-widest text-center uppercase glow-text-blue">Precision Drilling OS v5.0 // Auth: Julio Sarracent</p>
+            <p class="text-xs lg:text-sm text-[#00e5ff] font-mono mt-1 mb-4 tracking-widest text-center uppercase glow-text-blue" data-i18n="title-sub">Precision Drilling OS v5.0 // Auth: Julio Sarracent</p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mb-6 bg-[#0a0d14] p-4 rounded-lg border border-[#1a2235]">
                 <div>
                     <h3 class="text-[#00e5ff] font-bold uppercase mb-2 flex items-center text-sm tracking-wider">
                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13zM7 13a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13z" clip-rule="evenodd"></path></svg>
-                        Training Objectives
+                        <span data-i18n="obj-title">Training Objectives</span>
                     </h3>
                     <ul class="text-xs lg:text-sm text-gray-400 font-mono space-y-2">
-                        <li><span class="text-[#39ff14]">></span> Complete <span class="text-white">20 operational levels</span>.</li>
-                        <li><span class="text-[#39ff14]">></span> Master Absolute Horizon controls.</li>
-                        <li><span class="text-[#ff6a00]">> NEW:</span> Automated target depth marking.</li>
-                        <li><span class="text-[#39ff14]">></span> Maximize speed & precision metrics.</li>
+                        <li><span class="text-[#39ff14]">></span> <span data-i18n="obj-1">Complete 20 operational levels.</span></li>
+                        <li><span class="text-[#39ff14]">></span> <span data-i18n="obj-2">Master Absolute Horizon controls.</span></li>
+                        <li><span class="text-[#ff6a00]">> <span data-i18n="obj-3">NEW: Automated target depth marking.</span></span></li>
+                        <li><span class="text-[#39ff14]">></span> <span data-i18n="obj-4">Maximize speed & precision metrics.</span></li>
                     </ul>
                 </div>
                 <div>
                     <h3 class="text-[#ff2a2a] font-bold uppercase mb-2 flex items-center text-sm tracking-wider">
                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 4.946-3.076 9.168-7.391 10.82a.5.5 0 01-.218 0C6.076 16.168 3 11.946 3 7.001c0-.681.056-1.35.166-2.001zm6.39 5.847a.75.75 0 00-1.06 1.06L9.44 13.85a.75.75 0 001.06 0l3.5-3.5a.75.75 0 10-1.06-1.06L10 12.293 8.556 10.846z" clip-rule="evenodd"></path></svg>
-                        Safety Protocols
+                        <span data-i18n="safe-title">Safety Protocols</span>
                     </h3>
                     <ul class="text-xs lg:text-sm text-gray-400 font-mono space-y-2 text-left">
-                        <li><span class="text-[#ff6a00]">[!]</span> Potholing: Standard verification.</li>
-                        <li><span class="text-[#ff2a2a]">[!]</span> Strike: Terminate & Call 911.</li>
-                        <li><span class="text-[#00e5ff]">[i]</span> Alert: Respect rod bend radiuses.</li>
-                        <li><span class="text-white">[i]</span> Real-World: Protocols save lives.</li>
+                        <li><span class="text-[#ff6a00]" data-i18n="safe-1">[!] Potholing: Standard verification.</span></li>
+                        <li><span class="text-[#ff2a2a]" data-i18n="safe-2">[!] Strike: Terminate & Call 911.</span></li>
+                        <li><span class="text-[#00e5ff]" data-i18n="safe-3">[i] Alert: Respect rod bend radiuses.</span></li>
+                        <li><span class="text-white" data-i18n="safe-4">[i] Real-World: Protocols save lives.</span></li>
                     </ul>
                 </div>
             </div>
@@ -215,7 +215,7 @@
             <div class="mb-6">
                 <h3 class="text-[#00e5ff] font-bold uppercase mb-3 flex justify-center items-center text-sm tracking-widest glow-text-blue">
                     <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L11 6.477V16h2a1 1 0 110 2H7a1 1 0 110-2h2V6.477L6.237 7.582l1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.617a1 1 0 01.894-1.788l1.599.799L9 4.323V3a1 1 0 011-1zm-5 8.274l-.818 2.552c.25.112.526.174.818.174.292 0 .569-.062.818-.174L5 10.274zm10 0l-.818 2.552c.25.112.526.174.818.174.292 0 .569-.062.818-.174L15 10.274z" clip-rule="evenodd"></path></svg>
-                    Top Operators (Global Network)
+                    <span data-i18n="ldr-title">Top Operators (Global Network)</span>
                 </h3>
                 <div class="panel-inset rounded-lg overflow-hidden max-h-32 overflow-y-auto font-mono">
                     <table class="w-full text-left leaderboard-table">
@@ -229,7 +229,7 @@
                             </tr>
                         </thead>
                         <tbody id="home-leaderboard-body">
-                            <tr><td colspan="5" class="text-center text-[#64748b] italic py-3">Connecting to mainframe...</td></tr>
+                            <tr><td colspan="5" class="text-center text-[#64748b] italic py-3" data-i18n="ldr-conn">Connecting to mainframe...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -237,23 +237,23 @@
 
             <div class="flex flex-col items-center">
                 <div class="flex space-x-4 mb-4">
-                    <button onclick="startGame()" class="bg-gradient-to-b from-[#ff8a00] to-[#e55d00] hover:from-[#ffa033] hover:to-[#ff6a00] text-white font-black text-xl py-3 px-10 rounded shadow-[0_0_20px_rgba(255,106,0,0.5)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-[#ffb380] tracking-widest">
+                    <button onclick="window.startGame()" class="bg-gradient-to-b from-[#ff8a00] to-[#e55d00] hover:from-[#ffa033] hover:to-[#ff6a00] text-white font-black text-xl py-3 px-10 rounded shadow-[0_0_20px_rgba(255,106,0,0.5)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-[#ffb380] tracking-widest" data-i18n="btn-start">
                         System Start
                     </button>
-                    <button onclick="window.openLevels()" class="bg-gradient-to-b from-[#00bfff] to-[#0088cc] hover:from-[#33ccff] hover:to-[#00aaff] text-white font-black text-xl py-3 px-8 rounded shadow-[0_0_20px_rgba(0,191,255,0.4)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-[#80dfff] tracking-widest">
+                    <button onclick="window.openLevels()" class="bg-gradient-to-b from-[#00bfff] to-[#0088cc] hover:from-[#33ccff] hover:to-[#00aaff] text-white font-black text-xl py-3 px-8 rounded shadow-[0_0_20px_rgba(0,191,255,0.4)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-[#80dfff] tracking-widest" data-i18n="btn-sectors">
                         Sectors
                     </button>
-                    <button id="btn-resume" onclick="resumeGame()" class="hidden bg-gradient-to-b from-[#39ff14] to-[#2eb80d] text-black font-black text-xl py-3 px-8 rounded shadow-[0_0_20px_rgba(57,255,20,0.4)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-[#a6ff99] tracking-widest">
+                    <button id="btn-resume" onclick="window.resumeGame()" class="hidden bg-gradient-to-b from-[#39ff14] to-[#2eb80d] text-black font-black text-xl py-3 px-8 rounded shadow-[0_0_20px_rgba(57,255,20,0.4)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-[#a6ff99] tracking-widest" data-i18n="btn-resume">
                         Resume
                     </button>
-                    <button onclick="window.exitGame()" class="bg-gradient-to-b from-[#ef4444] to-[#b91c1c] hover:from-[#f87171] hover:to-[#dc2626] text-white font-black text-xl py-3 px-8 rounded shadow-[0_0_20px_rgba(239,68,68,0.4)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-[#fca5a5] tracking-widest">
+                    <button onclick="window.exitGame()" class="bg-gradient-to-b from-[#ef4444] to-[#b91c1c] hover:from-[#f87171] hover:to-[#dc2626] text-white font-black text-xl py-3 px-8 rounded shadow-[0_0_20px_rgba(239,68,68,0.4)] transition transform hover:scale-105 active:scale-95 uppercase text-center border border-[#fca5a5] tracking-widest" data-i18n="btn-exit">
                         Exit
                     </button>
                 </div>
                 <div class="max-w-2xl text-[10px] text-gray-500 font-mono tracking-tight text-center leading-tight">
-                    <p>DISCLAIMER: Simulation for conceptual training only. Physical environment variables omitted. Strictly adhere to OSHA & manufacturer protocols in field operations.</p>
+                    <p data-i18n="disc">DISCLAIMER: Simulation for conceptual training only. Physical environment variables omitted. Strictly adhere to OSHA & manufacturer protocols in field operations.</p>
                 </div>
-                <p class="mt-2 text-xs text-[#64748b] font-bold tracking-widest uppercase text-center">Protocol 811 Verification <span class="text-[#ff6a00] animate-pulse">REQUIRED</span> prior to surface penetration.</p>
+                <p class="mt-2 text-xs text-[#64748b] font-bold tracking-widest uppercase text-center"><span data-i18n="proto">Protocol 811 Verification REQUIRED prior to surface penetration.</span></p>
             </div>
         </div>
     </div>
@@ -263,12 +263,12 @@
         <div class="panel-metal p-8 rounded-xl shadow-[0_0_50px_rgba(0,229,255,0.15)] max-w-4xl w-full relative border border-[#00e5ff40]">
             <div class="screw screw-big screw-tl"></div><div class="screw screw-big screw-tr"></div><div class="screw screw-big screw-bl"></div><div class="screw screw-big screw-br"></div>
             
-            <h2 class="text-3xl lg:text-4xl font-black text-[#00e5ff] mb-8 uppercase tracking-widest glow-text-blue">Select Sector</h2>
+            <h2 class="text-3xl lg:text-4xl font-black text-[#00e5ff] mb-8 uppercase tracking-widest glow-text-blue" data-i18n="sec-sel">Select Sector</h2>
             
             <div id="levels-grid" class="grid grid-cols-4 md:grid-cols-5 gap-4 lg:gap-5 mb-8">
             </div>
             
-            <button onclick="document.getElementById('levels-modal').classList.add('hidden')" class="bg-transparent hover:bg-[#1a2235] text-[#00e5ff] font-bold py-3 px-12 rounded shadow-[0_0_15px_rgba(0,229,255,0.2)] transition border border-[#00e5ff] uppercase tracking-widest">
+            <button onclick="document.getElementById('levels-modal').classList.add('hidden'); document.getElementById('levels-modal').classList.remove('flex');" class="bg-transparent hover:bg-[#1a2235] text-[#00e5ff] font-bold py-3 px-12 rounded shadow-[0_0_15px_rgba(0,229,255,0.2)] transition border border-[#00e5ff] uppercase tracking-widest" data-i18n="btn-abort">
                 Abort
             </button>
         </div>
@@ -277,8 +277,8 @@
     <!-- ORIENTATION WARNING -->
     <div class="portrait:flex landscape:hidden fixed inset-0 bg-[#05070a] z-[110] flex-col items-center justify-center text-center p-6 text-white">
         <svg class="w-32 h-32 mb-6 text-[#ff6a00] animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 10V6a2 2-0 012-2h12a2 2-0 012 2v4m-16 4v4a2 2-0 002 2h12a2 2-0 002-2v-4m-16-4h16"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v4m-4-4l4 4 4-4"></path></svg>
-        <h2 class="text-4xl font-black text-[#ff6a00] mb-4 tracking-widest uppercase">System Error</h2>
-        <p class="text-xl text-[#64748b] font-mono">Horizontal orientation required for dashboard initialization.</p>
+        <h2 class="text-4xl font-black text-[#ff6a00] mb-4 tracking-widest uppercase" data-i18n="sys-err">System Error</h2>
+        <p class="text-xl text-[#64748b] font-mono" data-i18n="sys-err-sub">Horizontal orientation required for dashboard initialization.</p>
     </div>
 
     <!-- MAIN GAME UI -->
@@ -293,15 +293,21 @@
                     SYS-HDD <span class="text-[#00e5ff] ml-3 text-sm lg:text-lg border-l border-[#3b4559] pl-3 glow-text-blue">SEC <span id="lvl-number">1</span>/20</span>
                 </h1>
                 <div class="flex items-center space-x-3 text-white text-center mt-1">
-                    <p class="text-[10px] lg:text-xs text-[#ff6a00] uppercase tracking-widest font-bold">OS Active</p>
+                    <p class="text-[10px] lg:text-xs text-[#ff6a00] uppercase tracking-widest font-bold" data-i18n="os-act">OS Active</p>
                     <span class="text-[11px] font-mono text-[#39ff14] bg-[#0a0d14] border border-[#1a2235] px-3 py-0.5 rounded shadow-[inset_0_0_5px_#000]" id="time-display">T: 00:00</span>
                 </div>
             </div>
             
             <div class="flex items-center space-x-3 lg:space-x-5 text-center mr-4">
-                <div id="home-toggle" onclick="volverAlMenu()" class="icon-btn" title="Main Menu">
+                <div id="home-toggle" onclick="window.volverAlMenu()" class="icon-btn flex items-center justify-center" title="Main Menu">
                     <svg class="w-6 h-6 drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
                 </div>
+
+                <!-- LANGUAGE TOGGLE IN HEADER -->
+                <button onclick="window.toggleLanguage()" class="flex items-center justify-center space-x-1 px-2 py-1 rounded bg-[#0a0d14] text-[10px] lg:text-xs font-bold text-[#00e5ff] hover:text-white transition uppercase border border-[#3b4559] cursor-pointer shadow-[inset_0_0_5px_#000]">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path></svg>
+                    <span id="global-lang-indicator">EN</span>
+                </button>
 
                 <!-- LOCATOR TOGGLE BUTTON -->
                 <div id="locator-toggle" onclick="window.toggleLocator()" class="icon-btn text-[#00e5ff] transition-colors duration-300" title="Toggle Locator">
@@ -316,7 +322,7 @@
                 <div id="star-box-container" class="flex flex-row items-center bg-[#0a0d14] border border-[#1a2235] px-2 py-1 rounded shadow-[inset_0_0_5px_#000] gap-1 hidden h-8">
                 </div>
 
-                <div id="audio-toggle" onclick="toggleMute()" class="icon-btn transition-colors duration-300" title="Mute/Unmute">
+                <div id="audio-toggle" onclick="window.toggleMute()" class="icon-btn transition-colors duration-300" title="Mute/Unmute">
                     <svg class="w-6 h-6 drop-shadow-md" id="speaker-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5L6 9H2v6h4l5 4V5z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
@@ -326,10 +332,10 @@
                     <svg class="w-6 h-6 drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
                 </div>
                 <div class="h-6 w-px bg-[#3b4559] mx-1"></div>
-                <button onclick="volverAlMenu()" class="bg-transparent hover:bg-[#1a2235] text-[#64748b] font-bold py-1 px-4 rounded transition text-xs uppercase border border-[#3b4559]">
+                <button onclick="window.volverAlMenu()" class="bg-transparent hover:bg-[#1a2235] text-[#64748b] font-bold py-1 px-4 rounded transition text-xs uppercase border border-[#3b4559]" data-i18n="btn-esc">
                     ESC
                 </button>
-                <button onclick="window.reiniciarJuego()" class="bg-[#ff2a2a]/10 hover:bg-[#ff2a2a]/20 text-[#ff2a2a] font-bold py-1 px-4 rounded transition text-xs uppercase border border-[#ff2a2a]/50">
+                <button id="btn-rst-main" onclick="window.reiniciarJuego()" class="bg-[#ff2a2a]/10 hover:bg-[#ff2a2a]/20 text-[#ff2a2a] font-bold py-1 px-4 rounded transition-all duration-300 text-xs uppercase border border-[#ff2a2a]/50" data-i18n="btn-rst">
                     RST
                 </button>
             </div>
@@ -338,8 +344,14 @@
         <!-- CANVAS AREA -->
         <div class="panel-metal flex-grow min-h-0 w-full rounded-lg p-1.5 relative flex flex-col z-10">
 
-            <!-- FLOATING ZOOM CONTROLS -->
+            <!-- FLOATING ZOOM CONTROLS & AI -->
             <div id="zoom-controls" class="absolute bottom-6 left-4 flex flex-col space-y-2 z-20">
+                <!-- AI COPILOT BUTTON -->
+                <button onclick="window.askAI()" class="panel-metal text-[#ff6a00] font-bold text-[9px] w-10 h-10 rounded hover:brightness-125 active:scale-95 transition border-[#3b4559] flex flex-col items-center justify-center shadow-lg bg-[#1a0a0a] border border-[#ff6a00]/30" title="AI Copilot">
+                    <svg class="w-4 h-4 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                    AI
+                </button>
+                <div class="h-px w-full bg-[#3b4559] my-1"></div>
                 <button onclick="window.zoomIn()" class="panel-metal text-white font-black text-xl w-10 h-10 rounded hover:brightness-125 active:scale-95 transition border-[#3b4559] flex items-center justify-center pb-1">+</button>
                 <button onclick="window.resetZoom()" class="panel-metal text-[#00e5ff] font-bold text-[10px] w-10 h-10 rounded hover:brightness-125 active:scale-95 transition border-[#3b4559]">FIT</button>
                 <button onclick="window.zoomOut()" class="panel-metal text-white font-black text-xl w-10 h-10 rounded hover:brightness-125 active:scale-95 transition border-[#3b4559] flex items-center justify-center pb-1">-</button>
@@ -351,30 +363,42 @@
                 LOG
             </button>
 
+            <!-- INITIAL PITCH CONTROLS (FLOATING UNDER RIG) -->
+            <div id="initial-pitch-controls" class="absolute top-[40%] left-[80px] z-30 bg-[#0a0d14]/90 backdrop-blur-sm border border-[#1a2235] rounded p-1.5 flex flex-col items-center shadow-[0_0_10px_rgba(0,0,0,0.8)] gap-1">
+                <div class="flex items-center space-x-2">
+                    <span class="text-[9px] text-[#ff6a00] uppercase font-bold tracking-widest" data-i18n="lbl-pitch">Pitch</span>
+                    <span id="initial-pitch-value" class="text-[10px] font-mono text-white bg-[#1a2235] px-1.5 py-0.5 rounded border border-[#2a3241] min-w-[32px] text-center">-24.0</span>
+                </div>
+                <div class="flex space-x-1 w-full justify-between mt-0.5">
+                    <button onclick="window.ajustarPitchInicial(-1)" class="bg-[#1a2235] hover:bg-[#3b4559] text-white font-mono text-[11px] w-8 h-6 rounded flex items-center justify-center border border-[#2a3241]">-</button>
+                    <button onclick="window.ajustarPitchInicial(1)" class="bg-[#1a2235] hover:bg-[#3b4559] text-white font-mono text-[11px] w-8 h-6 rounded flex items-center justify-center border border-[#2a3241]">+</button>
+                </div>
+            </div>
+
             <!-- SPLIT CANVAS CONTAINER -->
             <div id="canvas-wrapper" class="relative w-full h-full panel-inset rounded overflow-hidden flex flex-col gap-[2px] bg-[#1a2235]">
                 
                 <!-- DYNAMIC CENTER HUD (MOVEMENT) -->
-                <div id="moving-hud" class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 flex items-center bg-black/60 backdrop-blur-sm border border-[#1a2235] px-4 py-1.5 rounded-full pointer-events-none gap-6 shadow-[0_0_15px_rgba(0,0,0,0.5)]">
+                <div id="moving-hud" class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 items-center bg-black/60 backdrop-blur-sm border border-[#1a2235] px-4 py-1.5 rounded-full pointer-events-none gap-6 shadow-[0_0_15px_rgba(0,0,0,0.5)]">
                     <div class="flex items-center gap-2">
-                        <span class="text-[10px] text-[#64748b] font-bold uppercase tracking-widest">Depth</span>
+                        <span class="text-[10px] text-[#64748b] font-bold uppercase tracking-widest" data-i18n="lbl-depth">Depth</span>
                         <span id="moving-depth" class="font-mono text-sm font-black text-[#39ff14] glow-text-green">0.0 ft</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="text-[10px] text-[#64748b] font-bold uppercase tracking-widest">Pitch</span>
+                        <span class="text-[10px] text-[#64748b] font-bold uppercase tracking-widest" data-i18n="lbl-pitch">Pitch</span>
                         <span id="moving-pitch" class="font-mono text-sm font-black text-[#ff6a00] glow-text-orange">+0.0 %</span>
                     </div>
                 </div>
 
                 <!-- SIDE VIEW (PROFILE) -->
                 <div class="relative w-full h-1/2 bg-[#05070a]">
-                    <div class="absolute bottom-2 right-2 px-2 py-1 bg-[#05070a]/80 text-[#00e5ff] text-[9px] font-mono rounded border border-[#00e5ff]/30 z-10 pointer-events-none tracking-widest shadow-[0_0_10px_rgba(0,229,255,0.1)]">MAIN FEED [PROFILE]</div>
+                    <div class="absolute bottom-2 right-2 px-2 py-1 bg-[#05070a]/80 text-[#00e5ff] text-[9px] font-mono rounded border border-[#00e5ff]/30 z-10 pointer-events-none tracking-widest shadow-[0_0_10px_rgba(0,229,255,0.1)]" data-i18n="main-feed">MAIN FEED [PROFILE]</div>
                     <canvas id="game-canvas-side" width="1200" height="200" class="w-full h-full object-contain touch-none"></canvas>
                 </div>
                 
                 <!-- AERIAL VIEW (TOP) -->
                 <div class="relative w-full h-1/2 bg-[#05070a]">
-                    <div class="absolute bottom-2 right-2 px-2 py-1 bg-[#05070a]/80 text-[#39ff14] text-[9px] font-mono rounded border border-[#39ff14]/30 z-10 pointer-events-none tracking-widest shadow-[0_0_10px_rgba(57,255,20,0.1)]">AERIAL FEED [TOP]</div>
+                    <div class="absolute bottom-2 right-2 px-2 py-1 bg-[#05070a]/80 text-[#39ff14] text-[9px] font-mono rounded border border-[#39ff14]/30 z-10 pointer-events-none tracking-widest shadow-[0_0_10px_rgba(57,255,20,0.1)]" data-i18n="aer-feed">AERIAL FEED [TOP]</div>
                     <canvas id="game-canvas-top" width="1200" height="200" class="w-full h-full object-contain touch-none"></canvas>
                 </div>
 
@@ -390,30 +414,30 @@
                 <div class="flex flex-row items-center justify-center shrink-0 border-b md:border-b-0 md:border-r border-[#2a3241] pb-2 md:pb-0 relative w-full">
                     
                     <div class="flex flex-row items-end justify-center gap-4 lg:gap-8 relative z-10 w-full md:px-0">
-                        <!-- CLOCK (TOOL FACE) -->
+                        <!-- CLOCK -->
                         <div class="flex flex-col items-center relative -left-2">
-                            <h3 class="text-[10px] lg:text-[11px] mb-2 text-[#64748b] font-bold uppercase tracking-widest">Tool Face</h3>
+                            <h3 class="text-[10px] lg:text-[11px] mb-2 text-[#64748b] font-bold uppercase tracking-widest" data-i18n="tool-face">Clock Position</h3>
                             <div id="clock-container" class="relative w-24 h-24 lg:w-[115px] lg:h-[115px] shrink-0 rounded-full panel-inset aspect-square shadow-[inset_0_0_15px_#000,0_0_5px_rgba(0,229,255,0.1)] border-[#00e5ff]/20"></div>
                         </div>
 
                         <!-- TELEMETRY HUD -->
                         <div class="flex flex-col items-center">
-                            <h3 class="text-[10px] lg:text-[11px] mb-2 text-[#64748b] font-bold uppercase tracking-widest">Telemetry</h3>
+                            <h3 class="text-[10px] lg:text-[11px] mb-2 text-[#64748b] font-bold uppercase tracking-widest" data-i18n="telemetry">Telemetry</h3>
                             <div class="flex flex-col justify-center panel-inset p-2 lg:p-3 rounded border border-[#1a2235] shadow-[inset_0_0_10px_rgba(0,0,0,0.8)] w-32 lg:w-40 h-20 lg:h-24">
                                 <div class="flex justify-between items-center w-full mb-1">
-                                    <span class="text-[11px] lg:text-[12px] text-[#64748b] font-bold uppercase tracking-widest">Depth</span>
+                                    <span class="text-[11px] lg:text-[12px] text-[#64748b] font-bold uppercase tracking-widest" data-i18n="lbl-depth">Depth</span>
                                     <span id="hud-depth" class="font-mono text-[12px] lg:text-[14.5px] font-bold text-white">0.0 ft</span>
                                 </div>
                                 <div class="flex justify-between items-center w-full mb-1">
-                                    <span class="text-[9px] lg:text-[10px] text-[#64748b] font-bold uppercase tracking-widest">Pitch</span>
+                                    <span class="text-[9px] lg:text-[10px] text-[#64748b] font-bold uppercase tracking-widest" data-i18n="lbl-pitch">Pitch</span>
                                     <span id="hud-pitch" class="font-mono text-[12px] lg:text-[14.5px] font-bold text-[#ff6a00] glow-text-orange">+0.0 %</span>
                                 </div>
                                 <div class="flex justify-between items-center w-full mb-1">
-                                    <span class="text-[11px] lg:text-[12px] text-[#64748b] font-bold uppercase tracking-widest">Dist</span>
+                                    <span class="text-[11px] lg:text-[12px] text-[#64748b] font-bold uppercase tracking-widest" data-i18n="lbl-dist">Dist</span>
                                     <span id="hud-dist" class="font-mono text-[12px] lg:text-[14.5px] font-bold text-white">0 ft</span>
                                 </div>
                                 <div class="flex justify-between items-center w-full">
-                                    <span class="text-[11px] lg:text-[12px] text-[#64748b] font-bold uppercase tracking-widest">Target</span>
+                                    <span class="text-[11px] lg:text-[12px] text-[#64748b] font-bold uppercase tracking-widest" data-i18n="lbl-target">Target</span>
                                     <span id="hud-target" class="font-mono text-[12px] lg:text-[14.5px] font-bold text-[#39ff14]">0 ft</span>
                                 </div>
                             </div>
@@ -424,22 +448,15 @@
                 <!-- Power & Rods -->
                 <div class="flex flex-col items-center justify-center px-4 border-b md:border-b-0 md:border-r border-[#2a3241] pb-2 md:pb-0 relative">
                     
-                    <div class="bg-[#05070a] border border-[#1a2235] px-3 py-0.5 rounded text-[8px] lg:text-[9px] font-mono text-[#00e5ff] tracking-widest uppercase mb-1.5 shadow-[inset_0_0_5px_rgba(0,0,0,0.5)]">
-                        Made by Julio Sarracent
-                    </div>
-                    
-                    <div id="display-programmed" class="font-mono font-bold text-[12px] lg:text-[14px] h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded mb-1 border-[#1a2235] tracking-wider text-[#00e5ff]">PWR: 12%</div>
-                    <button onclick="window.limpiarFuerza()" class="text-[9px] text-[#64748b] hover:text-white uppercase mt-0.5 mb-2 transition font-bold tracking-widest">Calibrate Default</button>
-                    
                     <div class="w-full max-w-[220px] bg-[#0a0d14] p-2 rounded border border-[#1a2235]">
                         <div class="flex justify-between items-center mb-1.5">
-                            <h3 class="text-[9px] text-[#64748b] font-bold uppercase tracking-widest">Pipe Spec</h3>
+                            <h3 class="text-[9px] text-[#64748b] font-bold uppercase tracking-widest" data-i18n="pipe-spec">Pipe Spec</h3>
                             <div id="display-rod-left" class="font-mono text-[10px] text-[#39ff14] bg-[#05070a] px-2 py-0.5 rounded border border-[#1a2235]">REM: 10.0'</div>
                         </div>
                         <select id="rod-length-select" onchange="window.cambiarLongitudVarilla(this.value)" class="bg-[#13171f] text-white border border-[#3b4559] text-[11px] font-mono font-bold w-full p-1 rounded outline-none cursor-pointer focus:border-[#00e5ff]">
-                            <option value="6">TYPE-6 [PWR: 8%]</option>
-                            <option value="10" selected>TYPE-10 [PWR: 12%]</option>
-                            <option value="20">TYPE-20 [PWR: 24%]</option>
+                            <option value="6">TYPE-6</option>
+                            <option value="10" selected>TYPE-10</option>
+                            <option value="20">TYPE-20</option>
                         </select>
 
                         <div class="flex items-center justify-center mt-2 pt-1.5 border-t border-[#1a2235]">
@@ -454,18 +471,8 @@
 
                 <!-- Steering & Thrust -->
                 <div class="flex flex-col justify-center pt-2 md:pt-0 pl-2">
-                    <div class="flex justify-between items-end mb-2.5 w-full pr-2">
-                        <h3 class="text-xs lg:text-sm text-[#00e5ff] font-bold uppercase tracking-widest">Thrust Controls</h3>
-                        <div id="initial-pitch-controls" class="bg-[#0a0d14] border border-[#1a2235] rounded p-1.5 flex items-center space-x-2">
-                            <span class="text-[9px] text-[#64748b] uppercase font-bold tracking-widest">Pitch</span>
-                            <div class="flex space-x-1">
-                                <button onclick="window.ajustarPitchInicial(-1)" class="bg-[#1a2235] hover:bg-[#3b4559] text-white font-mono text-[11px] w-6 h-6 rounded flex items-center justify-center border border-[#2a3241]">-</button>
-                                <button onclick="window.ajustarPitchInicial(1)" class="bg-[#1a2235] hover:bg-[#3b4559] text-white font-mono text-[11px] w-6 h-6 rounded flex items-center justify-center border border-[#2a3241]">+</button>
-                            </div>
-                        </div>
-                    </div>
                     
-                    <div class="grid grid-cols-3 gap-2 w-full mb-2">
+                    <div class="grid grid-cols-3 gap-2 w-full mb-2 mt-4">
                         <button onclick="window.iniciarMoverFraccion(0.25, true, 'd14')" class="btn-action bg-gradient-to-b from-[#10b981] to-[#047857] hover:from-[#34d399] hover:to-[#059669] text-white py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#34d399]/50 flex items-center justify-center">
                             <svg class="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg> 1/4 ROT
                         </button>
@@ -498,105 +505,7 @@
         </div>
     </div>
 
-    <!-- GAME OVER MODAL -->
-    <div id="game-over-modal" class="absolute inset-0 bg-[#05070a] bg-opacity-95 hidden flex-col items-center justify-center z-[150] backdrop-blur-md text-center">
-        <div class="panel-metal border border-[#00e5ff40] p-8 rounded-xl shadow-[0_0_50px_rgba(0,229,255,0.1)] max-w-xl w-full flex flex-col items-center mx-4 text-white relative">
-            <div class="screw screw-big screw-tl"></div><div class="screw screw-big screw-tr"></div><div class="screw screw-big screw-bl"></div><div class="screw screw-big screw-br"></div>
-            
-            <h2 id="game-over-title" class="text-2xl lg:text-4xl font-black mb-3 text-center uppercase tracking-widest"></h2>
-            <div id="star-rating" class="flex space-x-3 mb-4 text-4xl text-center drop-shadow-lg"></div>
-            <p id="game-over-msg" class="text-sm lg:text-lg mb-6 text-center px-4 max-w-2xl font-mono text-gray-300"></p>
-            
-            <div id="new-record-form" class="hidden flex-col items-center w-full mb-6 bg-[#0a0d14] p-5 rounded-lg border border-[#ff6a00]/50 shadow-[0_0_15px_rgba(255,106,0,0.2)]">
-                <h4 class="text-[#ff6a00] font-bold mb-3 uppercase tracking-widest animate-pulse">>>> NEW RECORD LOGGED <<<</h4>
-                <p class="text-xs text-[#64748b] font-mono mb-3">Input Operator Callsign:</p>
-                <div class="flex space-x-3 w-full max-w-sm">
-                    <input type="text" id="player-name-input" class="flex-grow px-4 py-2 rounded bg-[#05070a] border border-[#3b4559] text-white font-mono uppercase focus:border-[#ff6a00] focus:outline-none" placeholder="CALLSIGN" maxlength="15">
-                    <button onclick="window.saveRecord()" class="bg-[#00e5ff]/20 hover:bg-[#00e5ff]/40 text-[#00e5ff] font-bold py-2 px-6 rounded shadow border border-[#00e5ff] transition tracking-widest">SAVE</button>
-                </div>
-            </div>
-
-            <div id="game-over-errors" class="w-full mb-6 text-left hidden bg-[#1a0a0a] p-4 rounded border border-[#ff2a2a]/30">
-                <h4 class="text-[#ff2a2a] font-bold mb-2 text-sm uppercase tracking-widest">Incident Details:</h4>
-                <ul id="game-over-errors-list" class="list-disc pl-5 text-xs lg:text-sm text-[#ff8080] font-mono"></ul>
-            </div>
-            
-            <div class="flex flex-wrap justify-center gap-4 relative z-10 w-full">
-                <button id="btn-report" onclick="window.generarInformeFinal()" class="flex-1 bg-[#1a2235] hover:bg-[#2a3241] text-[#00e5ff] font-bold py-3 px-6 rounded transition uppercase text-sm border border-[#00e5ff]/30 tracking-widest">
-                    Data Log
-                </button>
-                <button id="btn-retry" onclick="window.reiniciarJuego()" class="flex-1 bg-gradient-to-b from-[#f59e0b] to-[#b45309] hover:from-[#fbbf24] hover:to-[#d97706] text-black font-black py-3 px-6 rounded transition uppercase text-sm shadow-[0_0_15px_rgba(245,158,11,0.3)] tracking-widest">
-                    Restart
-                </button>
-                <button id="btn-next" onclick="window.nextLevel()" class="flex-1 hidden bg-gradient-to-b from-[#10b981] to-[#047857] hover:from-[#34d399] hover:to-[#059669] text-white font-black py-3 px-6 rounded transition uppercase text-sm shadow-[0_0_15px_rgba(16,185,129,0.3)] tracking-widest border border-[#34d399]/50">
-                    Next Sector
-                </button>
-                <button onclick="window.volverAlMenu()" class="bg-transparent hover:bg-[#1a2235] text-[#64748b] font-bold py-3 px-6 rounded transition uppercase text-sm border border-[#3b4559] tracking-widest">
-                    Exit
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- REPORT MODAL -->
-    <div id="report-modal" class="absolute inset-0 bg-[#05070a] bg-opacity-95 hidden flex-col items-center justify-center z-[160] p-4 text-center backdrop-blur-md">
-        <div class="panel-metal p-2 rounded-lg w-full max-w-6xl overflow-auto flex flex-col text-center h-full relative border border-[#00e5ff40]">
-            <div class="screw screw-tl"></div><div class="screw screw-tr"></div><div class="screw screw-bl"></div><div class="screw screw-br"></div>
-            
-            <div class="flex justify-between items-center bg-[#0a0d14] p-3 mb-2 rounded border border-[#1a2235] z-10">
-                <h2 class="text-[#00e5ff] font-black text-xl uppercase tracking-widest glow-text-blue">Post-Op Telemetry</h2>
-                <div class="flex space-x-3">
-                    <button id="btn-report-view" onclick="window.toggleReportView()" class="bg-[#1a2235] hover:bg-[#2a3241] text-white font-bold px-5 py-1.5 rounded text-xs uppercase border border-[#3b4559] tracking-widest transition">VIEW: MAIN</button>
-                    <button onclick="window.cerrarInforme()" class="bg-[#ff2a2a]/10 hover:bg-[#ff2a2a]/20 text-[#ff2a2a] font-bold px-5 py-1.5 rounded text-xs border border-[#ff2a2a]/50 tracking-widest transition">CLOSE</button>
-                </div>
-            </div>
-            
-            <div id="report-container" class="flex-grow flex flex-col lg:flex-row items-stretch justify-center p-2 gap-4 relative z-10">
-                <div class="w-full lg:w-3/4 flex justify-center h-full relative overflow-hidden panel-inset rounded border border-[#1a2235]">
-                    <canvas id="report-canvas" width="1200" height="400" class="w-full h-full object-contain"></canvas>
-                </div>
-                
-                <div class="w-full lg:w-1/4 bg-[#0a0d14] p-5 rounded-lg flex flex-col text-left h-full overflow-y-auto border border-[#1a2235]">
-                    <h3 class="text-[#64748b] font-bold uppercase tracking-widest mb-4 border-b border-[#2a3241] pb-2 text-center text-sm">Operation Metrics</h3>
-                    
-                    <div class="space-y-5 text-sm">
-                        <div class="text-center bg-[#05070a] p-3 rounded border border-[#1a2235]">
-                            <p class="text-[#64748b] uppercase text-[10px] tracking-widest mb-1">Total Duration</p>
-                            <p class="text-3xl font-mono font-bold text-[#00e5ff] glow-text-blue" id="report-time">00:00</p>
-                        </div>
-                        
-                        <div>
-                            <p class="text-[#64748b] uppercase text-[10px] tracking-widest mb-2 border-b border-[#1a2235] pb-1">Rotation Actions</p>
-                            <div class="grid grid-cols-3 gap-2 text-[#39ff14] font-mono text-center text-xs">
-                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">1/4</span> <span id="metric-d14">0</span></div>
-                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">1/2</span> <span id="metric-d12">0</span></div>
-                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">FULL</span> <span id="metric-df">0</span></div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <p class="text-[#64748b] uppercase text-[10px] tracking-widest mb-2 border-b border-[#1a2235] pb-1">Thrust Actions</p>
-                            <div class="grid grid-cols-3 gap-2 text-[#ff6a00] font-mono text-center text-xs">
-                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">1/4</span> <span id="metric-p14">0</span></div>
-                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">1/2</span> <span id="metric-p12">0</span></div>
-                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">FULL</span> <span id="metric-pf">0</span></div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <p class="text-[#64748b] uppercase text-[10px] tracking-widest mb-2 border-b border-[#1a2235] pb-1">Retraction / Pipe</p>
-                            <div class="grid grid-cols-2 gap-2 font-mono text-center text-xs">
-                                <div class="bg-[#05070a] p-1.5 rounded text-[#e2e8f0]"><span class="text-[#475569] block text-[9px]">PULLS</span> <span id="metric-b">0</span></div>
-                                <div class="bg-[#05070a] p-1.5 rounded text-[#e2e8f0]"><span class="text-[#475569] block text-[9px]">RODS</span> <span id="metric-rods">0</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- LOG MODAL -->
+    <!-- LOG MODAL (RESTORED) -->
     <div id="log-modal" class="fixed inset-0 bg-[#05070a] bg-opacity-95 hidden flex-col items-center justify-center z-[160] p-4 text-center backdrop-blur-md">
         <div class="panel-metal p-6 lg:p-8 rounded-xl shadow-[0_0_50px_rgba(0,229,255,0.15)] max-w-5xl w-full max-h-[85vh] flex flex-col relative border border-[#00e5ff40]">
             <div class="screw screw-big screw-tl"></div><div class="screw screw-big screw-tr"></div><div class="screw screw-big screw-bl"></div><div class="screw screw-big screw-br"></div>
@@ -604,9 +513,9 @@
             <div class="flex justify-between items-center bg-[#0a0d14] p-3 mb-4 rounded border border-[#1a2235] z-10 shrink-0">
                 <h2 class="text-[#00e5ff] font-black text-xl uppercase tracking-widest glow-text-blue flex items-center">
                     <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                    FULL PIPE LOG
+                    <span data-i18n="log-title">FULL PIPE LOG</span>
                 </h2>
-                <button onclick="window.closeLogModal()" class="bg-[#ff2a2a]/10 hover:bg-[#ff2a2a]/20 text-[#ff2a2a] font-bold px-6 py-2 rounded text-xs border border-[#ff2a2a]/50 tracking-widest transition">CLOSE</button>
+                <button onclick="window.closeLogModal()" class="bg-[#ff2a2a]/10 hover:bg-[#ff2a2a]/20 text-[#ff2a2a] font-bold px-6 py-2 rounded text-xs border border-[#ff2a2a]/50 tracking-widest transition" data-i18n="btn-close">CLOSE</button>
             </div>
 
             <div class="flex-grow overflow-y-auto bg-[#05070a] rounded-lg border border-[#1a2235] p-4">
@@ -617,12 +526,319 @@
         </div>
     </div>
 
+    <!-- GAME OVER MODAL -->
+    <div id="game-over-modal" class="absolute inset-0 bg-[#05070a] bg-opacity-95 hidden flex-col items-center justify-center z-[150] backdrop-blur-md text-center">
+        <div class="panel-metal border border-[#00e5ff40] p-8 rounded-xl shadow-[0_0_50px_rgba(0,229,255,0.1)] max-w-xl w-full flex flex-col items-center mx-4 text-white relative">
+            <div class="screw screw-big screw-tl"></div><div class="screw screw-big screw-tr"></div><div class="screw screw-big screw-bl"></div><div class="screw screw-big screw-br"></div>
+            
+            <h2 id="game-over-title" class="text-2xl lg:text-4xl font-black mb-3 text-center uppercase tracking-widest"></h2>
+            <div id="star-rating" class="flex space-x-3 mb-4 text-4xl text-center drop-shadow-lg"></div>
+            <p id="game-over-msg" class="text-sm lg:text-lg mb-6 text-center px-4 max-w-2xl font-mono text-gray-300"></p>
+            
+            <div id="new-record-form" class="hidden flex-col items-center w-full mb-6 bg-[#0a0d14] p-5 rounded-lg border border-[#ff6a00]/50 shadow-[0_0_15px_rgba(255,106,0,0.2)]">
+                <h4 class="text-[#ff6a00] font-bold mb-3 uppercase tracking-widest animate-pulse" data-i18n="new-rec">>>> NEW RECORD LOGGED <<<</h4>
+                <p class="text-xs text-[#64748b] font-mono mb-3" data-i18n="input-call">Input Operator Callsign:</p>
+                <div class="flex space-x-3 w-full max-w-sm">
+                    <input type="text" id="player-name-input" class="flex-grow px-4 py-2 rounded bg-[#05070a] border border-[#3b4559] text-white font-mono uppercase focus:border-[#ff6a00] focus:outline-none" placeholder="CALLSIGN" maxlength="15">
+                    <button onclick="window.saveRecord()" class="bg-[#00e5ff]/20 hover:bg-[#00e5ff]/40 text-[#00e5ff] font-bold py-2 px-6 rounded shadow border border-[#00e5ff] transition tracking-widest" data-i18n="btn-save">SAVE</button>
+                </div>
+            </div>
+
+            <div id="game-over-errors" class="w-full mb-6 text-left hidden bg-[#1a0a0a] p-4 rounded border border-[#ff2a2a]/30">
+                <h4 class="text-[#ff2a2a] font-bold mb-2 text-sm uppercase tracking-widest" data-i18n="inc-det">Incident Details:</h4>
+                <ul id="game-over-errors-list" class="list-disc pl-5 text-xs lg:text-sm text-[#ff8080] font-mono"></ul>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-4 relative z-10 w-full">
+                <button id="btn-report" onclick="window.generarInformeFinal()" class="flex-1 bg-[#1a2235] hover:bg-[#2a3241] text-[#00e5ff] font-bold py-3 px-6 rounded transition uppercase text-sm border border-[#00e5ff]/30 tracking-widest" data-i18n="btn-data">
+                    Data Log
+                </button>
+                <button id="btn-retry" onclick="window.reiniciarJuego()" class="flex-1 bg-gradient-to-b from-[#f59e0b] to-[#b45309] hover:from-[#fbbf24] hover:to-[#d97706] text-black font-black py-3 px-6 rounded transition uppercase text-sm shadow-[0_0_15px_rgba(245,158,11,0.3)] tracking-widest" data-i18n="btn-restart">
+                    Restart
+                </button>
+                <button id="btn-next" onclick="window.nextLevel()" class="flex-1 hidden bg-gradient-to-b from-[#10b981] to-[#047857] hover:from-[#34d399] hover:to-[#059669] text-white font-black py-3 px-6 rounded transition uppercase text-sm shadow-[0_0_15px_rgba(16,185,129,0.3)] tracking-widest border border-[#34d399]/50" data-i18n="btn-next">
+                    Next Sector
+                </button>
+                <button onclick="window.volverAlMenu()" class="bg-transparent hover:bg-[#1a2235] text-[#64748b] font-bold py-3 px-6 rounded transition uppercase text-sm border border-[#3b4559] tracking-widest" data-i18n="btn-exit">
+                    Exit
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI MODAL -->
+    <div id="ai-modal" class="fixed inset-0 bg-[#05070a] bg-opacity-95 hidden flex-col items-center justify-center z-[160] p-4 text-center backdrop-blur-md">
+        <div class="panel-metal p-6 lg:p-8 rounded-xl shadow-[0_0_50px_rgba(0,229,255,0.15)] max-w-xl w-full relative border border-[#ff6a0040]">
+            <div class="screw screw-big screw-tl"></div><div class="screw screw-big screw-tr"></div><div class="screw screw-big screw-bl"></div><div class="screw screw-big screw-br"></div>
+            <h2 class="text-[#ff6a00] font-black text-xl uppercase tracking-widest glow-text-orange mb-4 flex items-center justify-center">
+                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                <span data-i18n="ai-title">AI COPILOT ADVISORY</span>
+            </h2>
+            <div id="ai-content" class="bg-[#05070a] p-4 rounded border border-[#1a2235] text-[#00e5ff] font-mono text-sm lg:text-base mb-6 min-h-[80px] flex items-center justify-center text-left">
+            </div>
+            <button onclick="document.getElementById('ai-modal').classList.add('hidden'); document.getElementById('ai-modal').classList.remove('flex');" class="bg-[#1a2235] hover:bg-[#2a3241] text-white font-bold px-6 py-2 rounded text-xs border border-[#3b4559] tracking-widest transition uppercase" data-i18n="btn-dismiss">DISMISS</button>
+        </div>
+    </div>
+
+    <!-- REPORT MODAL -->
+    <div id="report-modal" class="absolute inset-0 bg-[#05070a] bg-opacity-95 hidden flex-col items-center justify-center z-[160] p-4 text-center backdrop-blur-md">
+        <div class="panel-metal p-2 rounded-lg w-full max-w-6xl overflow-auto flex flex-col text-center h-full relative border border-[#00e5ff40]">
+            <div class="screw screw-tl"></div><div class="screw screw-tr"></div><div class="screw screw-bl"></div><div class="screw screw-br"></div>
+            
+            <div class="flex justify-between items-center bg-[#0a0d14] p-3 mb-2 rounded border border-[#1a2235] z-10">
+                <h2 class="text-[#00e5ff] font-black text-xl uppercase tracking-widest glow-text-blue" data-i18n="post-op">Post-Op Telemetry</h2>
+                <div class="flex space-x-3">
+                    <button id="btn-report-view" onclick="window.toggleReportView()" class="bg-[#1a2235] hover:bg-[#2a3241] text-white font-bold px-5 py-1.5 rounded text-xs uppercase border border-[#3b4559] tracking-widest transition" data-i18n="btn-view-main">VIEW: MAIN</button>
+                    <button onclick="window.cerrarInforme()" class="bg-[#ff2a2a]/10 hover:bg-[#ff2a2a]/20 text-[#ff2a2a] font-bold px-5 py-1.5 rounded text-xs border border-[#ff2a2a]/50 tracking-widest transition" data-i18n="btn-close">CLOSE</button>
+                </div>
+            </div>
+            
+            <div id="report-container" class="flex-grow flex flex-col lg:flex-row items-stretch justify-center p-2 gap-4 relative z-10">
+                <div class="w-full lg:w-3/4 flex justify-center h-full relative overflow-hidden panel-inset rounded border border-[#1a2235]">
+                    <canvas id="report-canvas" width="1200" height="400" class="w-full h-full object-contain"></canvas>
+                </div>
+                
+                <div class="w-full lg:w-1/4 bg-[#0a0d14] p-5 rounded-lg flex flex-col text-left h-full overflow-y-auto border border-[#1a2235]">
+                    <h3 class="text-[#64748b] font-bold uppercase tracking-widest mb-4 border-b border-[#2a3241] pb-2 text-center text-sm" data-i18n="op-met">Operation Metrics</h3>
+                    
+                    <div class="space-y-5 text-sm">
+                        <div class="text-center bg-[#05070a] p-3 rounded border border-[#1a2235]">
+                            <p class="text-[#64748b] uppercase text-[10px] tracking-widest mb-1" data-i18n="tot-dur">Total Duration</p>
+                            <p class="text-3xl font-mono font-bold text-[#00e5ff] glow-text-blue" id="report-time">00:00</p>
+                        </div>
+                        
+                        <div>
+                            <p class="text-[#64748b] uppercase text-[10px] tracking-widest mb-2 border-b border-[#1a2235] pb-1" data-i18n="rot-act">Rotation Actions</p>
+                            <div class="grid grid-cols-3 gap-2 text-[#39ff14] font-mono text-center text-xs">
+                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">1/4</span> <span id="metric-d14">0</span></div>
+                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">1/2</span> <span id="metric-d12">0</span></div>
+                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">FULL</span> <span id="metric-df">0</span></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <p class="text-[#64748b] uppercase text-[10px] tracking-widest mb-2 border-b border-[#1a2235] pb-1" data-i18n="thr-act">Thrust Actions</p>
+                            <div class="grid grid-cols-3 gap-2 text-[#ff6a00] font-mono text-center text-xs">
+                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">1/4</span> <span id="metric-p14">0</span></div>
+                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">1/2</span> <span id="metric-p12">0</span></div>
+                                <div class="bg-[#05070a] p-1.5 rounded"><span class="text-[#475569] block text-[9px]">FULL</span> <span id="metric-pf">0</span></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <p class="text-[#64748b] uppercase text-[10px] tracking-widest mb-2 border-b border-[#1a2235] pb-1" data-i18n="ret-pipe">Retraction / Pipe</p>
+                            <div class="grid grid-cols-2 gap-2 font-mono text-center text-xs">
+                                <div class="bg-[#05070a] p-1.5 rounded text-[#e2e8f0]"><span class="text-[#475569] block text-[9px]" data-i18n="lbl-pulls">PULLS</span> <span id="metric-b">0</span></div>
+                                <div class="bg-[#05070a] p-1.5 rounded text-[#e2e8f0]"><span class="text-[#475569] block text-[9px]" data-i18n="lbl-rods">RODS</span> <span id="metric-rods">0</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, query, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
+        window.translations = {
+            en: {
+                "init-title": "System Initialization",
+                "init-sub": "(Click anywhere to start)",
+                "title-sub": "Precision Drilling OS v5.0 // Auth: Julio Sarracent",
+                "obj-title": "Training Objectives",
+                "obj-1": "Complete 20 operational levels.",
+                "obj-2": "Master Absolute Horizon controls.",
+                "obj-3": "NEW: Automated target depth marking.",
+                "obj-4": "Maximize speed & precision metrics.",
+                "safe-title": "Safety Protocols",
+                "safe-1": "[!] Potholing: Standard verification.",
+                "safe-2": "[!] Strike: Terminate & Call 911.",
+                "safe-3": "[i] Alert: Respect rod bend radiuses.",
+                "safe-4": "[i] Real-World: Protocols save lives.",
+                "ldr-title": "Top Operators (Global Network)",
+                "ldr-conn": "Connecting to mainframe...",
+                "ldr-none": "No records found.",
+                "btn-start": "System Start",
+                "btn-sectors": "Sectores",
+                "btn-resume": "Resume",
+                "btn-exit": "Exit",
+                "disc": "DISCLAIMER: Simulation for conceptual training only. Physical environment variables omitted. Strictly adhere to OSHA & manufacturer protocols in field operations.",
+                "proto": "Protocol 811 Verification REQUIRED prior to surface penetration.",
+                "sec-sel": "Select Sector",
+                "btn-abort": "Abort",
+                "sys-err": "System Error",
+                "sys-err-sub": "Horizontal orientation required for dashboard initialization.",
+                "os-act": "OS Active",
+                "main-feed": "MAIN FEED [PROFILE]",
+                "aer-feed": "AERIAL FEED [TOP]",
+                "tool-face": "Clock Position",
+                "telemetry": "Telemetry",
+                "lbl-depth": "Depth",
+                "lbl-pitch": "Pitch",
+                "lbl-dist": "Dist",
+                "lbl-target": "Target",
+                "cal-def": "Calibrate Default",
+                "pipe-spec": "Pipe Spec",
+                "btn-esc": "ESC",
+                "btn-rst": "RST",
+                "log-title": "FULL PIPE LOG",
+                "btn-close": "CLOSE",
+                "post-op": "Post-Op Telemetry",
+                "op-met": "Operation Metrics",
+                "tot-dur": "Total Duration",
+                "rot-act": "Rotation Actions",
+                "thr-act": "Thrust Actions",
+                "ret-pipe": "Retraction / Pipe",
+                "lbl-pulls": "PULLS",
+                "lbl-rods": "RODS",
+                "btn-view-main": "VIEW: MAIN",
+                "btn-view-aer": "VIEW: AERIAL",
+                "btn-data": "Data Log",
+                "btn-restart": "Restart",
+                "btn-next": "Next Sector",
+                "ai-title": "AI COPILOT ADVISORY",
+                "btn-dismiss": "DISMISS",
+                "new-rec": ">>> NEW RECORD LOGGED <<<",
+                "input-call": "Input Operator Callsign:",
+                "btn-save": "SAVE",
+                "inc-det": "Incident Details:",
+                "snap-main": "> MAIN FEED SNAPSHOT",
+                "snap-aer": "> AERIAL FEED SNAPSHOT",
+                "err-oob": "OUT OF BOUNDS",
+                "msg-oob": "Safety corridor perimeter breach.",
+                "err-depth": "MAX DEPTH VIOLATION",
+                "msg-depth": "Permitted depth envelope exceeded.",
+                "err-min": "MIN COVERAGE ERROR",
+                "msg-min": "Insufficient top cover. Risk of surfacing.",
+                "err-strike": "CRITICAL STRIKE!",
+                "msg-strike": "Asset impact detected.",
+                "err-frac": "FRAC-OUT",
+                "msg-frac": "Unintended surface return. Pressure relief.",
+                "err-win": "SECTOR COMPLETE",
+                "msg-win": "Target precision verified.",
+                "err-miss": "TARGET MISSED",
+                "msg-miss": "Precision parameters not met.",
+                "ai-conn": "Connecting to AI Core...",
+                "ai-fail": "Connection failed. Please rely on manual telemetry.",
+                "ai-off": "AI Core offline. Proceed with manual telemetry.",
+                "none-clear": "None clear",
+                "ai-prompt-inst": "You are an expert Horizontal Directional Drilling (HDD) AI Copilot. Give a short, professional, 1 to 2 sentence advice to the operator in English on what to do next based on the telemetry. Do not format with markdown, just plain text."
+            },
+            es: {
+                "init-title": "Inicialización del Sistema",
+                "init-sub": "(Haz clic en cualquier lugar para iniciar)",
+                "title-sub": "SO de Perforación Precisa v5.0 // Aut: Julio Sarracent",
+                "obj-title": "Objetivos de Entrenamiento",
+                "obj-1": "Completar 20 niveles operativos.",
+                "obj-2": "Dominar controles de Horizonte Absoluto.",
+                "obj-3": "NUEVO: Marcado automático de profundidad.",
+                "obj-4": "Maximizar métricas de velocidad y precisión.",
+                "safe-title": "Protocolos de Seguridad",
+                "safe-1": "[!] Potholing: Verificación estándar.",
+                "safe-2": "[!] Impacto: Terminar y Llamar al 911.",
+                "safe-3": "[i] Alerta: Respetar radios de curvatura.",
+                "safe-4": "[i] Mundo Real: Los protocolos salvan vidas.",
+                "ldr-title": "Mejores Operadores (Red Global)",
+                "ldr-conn": "Conectando al servidor central...",
+                "ldr-none": "No se encontraron registros.",
+                "btn-start": "Iniciar Sistema",
+                "btn-sectors": "Sectores",
+                "btn-resume": "Reanudar",
+                "btn-exit": "Salir",
+                "disc": "AVISO: Simulación solo para entrenamiento conceptual. Variables ambientales omitidas. Adhiérase a los protocolos de OSHA en campo.",
+                "proto": "Verificación del Protocolo 811 REQUERIDA antes de perforar.",
+                "sec-sel": "Seleccionar Sector",
+                "btn-abort": "Cancelar",
+                "sys-err": "Error del Sistema",
+                "sys-err-sub": "Orientación horizontal requerida para el tablero.",
+                "os-act": "SO Activo",
+                "main-feed": "VISTA PRINCIPAL [PERFIL]",
+                "aer-feed": "VISTA AÉREA [SUPERIOR]",
+                "tool-face": "Posición Reloj",
+                "telemetry": "Telemetría",
+                "lbl-depth": "Profund.",
+                "lbl-pitch": "Inclin.",
+                "lbl-dist": "Dist.",
+                "lbl-target": "Objetivo",
+                "cal-def": "Calibrar Defecto",
+                "pipe-spec": "Espec. Tubo",
+                "btn-esc": "ESC",
+                "btn-rst": "RST",
+                "log-title": "REGISTRO DE TUBERÍA",
+                "btn-close": "CERRAR",
+                "post-op": "Telemetría Post-Op",
+                "op-met": "Métricas de Operación",
+                "tot-dur": "Duración Total",
+                "rot-act": "Rotaciones",
+                "thr-act": "Empujes",
+                "ret-pipe": "Retracción / Tubo",
+                "lbl-pulls": "TIRONES",
+                "lbl-rods": "TUBOS",
+                "btn-view-main": "VISTA: PRINCIPAL",
+                "btn-view-aer": "VISTA: AÉREA",
+                "btn-data": "Registro",
+                "btn-restart": "Reiniciar",
+                "btn-next": "Sig. Sector",
+                "ai-title": "AVISO DE COPILOTO IA",
+                "btn-dismiss": "DESCARTAR",
+                "new-rec": ">>> NUEVO REGISTRO GUARDADO <<<",
+                "input-call": "Ingrese Indicativo de Operador:",
+                "btn-save": "GUARDAR",
+                "inc-det": "Detalles del Incidente:",
+                "snap-main": "> CAPTURA VISTA PRINCIPAL",
+                "snap-aer": "> CAPTURA VISTA AÉREA",
+                "err-oob": "FUERA DE LÍMITES",
+                "msg-oob": "Brecha en el perímetro del corredor de seguridad.",
+                "err-depth": "VIOLACIÓN PROFUN. MÁX.",
+                "msg-depth": "Envoltura de profundidad permitida excedida.",
+                "err-min": "ERROR COBERTURA MÍN.",
+                "msg-min": "Cobertura superior insuficiente. Riesgo de afloramiento.",
+                "err-strike": "¡IMPACTO CRÍTICO!",
+                "msg-strike": "Impacto en activo detectado.",
+                "err-frac": "FRAC-OUT (FUGA)",
+                "msg-frac": "Retorno a superficie no intencionado.",
+                "err-win": "SECTOR COMPLETADO",
+                "msg-win": "Precisión del objetivo verificada.",
+                "err-miss": "OBJETIVO FALLIDO",
+                "msg-miss": "Parámetros de precisión no cumplidos.",
+                "ai-conn": "Conectando al Núcleo de IA...",
+                "ai-fail": "Fallo de conexión. Confíe en la telemetría manual.",
+                "ai-off": "Núcleo de IA desconectado. Use telemetría manual.",
+                "none-clear": "Ninguno cerca",
+                "ai-prompt-inst": "Eres un Copiloto IA experto en Perforación Direccional Horizontal (HDD). Da un consejo profesional y breve de 1 a 2 oraciones al operador en Español sobre qué hacer a continuación basándote en la telemetría. No uses formato markdown, solo texto plano."
+            }
+        };
+
+        window.currentLang = localStorage.getItem('hdd_lang') || 'en';
+
+        window.applyTranslations = function() {
+            const dic = window.translations[window.currentLang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dic[key]) {
+                    el.innerText = dic[key];
+                }
+            });
+            const indicator = document.getElementById('global-lang-indicator');
+            if (indicator) indicator.innerText = window.currentLang === 'en' ? 'EN' : 'ES';
+            
+            // Re-render report view button if it exists
+            const btn = document.getElementById('btn-report-view');
+            if (btn && window.reportViewType) {
+                btn.innerText = window.reportViewType === 'side' ? dic['btn-view-main'] : dic['btn-view-aer'];
+            }
+        };
+
+        window.toggleLanguage = function() {
+            window.currentLang = window.currentLang === 'en' ? 'es' : 'en';
+            localStorage.setItem('hdd_lang', window.currentLang);
+            window.applyTranslations();
+        };
+
         const canvasSide = document.getElementById('game-canvas-side');
         const ctxSide = canvasSide.getContext('2d');
         const canvasTop = document.getElementById('game-canvas-top');
@@ -632,6 +848,9 @@
         const startXOffset = 150;
         const ftToPx = 15;
         let camera = { zoom: 1, offsetX: 0, offsetY: 0 };
+        
+        // Scope fix for module variables accessed via window.function calls
+        window.reportViewType = 'side';
         
         let state = {
             level: 1, distance: 0, absElevation: 0, lat: 0, pitch: -24, latAngle: 0, clock: 12, steeringForce: 12, rods: 0, maxRodLength: 10, path: [], targetDistance: 100, targetDepth: 3.0, targetLat: 0.0, runawayWidth: 3.0, maxAllowedDepthRel: 7.0, gameOver: false, errors: [], potholesVisited: [], surfacePoints: [], utilities: [],
@@ -645,6 +864,9 @@
         window.initializeSystem = function() {
             const overlay = document.getElementById('init-overlay');
             if(overlay) overlay.style.display = 'none';
+            
+            // Apply language on load
+            window.applyTranslations();
             
             try {
                 introAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -738,7 +960,7 @@
                     for(let s=0; s<mStars; s++) { starHTML += s < earned ? '<span class="text-[#ff6a00] drop-shadow-[0_0_5px_rgba(255,106,0,0.8)]">★</span>' : '<span class="text-[#3b4559]">★</span>'; }
                     btn.className = "bg-[#0a0d14] rounded-lg flex flex-col items-center justify-center p-3 lg:p-4 hover:bg-[#1a2235] transition transform hover:scale-105 border border-[#1a2235] hover:border-[#00e5ff] cursor-pointer shadow-[0_4px_10px_rgba(0,0,0,0.5)] group";
                     btn.innerHTML = `<span class="text-xl lg:text-2xl font-black text-white mb-2 font-mono group-hover:text-[#00e5ff] transition">SEC_${i < 10 ? '0'+i : i}</span><div class="flex text-xs">${starHTML}</div>`;
-                    btn.onclick = () => { state.level = i; document.getElementById('levels-modal').classList.add('hidden'); window.startGame(); };
+                    btn.onclick = () => { state.level = i; document.getElementById('levels-modal').classList.add('hidden'); document.getElementById('levels-modal').classList.remove('flex'); window.startGame(); };
                 } else {
                     btn.className = "bg-[#05070a] rounded-lg flex flex-col items-center justify-center p-3 lg:p-4 opacity-40 cursor-not-allowed border border-[#13171f]";
                     btn.innerHTML = `<span class="text-2xl mb-2 text-[#ff2a2a]">🔒</span><span class="text-xs text-[#64748b] font-mono">SEC_${i < 10 ? '0'+i : i}</span>`;
@@ -752,29 +974,126 @@
         let db = null; let useLocalStorage = false; let user = null;
         window.initFirebase = async function() {
             try {
-                const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-                if(firebaseConfig) {
-                    const app = initializeApp(firebaseConfig); const auth = getAuth(app); db = getFirestore(app);
-                    onAuthStateChanged(auth, (currentUser) => { user = currentUser; if(user) { window.cargarLeaderboard(); } });
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) { await signInWithCustomToken(auth, __initial_auth_token); } else { await signInAnonymously(auth); }
-                } else { useLocalStorage = true; window.cargarLeaderboard(); }
-            } catch(e) { useLocalStorage = true; window.cargarLeaderboard(); }
+                if (typeof __firebase_config === 'undefined' || !__firebase_config) {
+                    useLocalStorage = true;
+                    window.cargarLeaderboard();
+                    return;
+                }
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
+                db = getFirestore(app);
+
+                const initAuth = async () => {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                };
+                await initAuth();
+
+                onAuthStateChanged(auth, (currentUser) => {
+                    user = currentUser;
+                    if (user) window.cargarLeaderboard();
+                });
+            } catch(e) {
+                console.error("Firebase init error:", e);
+                useLocalStorage = true;
+                window.cargarLeaderboard();
+            }
         };
+
         window.dbGuardarRecord = async function(nombre, nivel, tiempoSegundos, scoreEstrellas) {
             const record = { name: nombre, level: nivel, time: tiempoSegundos, score: scoreEstrellas, timestamp: new Date().toISOString() };
             if(useLocalStorage) { let records = JSON.parse(localStorage.getItem('hdd_leaderboard') || '[]'); records.push(record); localStorage.setItem('hdd_leaderboard', JSON.stringify(records)); window.cargarLeaderboard(); } 
             else if (db && user) { try { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard'), record); window.cargarLeaderboard(); } catch(e) { console.error(e); } }
         };
+
         window.cargarLeaderboard = async function() {
             const tbody = document.getElementById('home-leaderboard-body'); if(!tbody) return;
-            let records = []; if (useLocalStorage) { records = JSON.parse(localStorage.getItem('hdd_leaderboard') || '[]'); } 
-            else if (db && user) { try { const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard')); const querySnapshot = await getDocs(q); querySnapshot.forEach((doc) => { records.push(doc.data()); }); } catch(e) { console.error(e); } }
+            let records = []; 
+            if (useLocalStorage) { 
+                records = JSON.parse(localStorage.getItem('hdd_leaderboard') || '[]'); 
+            } else if (db && user) { 
+                try { 
+                    const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard')); 
+                    const querySnapshot = await getDocs(q); 
+                    querySnapshot.forEach((doc) => { records.push(doc.data()); }); 
+                } catch(e) { console.error(e); } 
+            } else {
+                return;
+            }
             records.sort((a, b) => { if(b.level !== a.level) return b.level - a.level; if(a.time !== b.time) return a.time - b.time; return b.score - a.score; });
             records = records.slice(0, 10); tbody.innerHTML = '';
-            if(records.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="text-center text-[#64748b] italic py-3">No records found.</td></tr>'; return; }
+            if(records.length === 0) { 
+                let msg = window.translations[window.currentLang]['ldr-none'];
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center text-[#64748b] italic py-3">${msg}</td></tr>`; return; 
+            }
             records.forEach((r, idx) => { let rankClass = idx === 0 ? "top-1" : idx === 1 ? "top-2" : idx === 2 ? "top-3" : "text-[#94a3b8]"; let timeStr = formatTime(r.time); let tr = document.createElement('tr'); tr.innerHTML = `<td class="text-center font-bold ${rankClass}">${idx + 1}</td><td class="${rankClass} uppercase">${r.name.substring(0,15)}</td><td class="text-center text-[#64748b]">SEC_${r.level < 10 ? '0'+r.level : r.level}</td><td class="text-center text-[#00e5ff]">${timeStr}</td><td class="text-center text-[#ff6a00] tracking-widest">${'★'.repeat(r.score)}</td>`; tbody.appendChild(tr); });
         };
+
         function formatTime(secs) { let m = Math.floor(secs / 60); let s = secs % 60; return (m < 10 ? "0"+m : m) + ":" + (s < 10 ? "0"+s : s); }
+
+        // EXPO BACKOFF FUNCTION FOR GEMINI API
+        async function fetchWithBackoff(url, payload, retries = 5) {
+            let delay = 1000;
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const res = await fetch(url, payload);
+                    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                    return await res.json();
+                } catch (e) {
+                    if (i === retries - 1) throw e;
+                    await new Promise(r => setTimeout(r, delay));
+                    delay *= 2;
+                }
+            }
+        }
+
+        // AI COPILOT FUNCTION
+        window.askAI = async function() {
+            const dic = window.translations[window.currentLang];
+            const modal = document.getElementById('ai-modal');
+            const contentDiv = document.getElementById('ai-content');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            contentDiv.innerHTML = `<span class="animate-pulse text-[#00e5ff]">${dic['ai-conn']}</span>`;
+
+            const apiKey = "";
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
+            let relDepth = state.absElevation + getSurfaceHeight(state.distance); 
+            let pVal = parseFloat(state.pitch.toFixed(1)); 
+            
+            // Only look ahead for next 30 feet
+            let upcoming = state.utilities.filter(u => u.dist > state.distance && u.dist < state.distance + 30).slice(0, 2);
+            let utilsText = upcoming.length > 0 ? upcoming.map(u => `${u.name} at ${u.dist.toFixed(1)}ft away`).join(', ') : dic['none-clear'];
+
+            const aiPrompt = `Current telemetry:
+            - Distance: ${state.distance.toFixed(1)} ft
+            - Depth: ${relDepth.toFixed(1)} ft
+            - Pitch: ${pVal} %
+            - Target: Distance ${state.targetDistance}ft, Depth ${state.targetDepth.toFixed(1)}ft
+            - Upcoming Hazards (next 30ft): ${utilsText}`;
+
+            const payload = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: aiPrompt }] }],
+                    systemInstruction: { parts: [{ text: dic['ai-prompt-inst'] }] }
+                })
+            };
+
+            try {
+                const data = await fetchWithBackoff(url, payload);
+                const text = data.candidates?.[0]?.content?.parts?.[0]?.text || dic['ai-off'];
+                contentDiv.innerText = text;
+            } catch(e) {
+                contentDiv.innerText = dic['ai-fail'];
+            }
+        };
 
         window.zoomIn = function() { camera.zoom *= 1.2; clampCamera(); dibujarEscena(); };
         window.zoomOut = function() { camera.zoom /= 1.2; clampCamera(); dibujarEscena(); };
@@ -868,7 +1187,33 @@
         
         function setEnginePitch(f, v = 0.15) { if (!audioCtx || isMuted) return; engineOsc.frequency.exponentialRampToValueAtTime(f, audioCtx.currentTime + 0.5); engineGain.gain.linearRampToValueAtTime(Math.min(v, 0.40), audioCtx.currentTime + 0.2); }
         function playSound(f, t, d, v = 0.40) { if (!audioCtx || isMuted) return; let o = audioCtx.createOscillator(); let g = audioCtx.createGain(); o.type = t; o.frequency.setValueAtTime(f, audioCtx.currentTime); g.gain.setValueAtTime(v, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + d); o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime + d); }
-        window.playSuccessChime = function() { if (!audioCtx || isMuted) return; let o1 = audioCtx.createOscillator(); let g1 = audioCtx.createGain(); o1.type = 'sine'; o1.frequency.setValueAtTime(523.25, audioCtx.currentTime); g1.gain.setValueAtTime(0, audioCtx.currentTime); g1.gain.linearRampToValueAtTime(0.40, audioCtx.currentTime + 0.05); g1.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2); o1.connect(g1); g1.connect(audioCtx.destination); o1.start(); o1.stop(audioCtx.currentTime + 0.2); let o2 = audioCtx.createOscillator(); let g2 = audioCtx.createGain(); o2.type = 'sine'; o2.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); g2.gain.setValueAtTime(0, audioCtx.currentTime + 0.1); g2.gain.linearRampToValueAtTime(0.40, audioCtx.currentTime + 0.15); g2.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.6); o2.connect(g2); g2.connect(audioCtx.destination); o2.start(audioCtx.currentTime + 0.1); o2.stop(audioCtx.currentTime + 0.6); };
+        
+        window.playSuccessChime = function() { 
+            if (!audioCtx || isMuted) return; 
+            let o1 = audioCtx.createOscillator(); 
+            let g1 = audioCtx.createGain(); 
+            o1.type = 'sine'; 
+            o1.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+            g1.gain.setValueAtTime(0, audioCtx.currentTime); 
+            g1.gain.linearRampToValueAtTime(0.40, audioCtx.currentTime + 0.05); 
+            g1.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2); 
+            o1.connect(g1); 
+            g1.connect(audioCtx.destination); 
+            o1.start(); 
+            o1.stop(audioCtx.currentTime + 0.2); 
+            
+            let o2 = audioCtx.createOscillator(); 
+            let g2 = audioCtx.createGain(); 
+            o2.type = 'sine'; 
+            o2.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); 
+            g2.gain.setValueAtTime(0, audioCtx.currentTime + 0.1); 
+            g2.gain.linearRampToValueAtTime(0.40, audioCtx.currentTime + 0.15); 
+            g2.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.6); 
+            o2.connect(g2); 
+            g2.connect(audioCtx.destination); 
+            o2.start(audioCtx.currentTime + 0.1); 
+            o2.stop(audioCtx.currentTime + 0.6); 
+        };
         
         window.playLoseStarSound = function() { 
             if (!audioCtx || isMuted) return; 
@@ -890,10 +1235,8 @@
             let o = audioCtx.createOscillator(); 
             let g = audioCtx.createGain(); 
             o.type = 'sawtooth'; 
-            // Frequency dropping sharply simulating shutdown/failure
             o.frequency.setValueAtTime(200, audioCtx.currentTime); 
             o.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 1.2); 
-            // Volume slightly higher than background music
             g.gain.setValueAtTime(0.60, audioCtx.currentTime); 
             g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.2); 
             o.connect(g); 
@@ -912,13 +1255,13 @@
                 toggleDiv.classList.add('text-[#ff2a2a]');
                 toggleDiv.classList.remove('text-[#64748b]', 'hover:text-[#00e5ff]');
                 
-                if (engineGain) engineGain.gain.setValueAtTime(0, audioCtx.currentTime); 
+                if (engineGain && audioCtx) engineGain.gain.setValueAtTime(0, audioCtx.currentTime); 
             } else { 
                 icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5L6 9H2v6h4l5 4V5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>'; 
                 toggleDiv.classList.remove('text-[#ff2a2a]');
                 toggleDiv.classList.add('text-[#64748b]', 'hover:text-[#00e5ff]');
                 
-                if (engineGain) engineGain.gain.setValueAtTime(0.15, audioCtx.currentTime); 
+                if (engineGain && audioCtx) engineGain.gain.setValueAtTime(0.15, audioCtx.currentTime); 
             } 
         };
 
@@ -929,12 +1272,41 @@
         function getPxX(dist, w) { return startXOffset + (dist / (state.targetDistance + 40)) * (w - startXOffset - 40); }
         function getPxY_Side(absElevation, h) { let base = h * 0.35; return base + (absElevation * ftToPx); }
         function getPxY_Top(lat, h) { return (h / 2) + (lat / 10) * (h / 2 - 20); }
-        function mostrarError(msg) { const errDiv = document.getElementById('error-msg'); if (errDiv) { errDiv.innerText = msg; errDiv.classList.remove('hidden'); setTimeout(() => errDiv.classList.add('hidden'), 3000); } }
+        
+        function mostrarError(msg) { 
+            const errDiv = document.getElementById('error-msg'); 
+            if (errDiv) { 
+                errDiv.innerText = msg; 
+                errDiv.classList.remove('hidden'); 
+                setTimeout(() => errDiv.classList.add('hidden'), 3000); 
+            } 
+        }
+        
         function getClockMultipliers(c) { if (c === 12) return { p: 1, l: 0 }; if (c === 3) return { p: 0, l: 1 }; if (c === 6) return { p: -1, l: 0 }; if (c === 9) return { p: 0, l: -1 }; let r = (c * 30) * (Math.PI / 180); return { p: Math.round(Math.cos(r)*1000)/1000, l: Math.round(Math.sin(r)*1000)/1000 }; }
+        
         window.cambiarLongitudVarilla = function(val) { let num = parseInt(val); let remaining = state.distance % state.maxRodLength; if (state.distance > 0 && remaining > 0.01 && remaining < state.maxRodLength - 0.01) { mostrarError("Finish the rod first!"); document.getElementById('rod-length-select').value = state.maxRodLength; return; } state.maxRodLength = num; window.limpiarFuerza(); };
         window.volverAlMenu = function() { document.getElementById('splash-screen').style.display = 'flex'; document.getElementById('btn-resume').classList.remove('hidden'); document.getElementById('game-over-modal').classList.add('hidden'); if (audioCtx && audioCtx.state === 'running') audioCtx.suspend(); if (window.cargarLeaderboard) window.cargarLeaderboard(); };
         window.resumeGame = function() { document.getElementById('splash-screen').style.display = 'none'; if (audioCtx && audioCtx.state === 'suspended' && !isMuted) audioCtx.resume(); };
         
+        window.toggleFullScreen = function() { 
+            try { 
+                let doc = document.documentElement; 
+                let isFull = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement; 
+                if (!isFull) { 
+                    if (doc.requestFullscreen) { doc.requestFullscreen().catch(e => console.warn("Fullscreen blocked.")); } 
+                    else if (doc.webkitRequestFullscreen) { doc.webkitRequestFullscreen(); } 
+                    else if (doc.mozRequestFullScreen) { doc.mozRequestFullScreen(); }
+                    else if (doc.msRequestFullscreen) { doc.msRequestFullscreen(); }
+                    else { mostrarError("Fullscreen: Use 'Add to Home Screen'"); } 
+                } else { 
+                    if (document.exitFullscreen) document.exitFullscreen(); 
+                    else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); 
+                    else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+                    else if (document.msExitFullscreen) document.msExitFullscreen();
+                } 
+            } catch(e) { console.warn("Full screen error:", e); } 
+        };
+
         window.exitGame = function() { 
             window.close(); 
             // Fallback in case the browser blocks window.close()
@@ -1017,8 +1389,6 @@
         function verificarEstrellas() { 
             let actualizadas = false;
 
-            // Calculate exact visual pixel position of the drill head 
-            // using the same formula as the Aerial (Top) view.
             let drillPxX = 150 + (state.distance / (state.targetDistance + 40)) * 1010;
             let drillPxY = 100 + (state.lat / 10) * 80;
 
@@ -1027,9 +1397,6 @@
                 let uPxX = 150 + (u.dist / (state.targetDistance + 40)) * 1010;
                 let uPxY = 100 + (u.lat / 10) * 80;
                 
-                // The visual pothole square is 15x15 pixels (radius of 7.5px from center).
-                // "At least 30% inside" means distance to center must be <= 7.5 * 0.70 = 5.25px.
-                // This prevents activation if it just "grazes" the edges.
                 let inX = Math.abs(drillPxX - uPxX) <= 5.25;
                 let inY = Math.abs(drillPxY - uPxY) <= 5.25;
 
@@ -1049,7 +1416,6 @@
                 let u = state.utilities.find(util => util.id === id);
                 if (u) {
                     let uPxX = 150 + (u.dist / (state.targetDistance + 40)) * 1010;
-                    // If drill X is before the left edge of the visual square (-7.5px)
                     if (drillPxX < uPxX - 7.5) {
                         perdidas = true;
                         return false; 
@@ -1087,7 +1453,6 @@
             let isLight = document.body.classList.contains('light-mode');
 
             for (let i = 0; i < total; i++) {
-                // Modification: The star is linked to the specific pothole ID
                 let u = state.utilities[i];
                 let isCollected = state.potholesVisited.includes(u.id);
                 
@@ -1118,6 +1483,7 @@
         function dibujarCuerpoEscena(tCtx, viewType, w, h) {
             let isLight = document.body.classList.contains('light-mode');
             let surfaceY = h * 0.35;
+            const dic = window.translations[window.currentLang];
             
             if (viewType === 'side') {
                 let skyGrad = tCtx.createLinearGradient(0, 0, 0, surfaceY);
@@ -1188,11 +1554,15 @@
                 tCtx.font = `bold ${12 / camera.zoom}px "Share Tech Mono"`;
                 tCtx.textAlign = 'left'; tCtx.fillStyle = isLight ? '#16a34a' : '#39ff14';
                 tCtx.shadowColor = isLight ? 'transparent' : '#000'; tCtx.shadowBlur = 4;
-                let targetLabel = "TARGET: " + formatPiesPulgadas(state.targetDepth) + "'";
+                let targetLabel = (dic['lbl-target'] || "TARGET").toUpperCase() + ": " + formatPiesPulgadas(state.targetDepth) + "'";
                 tCtx.fillText(targetLabel, tx + 50, yt + 4); tCtx.shadowBlur = 0;
                 
                 tCtx.save(); let startS = getSurfaceHeight(0); tCtx.translate(getPxX(0, w), surfaceY - (startS * 10)); 
-                tCtx.fillStyle = isLight ? '#475569' : '#1e293b'; tCtx.beginPath(); tCtx.roundRect(-50, -12, 80, 14, 4); tCtx.fill();
+                
+                // Usamos rectangulo estándar en vez de roundRect para asegurar máxima compatibilidad
+                tCtx.fillStyle = isLight ? '#475569' : '#1e293b'; 
+                tCtx.beginPath(); tCtx.rect(-50, -12, 80, 14); tCtx.fill();
+                
                 tCtx.fillStyle = isLight ? '#94a3b8' : '#0f172a'; 
                 for(let wx = -45; wx <= 20; wx += 12) { tCtx.beginPath(); tCtx.arc(wx, -5, 4, 0, Math.PI*2); tCtx.fill(); }
                 let bodyGrad = tCtx.createLinearGradient(-40, -40, 20, -10);
@@ -1212,7 +1582,7 @@
 
                 dibujarRuta(tCtx, (val, ht) => getPxY_Side(val, ht), 'side', w, h);
             } else {
-                tCtx.fillStyle = isLight ? '#84cc16' : '#1e3f20'; // Grass green
+                tCtx.fillStyle = isLight ? '#84cc16' : '#1e3f20'; 
                 tCtx.fillRect(-5000,-5000,10000,10000); 
                 
                 tCtx.strokeStyle = isLight ? 'rgba(0,0,0,0.1)' : 'rgba(0, 229, 255, 0.05)'; tCtx.lineWidth = 1;
@@ -1304,10 +1674,50 @@
             ctxTop.restore(); 
         }
 
+        window.mostrarGameOver = function(tit, msg, col, isWin = false) { 
+            state.gameOver = true; 
+            clearInterval(state.timerInterval); 
+            document.querySelectorAll('.btn-action').forEach(b => b.disabled = true); 
+            const m = document.getElementById('game-over-modal'), t = document.getElementById('game-over-title'); 
+            t.className = `text-2xl lg:text-4xl font-black mb-3 text-center uppercase tracking-widest ${col==='red'?'emergency-alert':col==='green'?'text-[#39ff14] glow-text-green':'text-[#ff6a00] glow-text-orange'}`; 
+            t.innerText = tit; 
+            document.getElementById('game-over-msg').innerText = msg; 
+            const s = document.getElementById('star-rating'); 
+            s.innerHTML = ''; 
+            const newRecordForm = document.getElementById('new-record-form'); 
+            if (isWin) { 
+                window.guardarProgresoLocal(state.level, state.potholesVisited.length); 
+                for(let i=0; i<state.utilities.length; i++) { 
+                    let span = document.createElement('span'); 
+                    span.innerText = '★'; 
+                    span.className = state.potholesVisited.length > i ? 'text-[#ff6a00] drop-shadow-[0_0_10px_rgba(255,106,0,0.8)]' : 'text-[#3b4559]'; 
+                    s.appendChild(span); 
+                } 
+                document.getElementById('btn-next').classList.remove('hidden'); 
+                document.getElementById('btn-retry').classList.add('hidden'); 
+                if (state.potholesVisited.length === state.utilities.length) { 
+                    newRecordForm.classList.remove('hidden'); 
+                    newRecordForm.classList.add('flex'); 
+                    document.getElementById('btn-next').classList.add('hidden'); 
+                } else { 
+                    newRecordForm.classList.add('hidden'); 
+                    newRecordForm.classList.remove('flex'); 
+                } 
+            } else { 
+                document.getElementById('btn-next').classList.add('hidden'); 
+                document.getElementById('btn-retry').classList.remove('hidden'); 
+                newRecordForm.classList.add('hidden'); 
+                newRecordForm.classList.remove('flex'); 
+            } 
+            m.classList.remove('hidden'); 
+            m.classList.add('flex'); 
+        };
+
         function chequearCondiciones(finalCheck) {
-            let iL = getIdealLat(state.distance); if (Math.abs(state.lat - iL) > state.runawayWidth) { window.playGameOverSound(); mostrarGameOver("OUT OF BOUNDS", "Safety corridor perimeter breach.", "red"); return true; }
-            let relD = state.absElevation + getSurfaceHeight(state.distance); if (relD > state.maxAllowedDepthRel) { window.playGameOverSound(); mostrarGameOver("MAX DEPTH VIOLATION", "Permitted depth envelope exceeded.", "red"); return true; }
-            if (relD <= 1.0 && state.distance >= state.maxRodLength) { window.playGameOverSound(); mostrarGameOver("MIN COVERAGE ERROR", "Insufficient top cover. Risk of surfacing.", "orange"); return true; }
+            const dic = window.translations[window.currentLang];
+            let iL = getIdealLat(state.distance); if (Math.abs(state.lat - iL) > state.runawayWidth) { window.playGameOverSound(); window.mostrarGameOver(dic['err-oob'], dic['msg-oob'], "red"); return true; }
+            let relD = state.absElevation + getSurfaceHeight(state.distance); if (relD > state.maxAllowedDepthRel) { window.playGameOverSound(); window.mostrarGameOver(dic['err-depth'], dic['msg-depth'], "red"); return true; }
+            if (relD <= 1.0 && state.distance >= state.maxRodLength) { window.playGameOverSound(); window.mostrarGameOver(dic['err-min'], dic['msg-min'], "orange"); return true; }
             let rP = [...state.path]; if (!isAnimating) rP.push({ distance: state.distance, absElevation: state.absElevation });
             for (let i = 1; i < rP.length; i++) {
                 for (let u of state.utilities) {
@@ -1316,13 +1726,13 @@
                         if (t >= 0 && t <= 1) {
                             let e = rP[i-1].absElevation + (rP[i].absElevation - rP[i-1].absElevation) * t;
                             let rodRadiusFt = 1.5 / 12; let utilityRadiusFt = u.diamFt / 2; let gapFt = Math.abs(e - u.absElevation) - utilityRadiusFt - rodRadiusFt; let clearanceInches = gapFt * 12;
-                            if (clearanceInches <= 1.0) { window.playGameOverSound(); mostrarGameOver("CRITICAL STRIKE!", `Asset impact detected. Clearance: ${clearanceInches.toFixed(1)}".`, "red"); return true; }
+                            if (clearanceInches <= 1.0) { window.playGameOverSound(); window.mostrarGameOver(dic['err-strike'], dic['msg-strike'], "red"); return true; }
                         }
                     }
                 }
             }
-            if (relD < -0.15 && state.distance > 5) { window.playGameOverSound(); mostrarGameOver("FRAC-OUT", "Unintended surface return. Pressure relief.", "red"); return true; }
-            if (finalCheck && state.distance >= state.targetDistance) { if (Math.abs(relD - state.targetDepth) <= 0.7 && Math.abs(state.lat - state.targetLat) <= 1.5) { playSound(600, 'sine', 0.5, 0.2); setTimeout(()=>playSound(800, 'sine', 0.5, 0.15), 200); mostrarGameOver("SECTOR COMPLETE", `Target precision verified.`, "green", true); } else { window.playGameOverSound(); mostrarGameOver("TARGET MISSED", "Precision parameters not met.", "orange"); } return true; }
+            if (relD < -0.15 && state.distance > 5) { window.playGameOverSound(); window.mostrarGameOver(dic['err-frac'], dic['msg-frac'], "red"); return true; }
+            if (finalCheck && state.distance >= state.targetDistance) { if (Math.abs(relD - state.targetDepth) <= 0.7 && Math.abs(state.lat - state.targetLat) <= 1.5) { window.playSuccessChime(); setTimeout(()=>window.playSuccessChime(), 200); window.mostrarGameOver(dic['err-win'], dic['msg-win'], "green", true); } else { window.playGameOverSound(); window.mostrarGameOver(dic['err-miss'], dic['msg-miss'], "orange"); } return true; }
             return false;
         }
 
@@ -1339,7 +1749,10 @@
                 if (chequearCondiciones(false)) { 
                     isAnimating = false; 
                     setEnginePitch(35); 
-                    if(movingHud) movingHud.classList.add('hidden');
+                    if(movingHud) {
+                        movingHud.classList.remove('flex');
+                        movingHud.classList.add('hidden');
+                    }
                     return; 
                 }
                 
@@ -1357,6 +1770,7 @@
                     if(movingHud) {
                         if (window.hudPersistenceTimeout) clearTimeout(window.hudPersistenceTimeout);
                         window.hudPersistenceTimeout = setTimeout(() => {
+                            movingHud.classList.remove('flex');
                             movingHud.classList.add('hidden');
                         }, 5000);
                     }
@@ -1371,6 +1785,7 @@
                         window.hudPersistenceTimeout = null;
                     }
                     movingHud.classList.remove('hidden');
+                    movingHud.classList.add('flex');
                     const relDepth = state.absElevation + getSurfaceHeight(state.distance);
                     if(movingDepth) movingDepth.innerText = `${formatPiesPulgadas(relDepth)} ft`;
                     if(movingPitch) movingPitch.innerText = `${(state.pitch > 0 ? "+" : "")}${state.pitch.toFixed(1)} %`;
@@ -1401,19 +1816,16 @@
         window.triggerPush = function(frac, metricKey) {
             if (isAnimating || state.gameOver) return;
             
-            // Bloqueamos temporalmente para evitar doble clic durante el refresh
             isAnimating = true;
             document.querySelectorAll('.btn-action').forEach(b => b.disabled = true);
             
-            // Hacemos el refresh visual en el reloj (oculta la manecilla)
             window.renderClock(true);
             
-            // Esperamos un instante (80ms) para mostrar la confirmación de la hora antes de moverse
             setTimeout(() => {
-                isAnimating = false; // Liberamos para que iniciarMoverFraccion tome el control real
+                isAnimating = false; 
                 document.querySelectorAll('.btn-action').forEach(b => b.disabled = false);
-                window.renderClock(false); // Reaparece la manecilla
-                window.iniciarMoverFraccion(frac, false, metricKey); // Se ejecuta la acción de PUSH
+                window.renderClock(false); 
+                window.iniciarMoverFraccion(frac, false, metricKey); 
             }, 80);
         };
 
@@ -1441,10 +1853,8 @@
         window.setClock = function(h) { 
             if(state.gameOver) return; 
             
-            // 1. PRIMERO hace un refresh (se envía true para dibujarlo sin manecillas ni selección)
             window.renderClock(true); 
             
-            // 2. DESPUÉS ejecuta la hora que se le dio clic, aplicando un ligerísimo retraso
             setTimeout(() => {
                 state.clock = h; 
                 playSound(200,'sine',0.40); 
@@ -1464,8 +1874,6 @@
                 let isSelected = !isRefreshing && state.clock === i;
                 let isMain = (i % 3 === 0);
                 
-                // Se aumentó significativamente el tamaño del área del botón (w-7 h-7 / lg:w-8 lg:h-8) 
-                // para que el dedo lo reconozca mucho mejor en móviles.
                 numBtn.className = `absolute transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-7 h-7 lg:w-8 lg:h-8 cursor-pointer rounded-full transition-all text-[10px] lg:text-[11px] font-mono ` + 
                                    (isSelected ? 'bg-[#00e5ff]/30 text-[#00e5ff] font-black shadow-[0_0_8px_rgba(0,229,255,0.6)] border border-[#00e5ff] z-20 scale-110' : 
                                    (isMain ? 'text-[#00e5ff] font-bold hover:bg-[#1a2235] z-10' : 'text-[#64748b] hover:text-white hover:bg-[#1a2235] z-10'));
@@ -1473,7 +1881,6 @@
                 numBtn.style.top = `${cy}%`; 
                 numBtn.innerText = i;
                 
-                // Sustituimos onclick por mousedown y touchstart para que reaccione al instante sin fallar
                 const triggerClock = (e) => { 
                     e.preventDefault();
                     e.stopPropagation();
@@ -1485,7 +1892,6 @@
                 container.appendChild(numBtn); 
             }
             
-            // Si NO está en modo refresh, dibuja la manecilla
             if (!isRefreshing) {
                 let hw = document.createElement('div'); hw.className = "absolute top-1/2 left-1/2 w-full h-full pointer-events-none text-center transition-transform duration-100 ease-out"; hw.style.transform = `translate(-50%, -50%) rotate(${state.clock * 30}deg)`;
                 let hand = document.createElement('div'); hand.className = "absolute bottom-1/2 left-1/2 transform -translate-x-1/2 w-1 h-[24%] rounded-t-sm z-0 bg-[#39ff14] shadow-[0_0_8px_#39ff14] text-center";
@@ -1495,20 +1901,39 @@
         };
 
         window.openLogModal = function() {
-            document.getElementById('log-modal').classList.remove('hidden');
-            document.getElementById('log-modal').classList.add('flex');
+            const modal = document.getElementById('log-modal');
+            if(modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
         };
         
         window.closeLogModal = function() {
-            document.getElementById('log-modal').classList.add('hidden');
-            document.getElementById('log-modal').classList.remove('flex');
+            const modal = document.getElementById('log-modal');
+            if(modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
         };
 
         window.actualizarPantallas = function() {
             let pDisp = document.getElementById('display-programmed'); if (pDisp) { pDisp.innerText = `PWR: ${state.steeringForce}%`; let abs = Math.abs(state.steeringForce); if (abs <= 10) pDisp.className = "font-mono font-bold text-[12px] lg:text-[14px] h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded mb-1 border-[#1a2235] tracking-wider text-[#00e5ff] glow-text-blue"; else if (abs <= 16) pDisp.className = "font-mono font-bold text-[12px] lg:text-[14px] h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded mb-1 border-[#1a2235] tracking-wider text-[#ff6a00] glow-text-orange"; else pDisp.className = "font-mono font-bold text-[12px] lg:text-[14px] h-8 flex items-center justify-center panel-inset w-full max-w-[220px] rounded mb-1 border border-[#ff2a2a] tracking-wider text-[#ff2a2a] shadow-[inset_0_0_10px_rgba(255,42,42,0.3)]"; }
             let rl = state.maxRodLength - (state.distance % state.maxRodLength); if (Math.abs(rl - state.maxRodLength) < 0.01 || Math.abs(rl) < 0.01) rl = state.maxRodLength;
             let dRod = document.getElementById('display-rod-left'); if (dRod) dRod.innerText = `REM: ${rl.toFixed(1)}'`;
-            let ip = document.getElementById('initial-pitch-controls'); if (ip) state.rods > 0 ? ip.classList.add('hidden') : ip.classList.remove('hidden');
+            
+            let ip = document.getElementById('initial-pitch-controls'); 
+            let ipv = document.getElementById('initial-pitch-value');
+            if (ip) {
+                if (state.rods > 0) {
+                    ip.classList.add('hidden');
+                    ip.classList.remove('flex');
+                } else {
+                    ip.classList.remove('hidden');
+                    ip.classList.add('flex');
+                    if (ipv) ipv.innerText = state.pitch.toFixed(1);
+                }
+            }
+            
             let relDepth = state.absElevation + getSurfaceHeight(state.distance); 
             let pVal = parseFloat(state.pitch.toFixed(1)); 
             let rem = Math.max(0, state.targetDistance - state.distance);
@@ -1521,6 +1946,7 @@
                 logList.innerHTML = ''; 
                 let maxRod = Math.floor((state.distance + 0.01) / state.maxRodLength); 
                 let currentPath = [...state.path, {distance: state.distance, absElevation: state.absElevation}]; 
+                const dic = window.translations[window.currentLang];
                 for (let i = 1; i <= maxRod; i++) { 
                     let targetDist = i * state.maxRodLength; 
                     let node = currentPath.find(n => Math.abs(n.distance - targetDist) < 0.1); 
@@ -1528,38 +1954,77 @@
                         let nodeRelDepth = node.absElevation + getSurfaceHeight(node.distance); 
                         let li = document.createElement('li'); 
                         li.className = "bg-[#0a0d14] px-2 py-2.5 rounded border border-[#1a2235] text-[#39ff14] shadow-[0_2px_4px_rgba(0,0,0,0.5)] flex flex-col items-center justify-center transition hover:border-[#00e5ff] cursor-default"; 
-                        li.innerHTML = `<span class="text-[#64748b] text-[9px] mb-1 tracking-widest uppercase">ROD ${i < 10 ? '0'+i : i}</span><span class="font-bold text-[12px]">${formatRodLog(nodeRelDepth)}</span>`; 
+                        li.innerHTML = `<span class="text-[#64748b] text-[9px] mb-1 tracking-widest uppercase">${dic['lbl-rods']} ${i < 10 ? '0'+i : i}</span><span class="font-bold text-[12px]">${formatRodLog(nodeRelDepth)}</span>`; 
                         logList.appendChild(li); 
                     } 
                 } 
             }
         };
-        
-        window.toggleFullScreen = function() { 
-            try { 
-                let doc = document.documentElement; 
-                let isFull = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement; 
-                if (!isFull) { 
-                    if (doc.requestFullscreen) { doc.requestFullscreen().catch(e => console.warn("Fullscreen blocked.")); } 
-                    else if (doc.webkitRequestFullscreen) { doc.webkitRequestFullscreen(); } 
-                    else if (doc.mozRequestFullScreen) { doc.mozRequestFullScreen(); }
-                    else if (doc.msRequestFullscreen) { doc.msRequestFullscreen(); }
-                    else { mostrarError("Fullscreen: Use 'Add to Home Screen'"); } 
-                } else { 
-                    if (document.exitFullscreen) document.exitFullscreen(); 
-                    else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); 
-                    else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
-                    else if (document.msExitFullscreen) document.msExitFullscreen();
-                } 
-            } catch(e) { console.warn("Full screen error:", e); } 
+
+        window.dibujarReporte = function() { 
+            try {
+                const rc = document.getElementById('report-canvas'); 
+                if (!rc) return;
+                const rCtx = rc.getContext('2d'); 
+                rCtx.clearRect(0,0,1200,400); 
+                rCtx.save(); 
+                rCtx.beginPath(); rCtx.rect(0,0,1200,400); rCtx.clip(); 
+                
+                let tempCamera = {...camera}; 
+                camera = {zoom: 1, offsetX: 0, offsetY: 0}; 
+                
+                dibujarCuerpoEscena(rCtx, window.reportViewType, 1200, 400); 
+                camera = tempCamera; 
+                
+                const dic = window.translations[window.currentLang];
+                rCtx.fillStyle = "rgba(0,0,0,0.7)"; 
+                rCtx.fillRect(10, 10, 280, 50); 
+                rCtx.fillStyle = "#00e5ff"; 
+                rCtx.font = "bold 20px 'Share Tech Mono'"; 
+                rCtx.fillText(window.reportViewType === 'side' ? dic['snap-main'] : dic['snap-aer'], 20, 42); 
+                
+                rCtx.restore(); 
+            } catch(e) {
+                console.error("Error generating snapshot:", e);
+            }
         };
 
-        function mostrarGameOver(tit, msg, col, isWin = false) { state.gameOver = true; clearInterval(state.timerInterval); document.querySelectorAll('.btn-action').forEach(b => b.disabled = true); const m = document.getElementById('game-over-modal'), t = document.getElementById('game-over-title'); t.className = `text-2xl lg:text-4xl font-black mb-3 text-center uppercase tracking-widest ${col==='red'?'emergency-alert':col==='green'?'text-[#39ff14] glow-text-green':'text-[#ff6a00] glow-text-orange'}`; t.innerText = tit; document.getElementById('game-over-msg').innerText = msg; const s = document.getElementById('star-rating'); s.innerHTML = ''; const newRecordForm = document.getElementById('new-record-form'); if (isWin) { window.guardarProgresoLocal(state.level, state.potholesVisited.length); for(let i=0; i<state.utilities.length; i++) { let span = document.createElement('span'); span.innerText = '★'; span.className = state.potholesVisited.length > i ? 'text-[#ff6a00] drop-shadow-[0_0_10px_rgba(255,106,0,0.8)]' : 'text-[#3b4559]'; s.appendChild(span); } document.getElementById('btn-next').classList.remove('hidden'); document.getElementById('btn-retry').classList.add('hidden'); if (state.potholesVisited.length === state.utilities.length) { newRecordForm.classList.remove('hidden'); newRecordForm.classList.add('flex'); document.getElementById('btn-next').classList.add('hidden'); } else { newRecordForm.classList.add('hidden'); newRecordForm.classList.remove('flex'); } } else { document.getElementById('btn-next').classList.add('hidden'); document.getElementById('btn-retry').classList.remove('hidden'); newRecordForm.classList.add('hidden'); newRecordForm.classList.remove('flex'); } m.classList.remove('hidden'); m.classList.add('flex'); }
-        window.generarInformeFinal = function() { reportViewType = 'side'; const btn = document.getElementById('btn-report-view'); if (btn) btn.innerText = 'VIEW: MAIN'; let m = Math.floor(state.timeElapsed / 60); let s = state.timeElapsed % 60; document.getElementById('report-time').innerText = `${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`; document.getElementById('metric-d14').innerText = state.metrics.d14; document.getElementById('metric-d12').innerText = state.metrics.d12; document.getElementById('metric-df').innerText = state.metrics.df; document.getElementById('metric-p14').innerText = state.metrics.p14; document.getElementById('metric-p12').innerText = state.metrics.p12; document.getElementById('metric-pf').innerText = state.metrics.pf; document.getElementById('metric-b').innerText = state.metrics.back; document.getElementById('metric-rods').innerText = state.rods.toFixed(1); dibujarReporte(); document.getElementById('report-modal').classList.remove('hidden'); document.getElementById('report-modal').classList.add('flex'); };
-        window.toggleReportView = function() { reportViewType = reportViewType === 'side' ? 'top' : 'side'; const btn = document.getElementById('btn-report-view'); if (btn) btn.innerText = reportViewType === 'side' ? 'VIEW: MAIN' : 'VIEW: AERIAL'; dibujarReporte(); };
-        function dibujarReporte() { const rc = document.getElementById('report-canvas'); const rCtx = rc.getContext('2d'); rCtx.clearRect(0,0,1200,400); rCtx.save(); rCtx.beginPath(); rCtx.rect(0,0,1200,400); rCtx.clip(); let tempCamera = {...camera}; camera = {zoom: 1, offsetX: 0, offsetY: 0}; dibujarCuerpoEscena(rCtx, reportViewType, 1200, 400); camera = tempCamera; rCtx.fillStyle = "rgba(0,0,0,0.5)"; rCtx.fillRect(10, 10, 240, 50); rCtx.fillStyle = "#00e5ff"; rCtx.font = "bold 24px 'Share Tech Mono'"; rCtx.fillText(reportViewType === 'side' ? "> MAIN FEED LOG" : "> AERIAL FEED LOG", 20, 42); rCtx.restore(); }
-        window.cerrarInforme = function() { document.getElementById('report-modal').classList.add('hidden'); document.getElementById('report-modal').classList.remove('flex'); };
-        window.saveRecord = function() { const nameInput = document.getElementById('player-name-input'); const name = nameInput.value.trim(); if(!name) { mostrarError("CALLSIGN REQUIRED"); return; } if(window.dbGuardarRecord) { window.dbGuardarRecord(name, state.level, state.timeElapsed, state.potholesVisited.length); } document.getElementById('new-record-form').classList.add('hidden'); nameInput.value = ''; window.nextLevel(); };
+        window.generarInformeFinal = function() { 
+            window.reportViewType = 'side'; 
+            const dic = window.translations[window.currentLang];
+            const btn = document.getElementById('btn-report-view'); 
+            if (btn) btn.innerText = dic['btn-view-main']; 
+            let m = Math.floor(state.timeElapsed / 60); let s = state.timeElapsed % 60; 
+            document.getElementById('report-time').innerText = `${(m < 10 ? "0"+m : m)}:${(s < 10 ? "0"+s : s)}`; 
+            document.getElementById('metric-d14').innerText = state.metrics.d14; 
+            document.getElementById('metric-d12').innerText = state.metrics.d12; 
+            document.getElementById('metric-df').innerText = state.metrics.df; 
+            document.getElementById('metric-p14').innerText = state.metrics.p14; 
+            document.getElementById('metric-p12').innerText = state.metrics.p12; 
+            document.getElementById('metric-pf').innerText = state.metrics.pf; 
+            document.getElementById('metric-b').innerText = state.metrics.back; 
+            document.getElementById('metric-rods').innerText = state.rods.toFixed(1); 
+            
+            window.dibujarReporte(); 
+            
+            document.getElementById('report-modal').classList.remove('hidden'); 
+            document.getElementById('report-modal').classList.add('flex'); 
+        };
+        
+        window.toggleReportView = function() { 
+            const dic = window.translations[window.currentLang];
+            window.reportViewType = window.reportViewType === 'side' ? 'top' : 'side'; 
+            const btn = document.getElementById('btn-report-view'); 
+            if (btn) btn.innerText = window.reportViewType === 'side' ? dic['btn-view-main'] : dic['btn-view-aer']; 
+            window.dibujarReporte(); 
+        };
+        
+        window.cerrarInforme = function() { 
+            document.getElementById('report-modal').classList.add('hidden'); 
+            document.getElementById('report-modal').classList.remove('flex'); 
+        };
+
+        window.saveRecord = function() { const nameInput = document.getElementById('player-name-input'); const name = nameInput.value.trim(); if(!name) { return; } if(window.dbGuardarRecord) { window.dbGuardarRecord(name, state.level, state.timeElapsed, state.potholesVisited.length); } document.getElementById('new-record-form').classList.add('hidden'); nameInput.value = ''; window.nextLevel(); };
 
         const apwaTypes = [ { name: "SEWER", color: '#32CD32', diam: 12/12 }, { name: "POWER", color: '#ff2a2a', diam: 4/12 }, { name: "WATER", color: '#00e5ff', diam: 6/12 }, { name: "TELECOM", color: '#ff6a00', diam: 4/12 } ];
         function generateLevel(lvl) {
@@ -1600,6 +2065,22 @@
         
         window.nextLevel = function() { if (state.level < 20) { state.level++; generateLevel(state.level); document.getElementById('game-over-modal').classList.add('hidden'); document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); } };
         window.reiniciarJuego = function() { generateLevel(state.level); document.getElementById('game-over-modal').classList.add('hidden'); document.querySelectorAll('.btn-action').forEach(b => b.disabled = false); };
+        
+        // Monitor constante para hacer parpadear el botón RST si los controles quedan desactivados
+        setInterval(() => {
+            const rstBtn = document.getElementById('btn-rst-main');
+            if (!rstBtn) return;
+            const actionBtn = document.querySelector('.btn-action');
+            // Si el botón de acción está desactivado y NO hay animación en curso (Game Over o bloqueo)
+            if (actionBtn && actionBtn.disabled && !isAnimating) {
+                rstBtn.classList.add('animate-pulse', 'bg-[#ff2a2a]', 'text-white', 'shadow-[0_0_15px_#ff2a2a]');
+                rstBtn.classList.remove('bg-[#ff2a2a]/10', 'text-[#ff2a2a]');
+            } else {
+                rstBtn.classList.remove('animate-pulse', 'bg-[#ff2a2a]', 'text-white', 'shadow-[0_0_15px_#ff2a2a]');
+                rstBtn.classList.add('bg-[#ff2a2a]/10', 'text-[#ff2a2a]');
+            }
+        }, 500);
+
         window.initFirebase();
     </script>
 </body>
