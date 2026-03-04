@@ -476,14 +476,15 @@
                             <svg class="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg> FULL ROT
                         </button>
                     </div>
+
                     <div class="grid grid-cols-3 gap-2 w-full mb-2">
-                        <button onclick="window.iniciarMoverFraccion(0.25, false, 'p14')" class="btn-action bg-gradient-to-b from-[#f59e0b] to-[#b45309] hover:from-[#fbbf24] hover:to-[#d97706] text-black py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#fbbf24]/50 flex items-center justify-center">
+                        <button onclick="window.triggerPush(0.25, 'p14')" class="btn-action bg-gradient-to-b from-[#f59e0b] to-[#b45309] hover:from-[#fbbf24] hover:to-[#d97706] text-black py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#fbbf24]/50 flex items-center justify-center">
                             <svg class="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l10 10m-3 0h3v-3"/><path d="M12 4l6 6m-4 0h4v-4"/></svg> 1/4 PSH
                         </button>
-                        <button onclick="window.iniciarMoverFraccion(0.5, false, 'p12')" class="btn-action bg-gradient-to-b from-[#f59e0b] to-[#b45309] hover:from-[#fbbf24] hover:to-[#d97706] text-black py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#fbbf24]/50 flex items-center justify-center">
+                        <button onclick="window.triggerPush(0.5, 'p12')" class="btn-action bg-gradient-to-b from-[#f59e0b] to-[#b45309] hover:from-[#fbbf24] hover:to-[#d97706] text-black py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#fbbf24]/50 flex items-center justify-center">
                             <svg class="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l10 10m-3 0h3v-3"/><path d="M12 4l6 6m-4 0h4v-4"/></svg> 1/2 PSH
                         </button>
-                        <button onclick="window.iniciarMoverFraccion(1.0, false, 'pf')" class="btn-action bg-gradient-to-b from-[#f59e0b] to-[#b45309] hover:from-[#fbbf24] hover:to-[#d97706] text-black py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#fbbf24]/50 flex items-center justify-center">
+                        <button onclick="window.triggerPush(1.0, 'pf')" class="btn-action bg-gradient-to-b from-[#f59e0b] to-[#b45309] hover:from-[#fbbf24] hover:to-[#d97706] text-black py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#fbbf24]/50 flex items-center justify-center">
                             <svg class="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l10 10m-3 0h3v-3"/><path d="M12 4l6 6m-4 0h4v-4"/></svg> FULL PSH
                         </button>
                     </div>
@@ -1014,17 +1015,25 @@
         }
         
         function verificarEstrellas() { 
-            // We significantly expand the thresholds (tolerance)
-            // to ensure it always registers when you pass through the utility crossing zone.
-            const thresholdDist = 4.0; // +/- 4 feet tolerance along the length
-            const thresholdLat = 3.5;  // +/- 3.5 feet lateral tolerance
-
             let actualizadas = false;
 
-            // 1. Activate star if it enters the pothole zone
+            // Calculate exact visual pixel position of the drill head 
+            // using the same formula as the Aerial (Top) view.
+            let drillPxX = 150 + (state.distance / (state.targetDistance + 40)) * 1010;
+            let drillPxY = 100 + (state.lat / 10) * 80;
+
+            // 1. Activate star ONLY if the drill is deeply inside the visual square
             state.utilities.forEach(u => { 
-                if (Math.abs(state.distance - u.dist) <= thresholdDist && 
-                    Math.abs(state.lat - u.lat) <= thresholdLat) { 
+                let uPxX = 150 + (u.dist / (state.targetDistance + 40)) * 1010;
+                let uPxY = 100 + (u.lat / 10) * 80;
+                
+                // The visual pothole square is 15x15 pixels (radius of 7.5px from center).
+                // "At least 30% inside" means distance to center must be <= 7.5 * 0.70 = 5.25px.
+                // This prevents activation if it just "grazes" the edges.
+                let inX = Math.abs(drillPxX - uPxX) <= 5.25;
+                let inY = Math.abs(drillPxY - uPxY) <= 5.25;
+
+                if (inX && inY) { 
                     if (!state.potholesVisited.includes(u.id)) { 
                         state.potholesVisited.push(u.id); 
                         if (window.playSuccessChime) window.playSuccessChime(); 
@@ -1033,14 +1042,18 @@
                 } 
             }); 
 
-            // 2. Deactivate star if the rod retracts before the pothole zone
+            // 2. Deactivate star if the rod retracts before the pothole square
             let originalLength = state.potholesVisited.length;
             let perdidas = false;
             state.potholesVisited = state.potholesVisited.filter(id => {
                 let u = state.utilities.find(util => util.id === id);
-                if (u && state.distance < (u.dist - thresholdDist)) {
-                    perdidas = true;
-                    return false; 
+                if (u) {
+                    let uPxX = 150 + (u.dist / (state.targetDistance + 40)) * 1010;
+                    // If drill X is before the left edge of the visual square (-7.5px)
+                    if (drillPxX < uPxX - 7.5) {
+                        perdidas = true;
+                        return false; 
+                    }
                 }
                 return true; 
             });
@@ -1384,6 +1397,26 @@
             }; 
             requestAnimationFrame(animTick); 
         }
+
+        window.triggerPush = function(frac, metricKey) {
+            if (isAnimating || state.gameOver) return;
+            
+            // Bloqueamos temporalmente para evitar doble clic durante el refresh
+            isAnimating = true;
+            document.querySelectorAll('.btn-action').forEach(b => b.disabled = true);
+            
+            // Hacemos el refresh visual en el reloj (oculta la manecilla)
+            window.renderClock(true);
+            
+            // Esperamos un instante (80ms) para mostrar la confirmación de la hora antes de moverse
+            setTimeout(() => {
+                isAnimating = false; // Liberamos para que iniciarMoverFraccion tome el control real
+                document.querySelectorAll('.btn-action').forEach(b => b.disabled = false);
+                window.renderClock(false); // Reaparece la manecilla
+                window.iniciarMoverFraccion(frac, false, metricKey); // Se ejecuta la acción de PUSH
+            }, 80);
+        };
+
         window.iniciarMoverFraccion = function(frac, isDrill, metricKey) {
             if (isAnimating || state.gameOver) return; if(metricKey) state.metrics[metricKey]++;
             let pies = state.maxRodLength * frac; let remainingRod = state.maxRodLength - (state.distance % state.maxRodLength); if (Math.abs(remainingRod - state.maxRodLength) < 0.01) remainingRod = state.maxRodLength; if (pies > remainingRod + 0.01) pies = remainingRod;
@@ -1404,8 +1437,23 @@
         window.programarFuerza = function(v) { if(state.gameOver) return; state.steeringForce = Math.max(-50, Math.min(50, state.steeringForce + v)); if(Math.abs(state.steeringForce)>=27) { mostrarError("SNAP ALERT!"); playSound(800,'square',0.40,0.05); } else playSound(300,'sine',0.40); window.actualizarPantallas(); };
         window.limpiarFuerza = function() { if (state.maxRodLength === 6) state.steeringForce = 8; else if (state.maxRodLength === 20) state.steeringForce = 24; else state.steeringForce = 12; playSound(100,'sine',0.40); window.actualizarPantallas(); };
         window.ajustarPitchInicial = function(v) { if(state.gameOver || state.rods>0) return; state.pitch = Math.max(-35, Math.min(50, state.pitch+v)); if (state.path.length>0) state.path[0].pitch = state.pitch; playSound(150,'sine',0.40); window.actualizarPantallas(); dibujarEscena(); };
-        window.setClock = function(h) { if(state.gameOver) return; state.clock = h; playSound(200,'sine',0.40); window.renderClock(); window.actualizarPantallas(); };
-        window.renderClock = function() {
+        
+        window.setClock = function(h) { 
+            if(state.gameOver) return; 
+            
+            // 1. PRIMERO hace un refresh (se envía true para dibujarlo sin manecillas ni selección)
+            window.renderClock(true); 
+            
+            // 2. DESPUÉS ejecuta la hora que se le dio clic, aplicando un ligerísimo retraso
+            setTimeout(() => {
+                state.clock = h; 
+                playSound(200,'sine',0.40); 
+                window.renderClock(false); 
+                window.actualizarPantallas(); 
+            }, 50); 
+        };
+        
+        window.renderClock = function(isRefreshing = false) {
             const container = document.getElementById('clock-container'); if (!container) return; container.innerHTML = '';
             
             for(let i=1; i<=12; i++) { 
@@ -1413,24 +1461,37 @@
                 let cx = 50 + 36 * Math.cos(a); 
                 let cy = 50 + 36 * Math.sin(a); 
                 let numBtn = document.createElement('div');
-                let isSelected = state.clock === i;
+                let isSelected = !isRefreshing && state.clock === i;
                 let isMain = (i % 3 === 0);
-                numBtn.className = `absolute transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-4 h-4 lg:w-5 lg:h-5 cursor-pointer rounded-full transition-all text-[10px] lg:text-[11px] font-mono ` + 
-                                   (isSelected ? 'bg-[#00e5ff]/30 text-[#00e5ff] font-black shadow-[0_0_8px_rgba(0,229,255,0.6)] border border-[#00e5ff] z-20' : 
+                
+                // Se aumentó significativamente el tamaño del área del botón (w-7 h-7 / lg:w-8 lg:h-8) 
+                // para que el dedo lo reconozca mucho mejor en móviles.
+                numBtn.className = `absolute transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-7 h-7 lg:w-8 lg:h-8 cursor-pointer rounded-full transition-all text-[10px] lg:text-[11px] font-mono ` + 
+                                   (isSelected ? 'bg-[#00e5ff]/30 text-[#00e5ff] font-black shadow-[0_0_8px_rgba(0,229,255,0.6)] border border-[#00e5ff] z-20 scale-110' : 
                                    (isMain ? 'text-[#00e5ff] font-bold hover:bg-[#1a2235] z-10' : 'text-[#64748b] hover:text-white hover:bg-[#1a2235] z-10'));
                 numBtn.style.left = `${cx}%`; 
                 numBtn.style.top = `${cy}%`; 
                 numBtn.innerText = i;
-                numBtn.onclick = (e) => { 
+                
+                // Sustituimos onclick por mousedown y touchstart para que reaccione al instante sin fallar
+                const triggerClock = (e) => { 
+                    e.preventDefault();
                     e.stopPropagation();
-                    if(!state.gameOver) { window.setClock(i); } 
+                    if(!state.gameOver && !isRefreshing) { window.setClock(i); } 
                 };
+                numBtn.addEventListener('mousedown', triggerClock);
+                numBtn.addEventListener('touchstart', triggerClock, {passive: false});
+                
                 container.appendChild(numBtn); 
             }
-            let hw = document.createElement('div'); hw.className = "absolute top-1/2 left-1/2 w-full h-full pointer-events-none text-center"; hw.style.transform = `translate(-50%, -50%) rotate(${state.clock * 30}deg)`;
-            let hand = document.createElement('div'); hand.className = "absolute bottom-1/2 left-1/2 transform -translate-x-1/2 w-1 h-[24%] rounded-t-sm z-0 bg-[#39ff14] shadow-[0_0_8px_#39ff14] text-center";
-            let ah = document.createElement('div'); ah.className = "absolute -top-1 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[3px] border-l-transparent border-r-[3px] border-r-transparent border-bottom-[6px] border-bottom-[#39ff14] text-center";
-            hand.appendChild(ah); hw.appendChild(hand); container.appendChild(hw);
+            
+            // Si NO está en modo refresh, dibuja la manecilla
+            if (!isRefreshing) {
+                let hw = document.createElement('div'); hw.className = "absolute top-1/2 left-1/2 w-full h-full pointer-events-none text-center transition-transform duration-100 ease-out"; hw.style.transform = `translate(-50%, -50%) rotate(${state.clock * 30}deg)`;
+                let hand = document.createElement('div'); hand.className = "absolute bottom-1/2 left-1/2 transform -translate-x-1/2 w-1 h-[24%] rounded-t-sm z-0 bg-[#39ff14] shadow-[0_0_8px_#39ff14] text-center";
+                let ah = document.createElement('div'); ah.className = "absolute -top-1 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[3px] border-l-transparent border-r-[3px] border-r-transparent border-bottom-[6px] border-bottom-[#39ff14] text-center";
+                hand.appendChild(ah); hw.appendChild(hand); container.appendChild(hw);
+            }
         };
 
         window.openLogModal = function() {
