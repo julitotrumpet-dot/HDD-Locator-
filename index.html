@@ -161,11 +161,21 @@
         ::-webkit-scrollbar-track { background: #05070a; }
         ::-webkit-scrollbar-thumb { background: #3b4559; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--neon-blue); }
+        
+        /* Hide arrows on number input */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
     </style>
 </head>
 <body class="h-screen w-screen m-0 p-0 flex flex-col overflow-hidden text-center select-none" style="background-color: #080a0f; background-image: linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px); background-size: 30px 30px; color: #ffffff;">
 
-    <!-- INITIALIZATION SCREEN (To unlock browser audio) -->
+    <!-- INITIALIZATION SCREEN -->
     <div id="init-overlay" onclick="window.initializeSystem()" class="fixed inset-0 z-[200] bg-[#05070a] flex flex-col items-center justify-center cursor-pointer text-white">
         <svg class="w-16 h-16 mb-4 text-[#00e5ff] animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v2m0 8v2m-6-6H4m16 0h-2m-9.172 6.172l1.414-1.414M6.343 6.343l1.414 1.414m10.828 10.828l-1.414-1.414M17.657 6.343l-1.414 1.414"></path>
@@ -180,6 +190,14 @@
             <div class="screw screw-big screw-tl"></div><div class="screw screw-big screw-tr"></div><div class="screw screw-big screw-bl"></div><div class="screw screw-big screw-br"></div>
             
             <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-1 bg-gradient-to-r from-transparent via-[#ff6a00] to-transparent"></div>
+
+            <!-- LANGUAGE TOGGLE ON SPLASH -->
+            <div class="absolute top-4 right-4 lg:top-6 lg:right-6 z-20">
+                <button onclick="window.toggleLanguage()" class="bg-[#0a0d14] flex items-center justify-center space-x-1 px-3 py-1.5 rounded text-[10px] lg:text-xs font-bold text-[#00e5ff] hover:text-white transition uppercase border border-[#3b4559] cursor-pointer shadow-[inset_0_0_5px_#000] hover:border-[#00e5ff]">
+                    <svg class="w-3 h-3 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path></svg>
+                    <span id="global-lang-indicator">EN</span>
+                </button>
+            </div>
 
             <h1 class="text-4xl lg:text-6xl font-black uppercase tracking-wider glow-text-orange" style="color: #ff6a00;">HDD SIMULATOR</h1>
             <p class="text-xs lg:text-sm text-[#00e5ff] font-mono mt-1 mb-4 tracking-widest text-center uppercase glow-text-blue" data-i18n="title-sub">Precision Drilling OS v5.0 // Auth: Julio Sarracent</p>
@@ -302,12 +320,11 @@
                 <div id="home-toggle" onclick="window.volverAlMenu()" class="icon-btn flex items-center justify-center" title="Main Menu">
                     <svg class="w-6 h-6 drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
                 </div>
-
-                <!-- LANGUAGE TOGGLE IN HEADER -->
-                <button onclick="window.toggleLanguage()" class="flex items-center justify-center space-x-1 px-2 py-1 rounded bg-[#0a0d14] text-[10px] lg:text-xs font-bold text-[#00e5ff] hover:text-white transition uppercase border border-[#3b4559] cursor-pointer shadow-[inset_0_0_5px_#000]">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path></svg>
-                    <span id="global-lang-indicator">EN</span>
-                </button>
+                
+                <!-- HELP TOGGLE BUTTON -->
+                <div id="help-toggle" onclick="window.openHelpModal()" class="icon-btn flex items-center justify-center text-[#ff6a00] hover:text-white" title="Help Guide">
+                    <svg class="w-6 h-6 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
 
                 <!-- LOCATOR TOGGLE BUTTON -->
                 <div id="locator-toggle" onclick="window.toggleLocator()" class="icon-btn text-[#00e5ff] transition-colors duration-300" title="Toggle Locator">
@@ -392,7 +409,14 @@
 
                 <!-- SIDE VIEW (PROFILE) -->
                 <div class="relative w-full h-1/2 bg-[#05070a]">
-                    <div class="absolute bottom-2 right-2 px-2 py-1 bg-[#05070a]/80 text-[#00e5ff] text-[9px] font-mono rounded border border-[#00e5ff]/30 z-10 pointer-events-none tracking-widest shadow-[0_0_10px_rgba(0,229,255,0.1)]" data-i18n="main-feed">MAIN FEED [PROFILE]</div>
+                    <div class="absolute bottom-10 right-2 px-2 py-1 bg-[#05070a]/80 text-[#00e5ff] text-[9px] font-mono rounded border border-[#00e5ff]/30 z-10 pointer-events-none tracking-widest shadow-[0_0_10px_rgba(0,229,255,0.1)]" data-i18n="main-feed">MAIN FEED [PROFILE]</div>
+                    
+                    <!-- NEW TARGET PITCH BOX -->
+                    <div class="absolute bottom-2 right-2 z-20 flex items-center space-x-2 bg-[#0a0d14]/90 backdrop-blur-sm px-2 py-1.5 rounded border border-[#ff6a00]/50 shadow-[0_0_10px_rgba(255,106,0,0.2)]">
+                        <button onclick="window.executeAutoPitch()" class="text-[9px] text-black bg-[#ff6a00] hover:bg-[#ff8a00] font-bold uppercase tracking-widest px-2 py-1 rounded transition shadow-[0_0_5px_rgba(255,106,0,0.5)] active:scale-95" data-i18n="target-pitch-lbl">Target Pitch %</button>
+                        <input type="number" id="target-pitch-input" step="0.1" class="bg-[#05070a] border border-[#3b4559] rounded w-14 lg:w-16 px-1 py-0.5 text-center text-[10px] lg:text-[11px] text-white font-mono focus:border-[#ff6a00] outline-none transition" placeholder="0.0">
+                    </div>
+
                     <canvas id="game-canvas-side" width="1200" height="200" class="w-full h-full object-contain touch-none"></canvas>
                 </div>
                 
@@ -448,6 +472,10 @@
                 <!-- Power & Rods -->
                 <div class="flex flex-col items-center justify-center px-4 border-b md:border-b-0 md:border-r border-[#2a3241] pb-2 md:pb-0 relative">
                     
+                    <div class="mb-1.5 text-[10px] lg:text-[12px] font-mono font-black text-[#00e5ff] uppercase tracking-widest glow-text-blue">
+                        By Julio Sarracent
+                    </div>
+
                     <div class="w-full max-w-[220px] bg-[#0a0d14] p-2 rounded border border-[#1a2235]">
                         <div class="flex justify-between items-center mb-1.5">
                             <h3 class="text-[9px] text-[#64748b] font-bold uppercase tracking-widest" data-i18n="pipe-spec">Pipe Spec</h3>
@@ -456,7 +484,6 @@
                         <select id="rod-length-select" onchange="window.cambiarLongitudVarilla(this.value)" class="bg-[#13171f] text-white border border-[#3b4559] text-[11px] font-mono font-bold w-full p-1 rounded outline-none cursor-pointer focus:border-[#00e5ff]">
                             <option value="6">TYPE-6</option>
                             <option value="10" selected>TYPE-10</option>
-                            <option value="20">TYPE-20</option>
                         </select>
 
                         <div class="flex items-center justify-center mt-2 pt-1.5 border-t border-[#1a2235]">
@@ -500,6 +527,108 @@
                         <button onclick="window.iniciarRetrocederFraccion(0.5)" class="btn-action bg-gradient-to-b from-[#475569] to-[#1e293b] hover:from-[#64748b] hover:to-[#334155] text-white py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#64748b]/50">PULL 1/2</button>
                         <button onclick="window.iniciarRetrocederFraccion(1.0)" class="btn-action bg-gradient-to-b from-[#475569] to-[#1e293b] hover:from-[#64748b] hover:to-[#334155] text-white py-1.5 lg:py-2.5 text-[10px] lg:text-xs shadow-[0_2px_5px_rgba(0,0,0,0.5)] border border-[#64748b]/50">PULL FULL</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROD CHANGE CONFIRMATION MODAL -->
+    <div id="rod-change-modal" class="absolute inset-0 bg-[#05070a] bg-opacity-95 hidden flex-col items-center justify-center z-[170] backdrop-blur-md text-center">
+        <div class="panel-metal border border-[#ff6a0040] p-6 lg:p-8 rounded-xl shadow-[0_0_50px_rgba(255,106,0,0.15)] max-w-md w-full flex flex-col items-center mx-4 text-white relative">
+            <div class="screw screw-big screw-tl"></div><div class="screw screw-big screw-tr"></div><div class="screw screw-big screw-bl"></div><div class="screw screw-big screw-br"></div>
+            
+            <h2 class="text-2xl font-black mb-3 text-center uppercase tracking-widest text-[#ff6a00] glow-text-orange" data-i18n="rod-warn-title">WARNING</h2>
+            <p class="text-sm lg:text-base mb-6 text-center font-mono text-gray-300" data-i18n="rod-warn-msg">Changing the Rod type will restart the current sector. Do you want to restart?</p>
+            
+            <div class="flex space-x-4 w-full justify-center">
+                <button onclick="window.confirmRodChange()" class="bg-[#ff2a2a]/20 hover:bg-[#ff2a2a]/40 text-[#ff2a2a] font-bold py-2 px-6 rounded shadow border border-[#ff2a2a] transition tracking-widest uppercase" data-i18n="btn-yes">YES</button>
+                <button onclick="window.cancelRodChange()" class="bg-[#64748b]/20 hover:bg-[#64748b]/40 text-white font-bold py-2 px-6 rounded shadow border border-[#64748b] transition tracking-widest uppercase" data-i18n="btn-no">NO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HELP MODAL (UI MAP/BLUEPRINT) -->
+    <div id="help-modal" class="fixed inset-0 bg-[#05070a] bg-opacity-95 hidden flex-col items-center justify-center z-[160] p-4 text-center backdrop-blur-md">
+        <div class="panel-metal p-6 lg:p-8 rounded-xl shadow-[0_0_50px_rgba(0,229,255,0.15)] max-w-5xl w-full max-h-[90vh] flex flex-col relative border border-[#00e5ff40]">
+            <div class="screw screw-big screw-tl"></div><div class="screw screw-big screw-tr"></div><div class="screw screw-big screw-bl"></div><div class="screw screw-big screw-br"></div>
+
+            <div class="flex justify-between items-center bg-[#0a0d14] p-3 mb-4 rounded border border-[#1a2235] z-10 shrink-0">
+                <h2 class="text-[#00e5ff] font-black text-xl uppercase tracking-widest glow-text-blue flex items-center">
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span data-i18n="help-title">INTERFACE MANUAL</span>
+                </h2>
+                <button onclick="window.closeHelpModal()" class="bg-[#ff2a2a]/10 hover:bg-[#ff2a2a]/20 text-[#ff2a2a] font-bold px-6 py-2 rounded text-xs border border-[#ff2a2a]/50 tracking-widest transition" data-i18n="btn-close">CLOSE</button>
+            </div>
+
+            <div class="flex-grow overflow-y-auto w-full flex flex-col lg:flex-row gap-4">
+                <!-- Blueprint Schematic Diagram -->
+                <div class="w-full lg:w-1/2 border border-[#00e5ff]/30 rounded p-2 flex flex-col gap-2 relative bg-[#0a0d14] shadow-[inset_0_0_20px_rgba(0,229,255,0.05)]">
+                    <!-- Top Bar -->
+                    <div class="border border-[#00e5ff]/50 rounded h-8 lg:h-12 flex items-center justify-center relative bg-[#05070a]/50">
+                        <span class="bg-[#00e5ff] text-black font-black w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center absolute -top-2 -left-2 text-xs lg:text-sm shadow-[0_0_10px_#00e5ff]">1</span>
+                        <span class="text-[10px] lg:text-xs text-[#00e5ff]/70 font-mono tracking-widest">HEADER & STATUS</span>
+                    </div>
+                    <!-- Canvas Area -->
+                    <div class="border border-[#00e5ff]/50 rounded flex-1 flex flex-col gap-1 p-1 relative bg-[#05070a]/50 min-h-[150px]">
+                         <div class="border border-dashed border-[#00e5ff]/40 rounded flex-1 flex items-center justify-center relative">
+                             <span class="bg-[#00e5ff] text-black font-black w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center absolute -top-2 -left-2 text-xs lg:text-sm shadow-[0_0_10px_#00e5ff]">2</span>
+                             <span class="text-[10px] lg:text-xs text-[#00e5ff]/70 font-mono tracking-widest">MAIN FEED (PROFILE)</span>
+                         </div>
+                         <div class="border border-dashed border-[#00e5ff]/40 rounded flex-1 flex items-center justify-center relative">
+                             <span class="bg-[#00e5ff] text-black font-black w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center absolute -top-2 -left-2 text-xs lg:text-sm shadow-[0_0_10px_#00e5ff]">3</span>
+                             <span class="text-[10px] lg:text-xs text-[#00e5ff]/70 font-mono tracking-widest">AERIAL FEED (TOP)</span>
+                         </div>
+                    </div>
+                    <!-- Bottom Controls -->
+                    <div class="border border-[#00e5ff]/50 rounded h-24 lg:h-32 flex gap-1 p-1 relative bg-[#05070a]/50">
+                        <div class="border border-dashed border-[#00e5ff]/40 rounded w-1/3 flex flex-col items-center justify-center relative">
+                            <span class="bg-[#00e5ff] text-black font-black w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center absolute -top-2 -left-2 text-xs lg:text-sm shadow-[0_0_10px_#00e5ff]">4</span>
+                            <span class="bg-[#00e5ff] text-black font-black w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center absolute top-1/2 -right-2 text-xs lg:text-sm z-10 transform -translate-y-1/2 shadow-[0_0_10px_#00e5ff]">5</span>
+                            <span class="text-[9px] lg:text-[10px] text-[#00e5ff]/70 font-mono tracking-widest text-center leading-tight">CLOCK<br>& HUD</span>
+                        </div>
+                        <div class="border border-dashed border-[#00e5ff]/40 rounded w-1/3 flex items-center justify-center relative">
+                            <span class="bg-[#00e5ff] text-black font-black w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center absolute -top-2 -left-2 text-xs lg:text-sm shadow-[0_0_10px_#00e5ff]">6</span>
+                            <span class="text-[9px] lg:text-[10px] text-[#00e5ff]/70 font-mono tracking-widest text-center leading-tight">PIPE<br>SPEC</span>
+                        </div>
+                        <div class="border border-dashed border-[#00e5ff]/40 rounded w-1/3 flex items-center justify-center relative">
+                            <span class="bg-[#00e5ff] text-black font-black w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center absolute -top-2 -left-2 text-xs lg:text-sm shadow-[0_0_10px_#00e5ff]">7</span>
+                            <span class="text-[9px] lg:text-[10px] text-[#00e5ff]/70 font-mono tracking-widest text-center leading-tight">THRUST<br>CONTROLS</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Legend List -->
+                <div class="w-full lg:w-1/2 bg-[#05070a] rounded border border-[#1a2235] p-5 text-left overflow-y-auto flex flex-col justify-center shadow-[inset_0_0_15px_rgba(0,0,0,0.8)]">
+                    <ul class="space-y-4 font-mono text-xs lg:text-sm text-gray-300">
+                        <li class="flex items-start gap-3">
+                            <span class="bg-[#00e5ff] text-black font-black w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">1</span> 
+                            <span data-i18n="help-1" class="leading-relaxed">STATUS: Current sector and elapsed time.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="bg-[#00e5ff] text-black font-black w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">2</span> 
+                            <span data-i18n="help-2" class="leading-relaxed">MAIN FEED: Side profile view of drill depth and utilities.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="bg-[#00e5ff] text-black font-black w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">3</span> 
+                            <span data-i18n="help-3" class="leading-relaxed">AERIAL FEED: Top-down view for lateral steering.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="bg-[#00e5ff] text-black font-black w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">4</span> 
+                            <span data-i18n="help-4" class="leading-relaxed">CLOCK POSITION: Adjust drill head rotation angle.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="bg-[#00e5ff] text-black font-black w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">5</span> 
+                            <span data-i18n="help-5" class="leading-relaxed">TELEMETRY: Real-time depth, pitch, and target distance.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="bg-[#00e5ff] text-black font-black w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">6</span> 
+                            <span data-i18n="help-6" class="leading-relaxed">PIPE SPEC: Select rod length to calculate max steering power limits.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="bg-[#00e5ff] text-black font-black w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">7</span> 
+                            <span data-i18n="help-7" class="leading-relaxed">THRUST CONTROLS: Execute rotation, push, and pull commands.</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -726,7 +855,24 @@
                 "ai-fail": "Connection failed. Please rely on manual telemetry.",
                 "ai-off": "AI Core offline. Proceed with manual telemetry.",
                 "none-clear": "None clear",
-                "ai-prompt-inst": "You are an expert Horizontal Directional Drilling (HDD) AI Copilot. Give a short, professional, 1 to 2 sentence advice to the operator in English on what to do next based on the telemetry. Do not format with markdown, just plain text."
+                "ai-prompt-inst": "You are an expert Horizontal Directional Drilling (HDD) AI Copilot. Give a short, professional, 1 to 2 sentence advice to the operator in English on what to do next based on the telemetry. Do not format with markdown, just plain text.",
+                "help-title": "INTERFACE MANUAL",
+                "help-1": "STATUS: Current sector and elapsed time.",
+                "help-2": "MAIN FEED: Side profile view of drill depth and utilities.",
+                "help-3": "AERIAL FEED: Top-down view for lateral steering.",
+                "help-4": "CLOCK POSITION: Adjust drill head rotation angle.",
+                "help-5": "TELEMETRY: Real-time depth, pitch, and target distance.",
+                "help-6": "PIPE SPEC: Select rod length to calculate max steering power limits.",
+                "help-7": "THRUST CONTROLS: Execute rotation, push, and pull commands.",
+                "target-pitch-lbl": "Target Pitch %",
+                "msg-max-pwr": "MAX PWR LIMIT!",
+                "err-pwr-zero": "PWR IS ZERO",
+                "err-clock-pos": "INVALID CLOCK POS",
+                "err-pitch-dir": "PITCH REACHED / WRONG DIR",
+                "rod-warn-title": "WARNING",
+                "rod-warn-msg": "Changing the Rod type will restart the current sector. Do you want to restart?",
+                "btn-yes": "YES",
+                "btn-no": "NO"
             },
             es: {
                 "init-title": "Inicialización del Sistema",
@@ -809,7 +955,24 @@
                 "ai-fail": "Fallo de conexión. Confíe en la telemetría manual.",
                 "ai-off": "Núcleo de IA desconectado. Use telemetría manual.",
                 "none-clear": "Ninguno cerca",
-                "ai-prompt-inst": "Eres un Copiloto IA experto en Perforación Direccional Horizontal (HDD). Da un consejo profesional y breve de 1 a 2 oraciones al operador en Español sobre qué hacer a continuación basándote en la telemetría. No uses formato markdown, solo texto plano."
+                "ai-prompt-inst": "Eres un Copiloto IA experto en Perforación Direccional Horizontal (HDD). Da un consejo profesional y breve de 1 a 2 oraciones al operador en Español sobre qué hacer a continuación basándote en la telemetría. No uses formato markdown, solo texto plano.",
+                "help-title": "MANUAL DE INTERFAZ",
+                "help-1": "ESTADO: Sector actual y tiempo transcurrido.",
+                "help-2": "VISTA PRINCIPAL: Perfil lateral de profundidad y servicios.",
+                "help-3": "VISTA AÉREA: Vista superior para dirección lateral.",
+                "help-4": "POSICIÓN RELOJ: Ajusta el ángulo de rotación del cabezal.",
+                "help-5": "TELEMETRÍA: Profundidad, inclinación y distancia al objetivo.",
+                "help-6": "ESPEC. TUBO: Selecciona barra para calcular límite de fuerza.",
+                "help-7": "CONTROLES EMPUJE: Ejecuta rotación, empuje y tracción.",
+                "target-pitch-lbl": "Pitch Deseado %",
+                "msg-max-pwr": "¡LÍMITE DE FUERZA!",
+                "err-pwr-zero": "FUERZA ES CERO",
+                "err-clock-pos": "POSICIÓN RELOJ INVÁLIDA",
+                "err-pitch-dir": "PITCH ALCANZADO O DIRECCIÓN ERRÓNEA",
+                "rod-warn-title": "ADVERTENCIA",
+                "rod-warn-msg": "Si cambias el tipo de Rod se reiniciará la partida. ¿Deseas reiniciar?",
+                "btn-yes": "SÍ",
+                "btn-no": "NO"
             }
         };
 
@@ -851,6 +1014,7 @@
         
         // Scope fix for module variables accessed via window.function calls
         window.reportViewType = 'side';
+        let pendingRodLength = null; // Guardará el valor si el jugador cancela el cambio
         
         let state = {
             level: 1, distance: 0, absElevation: 0, lat: 0, pitch: -24, latAngle: 0, clock: 12, steeringForce: 12, rods: 0, maxRodLength: 10, path: [], targetDistance: 100, targetDepth: 3.0, targetLat: 0.0, runawayWidth: 3.0, maxAllowedDepthRel: 7.0, gameOver: false, errors: [], potholesVisited: [], surfacePoints: [], utilities: [],
@@ -1095,10 +1259,25 @@
             }
         };
 
+        window.openHelpModal = function() {
+            document.getElementById('help-modal').classList.remove('hidden');
+            document.getElementById('help-modal').classList.add('flex');
+        };
+        
+        window.closeHelpModal = function() {
+            document.getElementById('help-modal').classList.add('hidden');
+            document.getElementById('help-modal').classList.remove('flex');
+        };
+
         window.zoomIn = function() { camera.zoom *= 1.2; clampCamera(); dibujarEscena(); };
         window.zoomOut = function() { camera.zoom /= 1.2; clampCamera(); dibujarEscena(); };
-        window.resetZoom = function() { camera.zoom = 1; camera.offsetX = 0; camera.offsetY = 0; dibujarEscena(); };
-        function clampCamera() { if(camera.zoom < 0.5) camera.zoom = 0.5; if(camera.zoom > 5) camera.zoom = 5; }
+        window.resetZoom = function() { 
+            camera.zoom = 1; 
+            camera.offsetX = 0; 
+            camera.offsetY = 0; 
+            dibujarEscena(); 
+        };
+        function clampCamera() { if(camera.zoom < 0.25) camera.zoom = 0.25; if(camera.zoom > 5) camera.zoom = 5; }
 
         wrapper.addEventListener('wheel', function(e) { 
             e.preventDefault(); 
@@ -1284,7 +1463,64 @@
         
         function getClockMultipliers(c) { if (c === 12) return { p: 1, l: 0 }; if (c === 3) return { p: 0, l: 1 }; if (c === 6) return { p: -1, l: 0 }; if (c === 9) return { p: 0, l: -1 }; let r = (c * 30) * (Math.PI / 180); return { p: Math.round(Math.cos(r)*1000)/1000, l: Math.round(Math.sin(r)*1000)/1000 }; }
         
-        window.cambiarLongitudVarilla = function(val) { let num = parseInt(val); let remaining = state.distance % state.maxRodLength; if (state.distance > 0 && remaining > 0.01 && remaining < state.maxRodLength - 0.01) { mostrarError("Finish the rod first!"); document.getElementById('rod-length-select').value = state.maxRodLength; return; } state.maxRodLength = num; window.limpiarFuerza(); };
+        function getMaxSteering() {
+            if (state.maxRodLength === 6) return 20;
+            return 24; // 10'
+        }
+
+        window.applyRodChange = function(num) {
+            state.maxRodLength = num; 
+            state.runawayWidth = 3.0;
+            let deep = 0;
+            if (state.utilities) {
+                state.utilities.forEach(u => { deep = Math.max(deep, u.depthTarget); });
+            }
+            state.maxAllowedDepthRel = deep + 2.0;
+
+            let mx = getMaxSteering();
+            if (state.steeringForce > mx) state.steeringForce = mx;
+            if (state.steeringForce < -mx) state.steeringForce = -mx;
+            window.limpiarFuerza(); 
+            window.resetZoom();
+        };
+
+        window.cambiarLongitudVarilla = function(val) { 
+            let num = parseInt(val); 
+            if (state.distance > 0) { 
+                pendingRodLength = num;
+                const modal = document.getElementById('rod-change-modal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                }
+            } else {
+                window.applyRodChange(num);
+            }
+        };
+
+        window.confirmRodChange = function() {
+            const modal = document.getElementById('rod-change-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+            if (pendingRodLength) {
+                window.applyRodChange(pendingRodLength);
+                window.reiniciarJuego();
+                pendingRodLength = null;
+            }
+        };
+
+        window.cancelRodChange = function() {
+            const modal = document.getElementById('rod-change-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+            document.getElementById('rod-length-select').value = state.maxRodLength;
+            pendingRodLength = null;
+        };
+
         window.volverAlMenu = function() { document.getElementById('splash-screen').style.display = 'flex'; document.getElementById('btn-resume').classList.remove('hidden'); document.getElementById('game-over-modal').classList.add('hidden'); if (audioCtx && audioCtx.state === 'running') audioCtx.suspend(); if (window.cargarLeaderboard) window.cargarLeaderboard(); };
         window.resumeGame = function() { document.getElementById('splash-screen').style.display = 'none'; if (audioCtx && audioCtx.state === 'suspended' && !isMuted) audioCtx.resume(); };
         
@@ -1813,6 +2049,55 @@
             requestAnimationFrame(animTick); 
         }
 
+        window.executeAutoPitch = function() {
+            if (isAnimating || state.gameOver) return;
+            const dic = window.translations[window.currentLang];
+            const tpInput = document.getElementById('target-pitch-input');
+            if (!tpInput || tpInput.value === "") return;
+            
+            let targetPitch = parseFloat(tpInput.value);
+            if (isNaN(targetPitch)) return;
+
+            let af = state.steeringForce;
+            if (af === 0) {
+                mostrarError(dic['err-pwr-zero']);
+                return;
+            }
+
+            let mults = getClockMultipliers(state.clock);
+            let pitchChangePerFoot = (af / state.maxRodLength) * mults.p;
+            
+            if (Math.abs(pitchChangePerFoot) < 0.0001) {
+                mostrarError(dic['err-clock-pos']); 
+                return;
+            }
+
+            let distToTarget = (targetPitch - state.pitch) / pitchChangePerFoot;
+            
+            if (distToTarget <= 0.01) {
+                mostrarError(dic['err-pitch-dir']);
+                return;
+            }
+
+            let remainingRod = state.maxRodLength - (state.distance % state.maxRodLength); 
+            if (Math.abs(remainingRod - state.maxRodLength) < 0.01) remainingRod = state.maxRodLength;
+            
+            let distToPush = Math.min(distToTarget, remainingRod);
+            let frac = distToPush / state.maxRodLength;
+            
+            isAnimating = true;
+            document.querySelectorAll('.btn-action').forEach(b => b.disabled = true);
+            
+            window.renderClock(true);
+            
+            setTimeout(() => {
+                isAnimating = false; 
+                document.querySelectorAll('.btn-action').forEach(b => b.disabled = false);
+                window.renderClock(false); 
+                window.iniciarMoverFraccion(frac, false, 'pf'); 
+            }, 80);
+        };
+
         window.triggerPush = function(frac, metricKey) {
             if (isAnimating || state.gameOver) return;
             
@@ -1832,7 +2117,9 @@
         window.iniciarMoverFraccion = function(frac, isDrill, metricKey) {
             if (isAnimating || state.gameOver) return; if(metricKey) state.metrics[metricKey]++;
             let pies = state.maxRodLength * frac; let remainingRod = state.maxRodLength - (state.distance % state.maxRodLength); if (Math.abs(remainingRod - state.maxRodLength) < 0.01) remainingRod = state.maxRodLength; if (pies > remainingRod + 0.01) pies = remainingRod;
-            let af = isDrill ? 0 : state.steeringForce; let numChunks = Math.ceil(pies / 2.5); if (numChunks === 0) return;
+            let af = isDrill ? 0 : state.steeringForce; 
+            
+            let numChunks = Math.ceil(pies / 2.5); if (numChunks === 0) return;
             let distPerChunk = pies / numChunks; let q = []; let s = { ...state };
             for(let i=0; i<numChunks; i++) {
                 let start = { ...s }; let rodsPerChunk = distPerChunk / state.maxRodLength;
@@ -1846,8 +2133,19 @@
             let q = []; let poppedDist = 0; for(let i=1; i < state.path.length; i++) { let endNode = state.path[state.path.length - i]; let startNode = state.path[state.path.length - 1 - i]; q.push({ type: 'pull', start: startNode, end: endNode }); poppedDist += (endNode.distance - startNode.distance); if (state.distance - poppedDist <= targetDist + 0.01) break; }
             if (q.length > 0) { setEnginePitch(50, 0.25); iniciarAnim(q); }
         };
-        window.programarFuerza = function(v) { if(state.gameOver) return; state.steeringForce = Math.max(-50, Math.min(50, state.steeringForce + v)); if(Math.abs(state.steeringForce)>=27) { mostrarError("SNAP ALERT!"); playSound(800,'square',0.40,0.05); } else playSound(300,'sine',0.40); window.actualizarPantallas(); };
-        window.limpiarFuerza = function() { if (state.maxRodLength === 6) state.steeringForce = 8; else if (state.maxRodLength === 20) state.steeringForce = 24; else state.steeringForce = 12; playSound(100,'sine',0.40); window.actualizarPantallas(); };
+        window.programarFuerza = function(v) { 
+            if(state.gameOver) return; 
+            let mx = getMaxSteering();
+            state.steeringForce = Math.max(-mx, Math.min(mx, state.steeringForce + v)); 
+            if(Math.abs(state.steeringForce) >= mx) { 
+                const dic = window.translations[window.currentLang];
+                mostrarError(dic['msg-max-pwr']); 
+                playSound(800,'square',0.40,0.05); 
+            } 
+            else playSound(300,'sine',0.40); 
+            window.actualizarPantallas(); 
+        };
+        window.limpiarFuerza = function() { if (state.maxRodLength === 6) state.steeringForce = 8; else state.steeringForce = 12; playSound(100,'sine',0.40); window.actualizarPantallas(); };
         window.ajustarPitchInicial = function(v) { if(state.gameOver || state.rods>0) return; state.pitch = Math.max(-35, Math.min(50, state.pitch+v)); if (state.path.length>0) state.path[0].pitch = state.pitch; playSound(150,'sine',0.40); window.actualizarPantallas(); dibujarEscena(); };
         
         window.setClock = function(h) { 
@@ -2033,21 +2331,32 @@
             state.maxRodLength = currentRodSize; state.locator = null; state.showLocator = true; window.resetZoom(); window.limpiarFuerza();
             let locToggle = document.getElementById('locator-toggle'); if(locToggle) { locToggle.classList.remove('text-[#64748b]'); locToggle.classList.add('text-[#00e5ff]'); }
             state.metrics = { d14: 0, d12: 0, df: 0, p14: 0, p12: 0, pf: 0, back: 0 }; state.startTime = Date.now(); state.timeElapsed = 0; state.timerInterval = setInterval(updateTimerDisplay, 1000); document.getElementById('time-display').innerText = "T: 00:00";
+            
+            const tpInput = document.getElementById('target-pitch-input');
+            if(tpInput) tpInput.value = '';
+
+            state.runawayWidth = 3.0;
+            let minDep = 2.5;
+            let rngDep = 2.5;
+
             for (let i = -100; i <= (100 + (lvl - 1) * 15) + 100; i += 5) {
                 let surfaceY = lvl === 1 ? 0 : Math.sin(i * 0.04) * 2.5 + Math.cos(i * 0.015) * 2.0;
                 state.surfacePoints.push({ x: i, y: surfaceY });
             }
-            state.absElevation = -getSurfaceHeight(0); state.path = [{ distance: 0, absElevation: state.absElevation, lat: 0, pitch: state.pitch, latAngle: 0, rods: 0 }]; state.targetDistance = 100 + (lvl - 1) * 15; state.targetLat = (Math.random() - 0.5) * 8; state.targetDepth = 2.0 + Math.random() * 2.0;
+            state.absElevation = -getSurfaceHeight(0); state.path = [{ distance: 0, absElevation: state.absElevation, lat: 0, pitch: state.pitch, latAngle: 0, rods: 0 }]; state.targetDistance = 100 + (lvl - 1) * 15; state.targetLat = (Math.random() - 0.5) * 8; 
+            state.targetDepth = minDep + Math.random() * rngDep;
+            
             state.utilities = []; let deep = 0; let numUtils = state.targetDistance < 150 ? 3 : 5; let step = state.targetDistance / (numUtils + 1);
             for (let i = 1; i <= numUtils; i++) { 
                 let d = step * i; 
-                let dp = 2.5 + Math.random() * 2.5; 
+                let dp = minDep + Math.random() * rngDep; 
                 deep = Math.max(deep, dp); 
                 let type = apwaTypes[(i - 1) % apwaTypes.length];
                 let offsetLateral = (Math.random() - 0.5) * 1.5; let targetL = (i === numUtils) ? getIdealLat(d) : getIdealLat(d) + offsetLateral;
                 state.utilities.push({ id: i, name: type.name, dist: d, lat: targetL, absElevation: -getSurfaceHeight(d) + dp, depthTarget: dp, diamFt: type.diam, color: type.color }); 
             }
-            state.maxAllowedDepthRel = deep + 2.0; const ln = document.getElementById('lvl-number'); if(ln) ln.innerText = lvl < 10 ? '0'+lvl : lvl; setEnginePitch(35); window.actualizarPantallas(); dibujarEscena(); window.actualizarEstrellas();
+            state.maxAllowedDepthRel = deep + 2.0; 
+            const ln = document.getElementById('lvl-number'); if(ln) ln.innerText = lvl < 10 ? '0'+lvl : lvl; setEnginePitch(35); window.actualizarPantallas(); dibujarEscena(); window.actualizarEstrellas();
         }
         
         window.startGame = function() { 
